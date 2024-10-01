@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
@@ -10,59 +8,120 @@ class ReadyToPackPage extends StatefulWidget {
 }
 
 class _ReadyToPackPageState extends State<ReadyToPackPage> {
-  // Simulated selected products
-  List<bool> selectedProducts = List<bool>.filled(10, false); // Assuming 10 products
+  List<bool> selectedProducts = [];
   bool selectAll = false;
 
-  void toggleSelectAll(bool value) {
-    setState(() {
-      selectAll = value;
-      for (int i = 0; i < selectedProducts.length; i++) {
-        selectedProducts[i] = value;
-      }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getData();
     });
   }
 
-  void toggleProductSelection(int index, bool value) {
+  void getData() async {
+    var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+    await readyToPackProvider.fetchReadyToPackOrders();
     setState(() {
-      selectedProducts[index] = value;
+      selectedProducts = List<bool>.filled(readyToPackProvider.orders.length, false);
     });
   }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
+
+  void toggleSelectAll(bool? value) {
+    if (value != null) {
+      setState(() {
+        selectAll = value;
+        selectedProducts = List<bool>.filled(selectedProducts.length, value);
+      });
+    }
   }
-  void getData()async{
-    var readyToPackProviderProvider=Provider.of<ReadyToPackProvider>(context,listen:false);
-   await readyToPackProviderProvider.fetchReadyToPackOrders();
-   for(int i=0;i<readyToPackProviderProvider.orders.length;i++){
-      for(int j=0;j<readyToPackProviderProvider.orders[i]["items"].length;j++){
-          print("data is here ${readyToPackProviderProvider.orders[i]["items"][j]["product_id"]["displayName"]}");
-          print("\n");
-      }
-   }
+
+  void toggleProductSelection(int index, bool? value) {
+    if (value != null) {
+      setState(() {
+        selectedProducts[index] = value;
+        selectAll = selectedProducts.every((element) => element);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ready to Pack'),
-        backgroundColor: Colors.blue,
+        title: const Text('Ready to Pack', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.blueAccent,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => getData(),
+          ),
+        ],
       ),
       body: Consumer<ReadyToPackProvider>(
-        builder:(con,provider,child)=>SingleChildScrollView(
-          child:Row(
+        builder: (context, provider, child) {
+          if (provider.orders.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 4,
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: Transform.scale(
+                      scale: 1.5,
+                      child: Checkbox(
+                        value: selectAll,
+                        onChanged: toggleSelectAll,
+                        activeColor: Colors.blue,
+                      ),
+                    ),
+                    title: const Text('Select All', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  ),
+                  const Divider(thickness: 2),
+                  ...provider.orders.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final order = entry.value;
+                    final productNames = (order["items"] as List<dynamic>)
+                        .map((item) => item["product_id"]["displayName"] as String)
+                        .toList();
 
-            children: [
-             
-              //  Checkbox(value:true, onChanged:(v){}),
-              Text("Orders"),
-            ],
-          ),
-        ),
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: Transform.scale(
+                            scale: 1.5,
+                            child: Checkbox(
+                              value: selectedProducts[index],
+                              onChanged: (value) => toggleProductSelection(index, value),
+                              activeColor: Colors.blue,
+                            ),
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('ORDERS:', style: TextStyle(fontWeight: FontWeight.bold)),
+                              ...productNames.map((name) => Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                                child: Text(
+                                  name,
+                                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                                ),
+                              )).toList(),
+                            ],
+                          ),
+                        ),
+                        if (index < provider.orders.length - 1) const Divider(thickness: 1),
+                      ],
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
