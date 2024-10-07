@@ -30,13 +30,13 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       if (value != null && isScanning) {
         setState(() {
           scannedValue = value;
-          isScanning = false; 
+          isScanning = false;
         });
         widget.onScan(value);
         Future.delayed(Duration(seconds: 2), () {
           setState(() {
-            isScanning = true; 
-            scannedValue = ""; 
+            isScanning = true;
+            scannedValue = "";
           });
         });
       }
@@ -81,9 +81,13 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       child: Scaffold(
         backgroundColor: Colors.blueGrey[900],
         appBar: AppBar(
-          title:const Text("Sacn QR", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color:Colors.white)),
+          title: const Text("Sacn QR",
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
           backgroundColor: Colors.black.withOpacity(0.01),
-          elevation:0,
+          elevation: 0,
           // centerTitle: true,
         ),
         body: Stack(
@@ -128,7 +132,8 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                   opacity: scannedValue.isNotEmpty ? 1.0 : 0.0,
                   duration: Duration(milliseconds: 300),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
@@ -143,7 +148,10 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                     ),
                     child: Text(
                       scannedValue.isNotEmpty ? scannedValue : "Scan a QR code",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -160,7 +168,8 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                   children: [
                     ToggleFlashlightButton(controller: controller),
                     IconButton(
-                      icon: const Icon(Icons.switch_camera, color: Colors.white, size: 32),
+                      icon: const Icon(Icons.switch_camera,
+                          color: Colors.white, size: 32),
                       onPressed: () async {
                         await controller.stop();
                         await controller.switchCamera();
