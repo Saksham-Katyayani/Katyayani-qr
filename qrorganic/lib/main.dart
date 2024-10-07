@@ -19,6 +19,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Sora',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xff09254A),
+          primary: const Color(0xff09254A),
+        ),
+        useMaterial3: false,
+      ),
       debugShowCheckedModeBanner: false,
       home: DashboardScreen(),
     );
