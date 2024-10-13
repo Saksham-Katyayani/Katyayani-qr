@@ -1,5 +1,17 @@
-// ignore_for_file: file_names
 
+class Picker{
+  String sku;
+  int scannedQty;
+  bool isFullyScanned;
+  Picker({required this.sku,required this.scannedQty,required this.isFullyScanned});
+  factory Picker.fromJson(Map<String,dynamic>json){
+    return Picker(
+      sku:json['sku']??'', 
+      scannedQty:(json['scannedQty'] as num?)?.toInt()??0, 
+      isFullyScanned: json['isFullyScanned']??false
+    );
+  }
+}
 class Dimensions {
   final double length;
   final double width;
@@ -151,14 +163,22 @@ class Product {
 class ModelByDipu{
   String orderId;
   List<ItemModel>?items;
-  ModelByDipu({required this.orderId,this.items});
+  List<Picker>?picker;
+  bool isPickerFullyScanned;
+  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned});
     factory ModelByDipu.fromJson(Map<String, dynamic> json) {
+      print("model dipu ${json['isPickerFullyScanned']}   ${json['items']}");
+    if(json['picker']==null){
+      json['picker']=[];
+    }
     return ModelByDipu(
       orderId:json['order_id'],
       // items: (json['items'] as List) 
       //     .map((itemJson) => ItemModel.fromJson(itemJson))
       //     .toList(),
-      items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList()
+      items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList(),
+      picker:(json['picker'] as List).map((e) =>Picker.fromJson(e as Map<String,dynamic>) ).toList(),
+      isPickerFullyScanned:json["isPickerFullyScanned"],
     );
   }
 

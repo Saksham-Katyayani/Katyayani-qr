@@ -8,6 +8,7 @@ buildscript {
         // Ensure this classpath dependency is inside the buildscript block
         classpath 'com.android.tools.build:gradle:4.2.0' // Update to your desired Gradle plugin version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    
     }
 }
 allprojects {

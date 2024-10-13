@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
+import 'package:qrorganic/screen/camera-screen.dart';
 
 
-class ReadyToPackPage extends StatefulWidget {
-  const ReadyToPackPage({super.key});
+class ReadyToManiFest extends StatefulWidget {
+  const ReadyToManiFest({super.key});
 
   @override
-  State<ReadyToPackPage> createState() => _ReadyToPackPageState();
+  State<ReadyToManiFest> createState() => _ReadyToManiFestState();
 }
 
-class _ReadyToPackPageState extends State<ReadyToPackPage> {
+class _ReadyToManiFestState extends State<ReadyToManiFest> {
   @override
   void initState() {
     super.initState();
@@ -23,7 +24,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
   void getData() async {
     var readyToPackProvider =
         Provider.of<ReadyToPackProvider>(context, listen: false);
-    await readyToPackProvider.fetchReadyToPackOrders();
+    await readyToPackProvider.fetchReadyToManiFestOrders();
     // List<bool>.filled(readyToPackProvider.orders.length, false);
     setState(() {
       
@@ -35,18 +36,19 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
     return Scaffold(
 
       body: Consumer<ReadyToPackProvider>(
-        builder: (context, provider, child) => provider.orders.isNotEmpty
+        builder: (context, provider, child) => provider.manifestOrder.isNotEmpty
             ? Column(
                 children: [
                   Row(
+                    
                     children: [
-                      Checkbox(value:provider.orders[0].isPickerFullyScanned, onChanged: (val) {}),
+                      Checkbox(value:provider.manifestOrder[0].isPickerFullyScanned, onChanged: (val) {}),
                       const Text("Select All Orders"),
                     ],
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: provider.orders.length,
+                      itemCount: provider.manifestOrder.length,
                       scrollDirection:Axis.vertical,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -64,7 +66,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   Row(
                                     children: [
                                       Checkbox(
-                                          value: provider.checkBox[index],
+                                          value: provider.rtmCheckBox[index],
                                           onChanged: (val) {
                                             // provider
                                             //     .updateCheckBoxStatus(index);
@@ -83,7 +85,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   const SizedBox(height: 10),
                                   Column(
                                     children: List.generate(
-                                        provider.orders[index].items!.length,
+                                        provider.manifestOrder[index].items!.length,
                                         (i) {
                                       return Padding(
                                         padding:
@@ -106,7 +108,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                   children: [
                                                     Text(
                                                       provider
-                                                          .orders[index]
+                                                          .manifestOrder[index]
                                                           .items![i]
                                                           .product
                                                           .displayName,
@@ -115,7 +117,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      "SKU: ${provider.orders[index].items![i].product.sku}",
+                                                      "SKU: ${provider.manifestOrder[index].items![i].product.sku}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
@@ -123,14 +125,14 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      "Quantity: ${provider.orders[index].items![i].quantity}",
+                                                      "Quantity: ${provider.manifestOrder[index].items![i].quantity}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Scanned Qty: ${provider.orders[index].picker!.length > i ? provider.orders[index].picker![i].scannedQty : 0}",
+                                                      "Scanned Qty: ${provider.manifestOrder[index].picker!.length > i ? provider.manifestOrder[index].picker![i].scannedQty : 0}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
@@ -142,43 +144,12 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                             ],
                                           ),
                                           onTap: () {
-                                            List<String> title = [];
-                                            List<int> quantity = [];
-                                            List<int> scannedQty = [];
-                                            int sumQty=0;
-                                            int totalQtyi=0;
-                                            
-                                            for (int val = 0;
-                                                val <
-                                                    provider.orders[index]
-                                                        .items!.length;
-                                                val++) {
-                                              title.add(provider.orders[index]
-                                                  .items![val].product.sku);
-                                              quantity.add((provider
-                                                      .orders[index]
-                                                      .items![val]
-                                                      .quantity)
-                                                  .toInt());
-                                              sumQty=sumQty+(provider.orders[index].picker!.length > val ? provider.orders[index].picker![val].scannedQty : 0);
-                                              scannedQty.add(provider.orders[index].picker!.length > val ? provider.orders[index].picker![val].scannedQty : 0);
-                                              totalQtyi=totalQtyi+(provider.orders[index].items![val].quantity).toInt();
-                                             
-                                            }
-                                            provider.setDetailsOfProducts(title,scannedQty,scannedQty);
+                                           
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ShowDetailsOfOrderItem(
-                                                          numberOfItme:
-                                                              quantity,
-                                                          title: title,
-                                                          oredrId: provider
-                                                              .orders[index]
-                                                              .orderId, scannedQty:sumQty, totalQty:totalQtyi,
-                                                              scannedQ:scannedQty,
-                                                        )
+                                                        const CameraScreen()
                                                         )
                                                         );
                                           },
@@ -197,7 +168,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                   ),
                 ],
               )
-            : const Text("Wait"),
+            :(provider.isLoading)?const Text("Wait"):Text('No Data'),
       ),
     );
   }

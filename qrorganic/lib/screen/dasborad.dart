@@ -1,7 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:qrorganic/screen/ready-to-check.dart';
+import 'package:qrorganic/screen/ready-to-manitfest.dart';
 import 'package:qrorganic/screen/ready-to-pack.dart';
+import 'package:qrorganic/screen/ready-to-pick.dart';
+import 'package:qrorganic/screen/ready-to-racked.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -17,6 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // List of labels for the bottom navigation bar
   final List<String> _labels = [
     'Ready to Pack',
+    'Ready to Pick',
     'Ready to Check',
     'Ready to Racked',
     'Ready to Manifest'
@@ -24,16 +29,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // List of icons for each item
   final List<IconData> _icons = [
-    Icons.shopping_bag,      // For "Ready to Pack"
+    Icons.shopping_bag, 
+    Icons.done,     // For "Ready to Pack"
     Icons.check_circle, // For "Ready to Check"
     Icons.storage,      // For "Ready to Racked"
     Icons.assignment,    // For "Ready to Manifest"
   ];
   final List<Widget> content = [
-    ReadyToPackPage(),      // For "Ready to Pack"
-   const Center(child:Text("Ready to Check"),), // For "Ready to Check"
-   const Center(child:Text("Ready to Check"),),      // For "Ready to Racked"
-   const Center(child:Text("Ready to Manifes"),),    // For "Ready to Manifest"
+    const ReadyToPackPage(),   
+    const ReadyToPickPage(),    // For "Ready to Pack"
+   const ReadyToCheckPage(), // For "Ready to Check"
+   const ReadyToRacked(),      // For "Ready to Racked"
+   const ReadyToManiFest(),    // For "Ready to Manifest"
   ];
 
   void _onItemTapped(int index) {

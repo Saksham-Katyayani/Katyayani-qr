@@ -4,14 +4,14 @@ import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
 
 
-class ReadyToPackPage extends StatefulWidget {
-  const ReadyToPackPage({super.key});
+class ReadyToPickPage extends StatefulWidget {
+  const ReadyToPickPage({super.key});
 
   @override
-  State<ReadyToPackPage> createState() => _ReadyToPackPageState();
+  State<ReadyToPickPage> createState() => _ReadyToPickPageState();
 }
 
-class _ReadyToPackPageState extends State<ReadyToPackPage> {
+class _ReadyToPickPageState extends State<ReadyToPickPage> {
   @override
   void initState() {
     super.initState();
@@ -23,7 +23,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
   void getData() async {
     var readyToPackProvider =
         Provider.of<ReadyToPackProvider>(context, listen: false);
-    await readyToPackProvider.fetchReadyToPackOrders();
+    await readyToPackProvider.fetchReadyToPickOrders();
     // List<bool>.filled(readyToPackProvider.orders.length, false);
     setState(() {
       
@@ -35,18 +35,18 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
     return Scaffold(
 
       body: Consumer<ReadyToPackProvider>(
-        builder: (context, provider, child) => provider.orders.isNotEmpty
+        builder: (context, provider, child) => provider.pickOrder.isNotEmpty
             ? Column(
                 children: [
                   Row(
                     children: [
-                      Checkbox(value:provider.orders[0].isPickerFullyScanned, onChanged: (val) {}),
+                      Checkbox(value:provider.pickOrder[0].isPickerFullyScanned, onChanged: (val) {}),
                       const Text("Select All Orders"),
                     ],
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: provider.orders.length,
+                      itemCount: provider.pickOrder.length,
                       scrollDirection:Axis.vertical,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -64,14 +64,14 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   Row(
                                     children: [
                                       Checkbox(
-                                          value: provider.checkBox[index],
+                                          value: provider.pickCheckBox[index],
                                           onChanged: (val) {
                                             // provider
                                             //     .updateCheckBoxStatus(index);
                                           }),
                                       Expanded(
                                         child: Text(
-                                          "Order ID: ${provider.orders[index].orderId} ",
+                                          "Order ID: ${provider.pickOrder[index].orderId} ",
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   const SizedBox(height: 10),
                                   Column(
                                     children: List.generate(
-                                        provider.orders[index].items!.length,
+                                        provider.pickOrder[index].items!.length,
                                         (i) {
                                       return Padding(
                                         padding:
@@ -106,7 +106,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                   children: [
                                                     Text(
                                                       provider
-                                                          .orders[index]
+                                                          .pickOrder[index]
                                                           .items![i]
                                                           .product
                                                           .displayName,
@@ -115,7 +115,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      "SKU: ${provider.orders[index].items![i].product.sku}",
+                                                      "SKU: ${provider.pickOrder[index].items![i].product.sku}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
@@ -123,14 +123,14 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      "Quantity: ${provider.orders[index].items![i].quantity}",
+                                                      "Quantity: ${provider.pickOrder[index].items![i].quantity}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Scanned Qty: ${provider.orders[index].picker!.length > i ? provider.orders[index].picker![i].scannedQty : 0}",
+                                                      "Scanned Qty: ${provider.pickOrder[index].picker!.length > i ? provider.pickOrder[index].picker![i].scannedQty : 0}",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
@@ -150,19 +150,19 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                             
                                             for (int val = 0;
                                                 val <
-                                                    provider.orders[index]
+                                                    provider.pickOrder[index]
                                                         .items!.length;
                                                 val++) {
-                                              title.add(provider.orders[index]
+                                              title.add(provider.pickOrder[index]
                                                   .items![val].product.sku);
                                               quantity.add((provider
-                                                      .orders[index]
+                                                      .pickOrder[index]
                                                       .items![val]
                                                       .quantity)
                                                   .toInt());
-                                              sumQty=sumQty+(provider.orders[index].picker!.length > val ? provider.orders[index].picker![val].scannedQty : 0);
-                                              scannedQty.add(provider.orders[index].picker!.length > val ? provider.orders[index].picker![val].scannedQty : 0);
-                                              totalQtyi=totalQtyi+(provider.orders[index].items![val].quantity).toInt();
+                                              sumQty=sumQty+(provider.pickOrder[index].picker!.length > val ? provider.pickOrder[index].picker![val].scannedQty : 0);
+                                              scannedQty.add(provider.pickOrder[index].picker!.length > val ? provider.pickOrder[index].picker![val].scannedQty : 0);
+                                              totalQtyi=totalQtyi+(provider.pickOrder[index].items![val].quantity).toInt();
                                              
                                             }
                                             provider.setDetailsOfProducts(title,scannedQty,scannedQty);
@@ -175,7 +175,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                               quantity,
                                                           title: title,
                                                           oredrId: provider
-                                                              .orders[index]
+                                                              .pickOrder[index]
                                                               .orderId, scannedQty:sumQty, totalQty:totalQtyi,
                                                               scannedQ:scannedQty,
                                                         )
