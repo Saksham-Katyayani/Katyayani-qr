@@ -16,9 +16,10 @@ class ScannerWidget extends StatefulWidget {
    int scanned;
    int totalQty;
    int index;
+   bool isRacker;
   final void Function(String value) onScan;
 
-   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index});
+   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index,this.isRacker=false});
 
   @override
   State<ScannerWidget> createState() => _ScannerState();
@@ -85,10 +86,12 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       progress = true;
     });
 
-    final url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan');
+    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/');
    
     try {
-      final response = await http.post(
+      var response;
+      if(!widget.isRacker){
+        response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -97,6 +100,17 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
         body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
       );
 
+      }else{
+        url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker');
+         response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4NTc3MTMyLCJleHAiOjE3Mjg2MjAzMzJ9.sCM6xurdP8TLKuigxVcgmU8vkpDBncGQbX2Nv8741FI',
+        },
+        body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
+      );
+      }
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         // print("here response data ${data.toString()}");
@@ -105,9 +119,6 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
          var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
          provider.upDateScannedProducts(widget.index);
          provider.updateCheckBoxValue(widget.index,widget.scanned);
-        // OrderItemProvider pro = Provider.of<OrderItemProvider>(context, listen: false);
-  
-      //  pro.updateCheckBoxValue(widget.index,widget.scanned);
         message = 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
         setState(() {
 

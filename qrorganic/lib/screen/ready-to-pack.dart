@@ -40,7 +40,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                 children: [
                   Row(
                     children: [
-                      Checkbox(value:provider.orders[0].isPickerFullyScanned, onChanged: (val) {}),
+                      Checkbox(value:provider.orders[0].isPackerFullyScanned, onChanged: (val) {}),
                       const Text("Select All Orders"),
                     ],
                   ),

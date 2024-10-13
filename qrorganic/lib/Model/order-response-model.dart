@@ -1,4 +1,6 @@
 
+import 'package:flutter/foundation.dart';
+
 class Picker{
   String sku;
   int scannedQty;
@@ -159,13 +161,38 @@ class Product {
     };
   }
 }
+class CheckerModel{
+  bool approved;
+  CheckerModel({required this.approved});
+  factory CheckerModel.fromJson(Map<String,dynamic>json){
+    return CheckerModel(approved:json["approved"]);
+  }
+}
+class RackerModel{
+  bool approved;
+  RackerModel({required this.approved});
+  factory RackerModel.fromJson(Map<String,dynamic>json){
+    return RackerModel(approved:json["approved"]);
+  }
+}
+class ManiFestModel{
+  bool approved;
+  ManiFestModel({required this.approved});
+  factory ManiFestModel.fromJson(Map<String,dynamic>json){
+    return ManiFestModel(approved:json["approved"]);
+  }
+}
 
 class ModelByDipu{
   String orderId;
   List<ItemModel>?items;
   List<Picker>?picker;
+  CheckerModel checker;
+   RackerModel racker;
+  ManiFestModel mainFest;
   bool isPickerFullyScanned;
-  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned});
+  bool isPackerFullyScanned;
+  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned,required this.checker,required this.racker,required this.mainFest,required this.isPackerFullyScanned});
     factory ModelByDipu.fromJson(Map<String, dynamic> json) {
       print("model dipu ${json['isPickerFullyScanned']}   ${json['items']}");
     if(json['picker']==null){
@@ -179,6 +206,10 @@ class ModelByDipu{
       items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList(),
       picker:(json['picker'] as List).map((e) =>Picker.fromJson(e as Map<String,dynamic>) ).toList(),
       isPickerFullyScanned:json["isPickerFullyScanned"],
+      checker:CheckerModel.fromJson(json["checker"]),
+      racker: RackerModel.fromJson(json["racker"]),
+      mainFest:ManiFestModel.fromJson(json["checkManifest"]),
+      isPackerFullyScanned:json["isPackerFullyScanned"],
     );
   }
 

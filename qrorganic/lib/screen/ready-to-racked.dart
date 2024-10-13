@@ -65,7 +65,7 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                   Row(
                                     children: [
                                       Checkbox(
-                                          value: provider.rtrcheckbox[index],
+                                          value: provider.orders[index].racker.approved,
                                           onChanged: (val) {
                                             // provider
                                             //     .updateCheckBoxStatus(index);

@@ -67,7 +67,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                     child: Row(
                                       children: [
                                         Checkbox(
-                                            value: provider.rtcCheckBox[index],
+                                            value: provider.orders[index].checker.approved,
                                             onChanged: (val) {
                                               // provider
                                               //     .updateCheckBoxStatus(index);
