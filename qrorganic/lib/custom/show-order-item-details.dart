@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
@@ -14,6 +15,9 @@ class ShowDetailsOfOrderItem extends StatefulWidget {
   List<int> scannedQ;
   int totalQty;
   int scannedQty;
+  bool isPicker;
+  bool isPacker;
+  bool isRacker;
   ShowDetailsOfOrderItem(
       {super.key,
       required this.numberOfItme,
@@ -21,7 +25,10 @@ class ShowDetailsOfOrderItem extends StatefulWidget {
       required this.oredrId,
       required this.scannedQty,
       required this.totalQty,
-      required this.scannedQ
+      required this.scannedQ,
+      this.isPicker=false,
+      this.isPacker=false,
+      this.isRacker=false
       });
 
   @override
@@ -90,12 +97,19 @@ class _ShowDetailsOfOrderItemState extends State<ShowDetailsOfOrderItem> {
                                 ),
                               ),
                             )),
-                            Checkbox(
-                                value:readyToPackProvider.orderItemCheckBox![i][index],
-                                onChanged: (val) {
-                                  //  print("$i,$index");
-                                  //  ReadyToPackProvider.updateCheckBoxValue(i,index);
-                                })
+                            readyToPackProvider.orderItemCheckBox![i][index]?const FaIcon(
+                            FontAwesomeIcons.check,
+                           size:25,
+                           
+                           color:Colors.green,
+                              
+                            ) :const Text(''),
+                            // Checkbox(
+                            //     value:readyToPackProvider.orderItemCheckBox![i][index],
+                            //     onChanged: (val) {
+                            //       //  print("$i,$index");
+                            //       //  ReadyToPackProvider.updateCheckBoxValue(i,index);
+                            //     })
                           ],
                         ),
                       ),
@@ -103,7 +117,19 @@ class _ShowDetailsOfOrderItemState extends State<ShowDetailsOfOrderItem> {
                         for(int j=0;j< readyToPackProvider.productTitle.length;j++){
                           if( readyToPackProvider.productTitle[i]== readyToPackProvider.productTitle[j]){
                 
-                             Navigator.push(context,MaterialPageRoute(builder:(context)=>ScannerWidget(onScan:(s){}, scanned:widget.scannedQ[j], totalQty: widget.numberOfItme[j],index:j, oredrId:widget.oredrId,)));
+                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:(context)=>
+                                ScannerWidget(onScan:(s){}, 
+                                scanned:widget.scannedQ[j], 
+                                totalQty: widget.numberOfItme[j],
+                                index:j, 
+                                oredrId:widget.oredrId,
+                                isPicker:widget.isPicker,
+                                isPacker:widget.isPacker,
+                                isRacker:widget.isRacker,
+                                )));
                           }
                         }
                        

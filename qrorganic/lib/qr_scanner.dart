@@ -16,10 +16,12 @@ class ScannerWidget extends StatefulWidget {
    int scanned;
    int totalQty;
    int index;
+  bool isPicker;
+  bool isPacker;
    bool isRacker;
   final void Function(String value) onScan;
 
-   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index,this.isRacker=false});
+   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index,this.isRacker=false,this.isPicker=false,this.isPacker=false});
 
   @override
   State<ScannerWidget> createState() => _ScannerState();
@@ -86,12 +88,24 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       progress = true;
     });
 
-    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/');
+    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker');
    
     try {
-      var response;
-      if(!widget.isRacker){
+      http.Response response;
+     print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
+      if(widget.isRacker){
         response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4NTc3MTMyLCJleHAiOjE3Mjg2MjAzMzJ9.sCM6xurdP8TLKuigxVcgmU8vkpDBncGQbX2Nv8741FI',
+        },
+        body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
+      );
+
+      }else if(widget.isPacker){
+         url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan/packer');
+         response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -101,24 +115,28 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       );
 
       }else{
-        url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker');
+        url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan');
          response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4NTc3MTMyLCJleHAiOjE3Mjg2MjAzMzJ9.sCM6xurdP8TLKuigxVcgmU8vkpDBncGQbX2Nv8741FI',
         },
-        body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
+        body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
       );
       }
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         // print("here response data ${data.toString()}");
+         var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
+        if(!widget.isRacker){
         int scannedCount = data['scannedCount'];
         widget.scanned++;
-         var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
-         provider.upDateScannedProducts(widget.index);
+          provider.upDateScannedProducts(widget.index);
          provider.updateCheckBoxValue(widget.index,widget.scanned);
+        }
+        
+       provider=Provider.of<ReadyToPackProvider>(context,listen:false);
         message = 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
         setState(() {
 
@@ -128,7 +146,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
         });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("Scanned Succesfully}")));
       } else {
-        // print('Failed to fetch data: ${response.reasonPhrase}');
+       
         
         setState(() {
           isScanning = true;
@@ -193,14 +211,21 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
             child:const Icon(Icons.arrow_back),
             onTap:()async{
               var provider= Provider.of<ReadyToPackProvider>(context,listen:false);
-                provider.fetchReadyToPackOrders();
+              if(widget.isPicker){
+                // print("heeelooo i am dipu");
+                provider.fetchReadyToPickOrders();
+              }else if(widget.isRacker){
+                 provider.fetchReadyToCheckOrders(); 
+              }else{
+                 provider.fetchReadyToPackOrders();
+              }
                 Navigator.pop(context);
             },
           ),
         ),
         body: Stack(
           children: [
-            Padding(
+           !widget.isRacker?Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 30,
@@ -208,7 +233,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                 color: Colors.white,
                 child: Center(child:  Text("Scanned : ${widget.scanned} total ${widget.totalQty}")),
               ),
-            ),
+            ):const Text(''),
             Center(
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),

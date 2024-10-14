@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 
 class WightEnter extends StatefulWidget {
@@ -138,12 +139,12 @@ class _WightEnterState extends State<WightEnter> {
             duration: const Duration(seconds: 2),
           ),
         );
-        
+        Provider.of<ReadyToPackProvider>(context,listen:false).fetchReadyToCheckOrders();
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Error: ${response.body.toString()}"),
+            content: Text("Error: ${jsonDecode(response.body)["message"]}"),
             duration: const Duration(seconds: 2),
           ),
         );
