@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qrorganic/const.dart';
-import 'package:qrorganic/screens/ready-to-pack.dart';
-import 'package:qrorganic/screens/ready_to_pick_screen.dart';
+import 'package:qrorganic/screen/ready-to-pack.dart';
+import 'package:qrorganic/screen/ready-to-pick.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override

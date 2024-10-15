@@ -1,5 +1,32 @@
-// ignore_for_file: file_names
 
+import 'package:flutter/foundation.dart';
+
+class Picker{
+  String sku;
+  int scannedQty;
+  bool isFullyScanned;
+  Picker({required this.sku,required this.scannedQty,required this.isFullyScanned});
+  factory Picker.fromJson(Map<String,dynamic>json){
+    return Picker(
+      sku:json['sku']??'', 
+      scannedQty:(json['scannedQty'] as num?)?.toInt()??0, 
+      isFullyScanned: json['isFullyScanned']??false
+    );
+  }
+}
+class Packer{
+  String sku;
+  int scannedQty;
+  bool isFullyScanned;
+  Packer({required this.sku,required this.scannedQty,required this.isFullyScanned});
+  factory Packer.fromJson(Map<String,dynamic>json){
+    return Packer(
+      sku:json['sku']??'', 
+      scannedQty:(json['scannedQty'] as num?)?.toInt()??0, 
+      isFullyScanned: json['isFullyScanned']??false
+    );
+  }
+}
 class Dimensions {
   final double length;
   final double width;
@@ -69,6 +96,7 @@ class Product {
   final String grade;
   final String shopifyImage;
   final Dimensions dimensions;
+  DateTime upDatedAt;
 
   Product({
     this.id = '',
@@ -90,8 +118,7 @@ class Product {
     this.images = const [],
     this.grade = '',
     this.shopifyImage = '',
-    DateTime? createdAt,
-    DateTime? updatedAt,
+     required this.upDatedAt,
     required this.dimensions,
   });
 
@@ -116,9 +143,10 @@ class Product {
       images: List<String>.from(json['images'] ?? []),
       grade: json['grade'] as String? ?? '',
       shopifyImage: json['shopifyImage'] as String? ?? '',
-      createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
-      updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
+      upDatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
+      // updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
       dimensions: Dimensions.fromJson(json['dimensions'] ?? {}),
+      
     );
   }
 
@@ -144,21 +172,63 @@ class Product {
       'grade': grade,
       'shopifyImage': shopifyImage,
       'dimensions': dimensions.toJson(),
+      // 'createdAT': c,
+      // 'dimensions': dimensions.toJson(),
     };
+  }
+}
+class CheckerModel{
+  bool approved;
+  CheckerModel({required this.approved});
+  factory CheckerModel.fromJson(Map<String,dynamic>json){
+    return CheckerModel(approved:json["approved"]);
+  }
+}
+class RackerModel{
+  bool approved;
+  RackerModel({required this.approved});
+  factory RackerModel.fromJson(Map<String,dynamic>json){
+    return RackerModel(approved:json["approved"]);
+  }
+}
+class ManiFestModel{
+  bool approved;
+  ManiFestModel({required this.approved});
+  factory ManiFestModel.fromJson(Map<String,dynamic>json){
+    return ManiFestModel(approved:json["approved"]);
   }
 }
 
 class ModelByDipu{
   String orderId;
   List<ItemModel>?items;
-  ModelByDipu({required this.orderId,this.items});
+  List<Picker>?picker;
+  List<Packer>?packer;
+  CheckerModel checker;
+   RackerModel racker;
+  ManiFestModel mainFest;
+  bool isPickerFullyScanned;
+  bool isPackerFullyScanned;
+  // String shopifyImage;
+  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned,required this.checker,required this.racker,required this.mainFest,required this.isPackerFullyScanned,required this.packer});
     factory ModelByDipu.fromJson(Map<String, dynamic> json) {
+      print("model dipu ${json['isPickerFullyScanned']}   ${json['items']}");
+    if(json['picker']==null){
+      json['picker']=[];
+    }
     return ModelByDipu(
       orderId:json['order_id'],
       // items: (json['items'] as List) 
       //     .map((itemJson) => ItemModel.fromJson(itemJson))
       //     .toList(),
-      items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList()
+      items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList(),
+      picker:(json['picker'] as List).map((e) =>Picker.fromJson(e as Map<String,dynamic>) ).toList(),
+      packer:(json['packer'] as List).map((e) =>Packer.fromJson(e as Map<String,dynamic>) ).toList(),
+      isPickerFullyScanned:json["isPickerFullyScanned"],
+      checker:CheckerModel.fromJson(json["checker"]),
+      racker: RackerModel.fromJson(json["racker"]),
+      mainFest:ManiFestModel.fromJson(json["checkManifest"]),
+      isPackerFullyScanned:json["isPackerFullyScanned"],
     );
   }
 

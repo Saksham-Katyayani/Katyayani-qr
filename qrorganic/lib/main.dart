@@ -9,7 +9,7 @@ void main() => runApp(
   MultiProvider(
      providers: [
         ChangeNotifierProvider(create: (context) => ReadyToPackProvider()),
-        ChangeNotifierProvider(create:(context)=>OrderItemProvider())
+        ChangeNotifierProvider(create:(context)=> OrderItemProvider()),
       ],
   child: const App()));
 

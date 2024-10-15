@@ -1,106 +1,248 @@
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
+
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
+import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'dart:convert';
+
+import 'package:qrorganic/Provider/show-order-item.dart';
 
 class ScannerWidget extends StatefulWidget {
-  final String? title;
+  final String? oredrId;
+   int scanned;
+   int totalQty;
+   int index;
+  bool isPicker;
+  bool isPacker;
+   bool isRacker;
   final void Function(String value) onScan;
 
-  const ScannerWidget({super.key, required this.onScan, this.title});
+   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index,this.isRacker=false,this.isPicker=false,this.isPacker=false});
 
   @override
   State<ScannerWidget> createState() => _ScannerState();
 }
 
 class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
-  final MobileScannerController controller = MobileScannerController(
-    autoStart: true,
-    torchEnabled: false,
-    useNewCameraSelector: true,
-    facing: CameraFacing.back,
-  );
-
+  MobileScannerController? controller;
   StreamSubscription<Object?>? _subscription;
+  
   String scannedValue = "";
   bool isScanning = true;
-
-  void _handleBarcode(BarcodeCapture barcodes) {
-    if (mounted) {
-      final String? value = barcodes.barcodes.firstOrNull?.displayValue?.trim();
-      if (value != null && isScanning) {
-        setState(() {
-          scannedValue = value;
-          isScanning = false;
-        });
-        widget.onScan(value);
-        Future.delayed(Duration(seconds: 2), () {
-          setState(() {
-            isScanning = true;
-            scannedValue = "";
-          });
-        });
-      }
-    }
-  }
+  // int scannedItem = 0;
+  // int totalItems = 10;
+  String message = '';
+  bool progress = false;
 
   @override
   void initState() {
     super.initState();
+    print('Scanned Item: ${widget.scanned} Total Items: ${widget.totalQty}');
     WidgetsBinding.instance.addObserver(this);
-    _subscription = controller.barcodes.listen(_handleBarcode);
-    unawaited(controller.start());
+    _initializeScanner();
+  }
+
+  void _initializeScanner() {
+    controller = MobileScannerController(
+      autoStart: false,
+      torchEnabled: false,
+      useNewCameraSelector: true,
+      facing: CameraFacing.back,
+    );
+    _subscription = controller?.barcodes.listen(_handleBarcode);
+    _startScanner();
+  }
+
+  Future<void> _startScanner() async {
+    try {
+      await controller?.start();
+    } catch (e) {
+      print("Error starting scanner: $e");
+      _disposeCurrentController();
+      _initializeScanner();
+    }
+  }
+
+  void _handleBarcode(BarcodeCapture barcodes) async {
+    if (mounted) {
+      final String? value = barcodes.barcodes.firstOrNull?.displayValue?.trim();
+      if (value != null && isScanning) {
+        var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
+        
+       message= 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
+        setState(() {
+          scannedValue = value;
+          isScanning = false;
+        });
+        await _scanAndFetchData(value);
+      }
+    }
+  }
+
+  Future<void> _scanAndFetchData(String qrCode) async {
+    setState(() {
+      progress = true;
+    });
+
+    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker');
+   
+    try {
+      http.Response response;
+     print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
+      if(widget.isRacker){
+        response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+        },
+        body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
+      );
+
+      }else if(widget.isPacker){
+         url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan/packer');
+         response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+        },
+        body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
+      );
+
+      }else{
+        url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan');
+         response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+        },
+        body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
+      );
+      }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        // print("here response data ${data.toString()}");
+         var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
+        if(!widget.isRacker){
+        int scannedCount = data['scannedCount'];
+        widget.scanned++;
+          provider.upDateScannedProducts(widget.index);
+         provider.updateCheckBoxValue(widget.index,widget.scanned);
+        }
+        
+       provider=Provider.of<ReadyToPackProvider>(context,listen:false);
+        message = 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
+        setState(() {
+
+          
+          isScanning = true;
+          scannedValue = "";
+        });
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("Scanned Succesfully}")));
+      } else {
+       
+        
+        setState(() {
+          isScanning = true;
+          scannedValue = "";
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Failed to fetch data: ${response.reasonPhrase}")));
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        isScanning = true;
+        scannedValue = "";
+      });
+    } finally {
+      setState(() {
+        progress = false;
+      });
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!controller.value.isInitialized) {
+    if (controller == null || !controller!.value.isInitialized) {
       return;
     }
 
     switch (state) {
       case AppLifecycleState.resumed:
-        _subscription = controller.barcodes.listen(_handleBarcode);
-        unawaited(controller.start());
+        _startScanner();
         break;
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-        unawaited(_subscription?.cancel());
-        _subscription = null;
-        unawaited(controller.stop());
+        _stopScanner();
         break;
       default:
         break;
     }
   }
 
+  Future<void> _stopScanner() async {
+    await _subscription?.cancel();
+    _subscription = null;
+    await controller?.stop();
+  }
+
+  void _disposeCurrentController() {
+    _stopScanner();
+    controller?.dispose();
+    controller = null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String title = widget.title ?? 'Scan Your Badge';
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.blueGrey[900],
         appBar: AppBar(
-          title: const Text("Sacn QR",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)),
+          title: const Text("Scan QR", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
           backgroundColor: Colors.black.withOpacity(0.01),
           elevation: 0,
-          // centerTitle: true,
+          leading:InkWell(
+            child:const Icon(Icons.arrow_back),
+            onTap:()async{
+              var provider= Provider.of<ReadyToPackProvider>(context,listen:false);
+              if(widget.isPicker){
+                // print("heeelooo i am dipu");
+                provider.fetchReadyToPickOrders();
+              }else if(widget.isRacker){
+                 provider.fetchReadyToCheckOrders(); 
+              }else{
+                 provider.fetchReadyToPackOrders();
+              }
+                Navigator.pop(context);
+            },
+          ),
         ),
         body: Stack(
           children: [
+           !widget.isRacker?Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 30,
+                width: double.infinity,
+                color: Colors.white,
+                child: Center(child:  Text("Scanned : ${widget.scanned} total ${widget.totalQty}")),
+              ),
+            ):const Text(''),
             Center(
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 width: 300,
                 height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10.0,
@@ -109,55 +251,20 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                     ),
                   ],
                 ),
-                child: MobileScanner(
-                  controller: controller,
-                  errorBuilder: (context, error, child) {
-                    return Center(child: Text(error.toString()));
-                  },
-                  placeholderBuilder: (context, val) {
-                    return Center(child: Text(val.toString()));
-                  },
-                  onDetect: (val) {
-                    // Handle barcode detection
-                  },
-                ),
+                child: progress
+                    ? const Center(child: CircularProgressIndicator())
+                    : MobileScanner(
+                        controller: controller!,
+                        errorBuilder: (context, error, child) {
+                          return Center(child: Text(error.toString()));
+                        },
+                        placeholderBuilder: (context, val) {
+                          return Center(child: Text(val.toString()));
+                        },
+                      ),
               ),
             ),
-            Positioned(
-              bottom: 80,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: AnimatedOpacity(
-                  opacity: scannedValue.isNotEmpty ? 1.0 : 0.0,
-                  duration: Duration(milliseconds: 300),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          spreadRadius: 2.0,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      scannedValue.isNotEmpty ? scannedValue : "Scan a QR code",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -166,14 +273,13 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ToggleFlashlightButton(controller: controller),
+                    ToggleFlashlightButton(controller: controller!),
                     IconButton(
-                      icon: const Icon(Icons.switch_camera,
-                          color: Colors.white, size: 32),
+                      icon: const Icon(Icons.switch_camera, color: Colors.white, size: 32),
                       onPressed: () async {
-                        await controller.stop();
-                        await controller.switchCamera();
-                        await controller.start();
+                        await _stopScanner();
+                        await controller?.switchCamera();
+                        await _startScanner();
                       },
                     ),
                   ],
@@ -189,10 +295,8 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
   @override
   Future<void> dispose() async {
     WidgetsBinding.instance.removeObserver(this);
-    unawaited(_subscription?.cancel());
-    _subscription = null;
+    _disposeCurrentController();
     super.dispose();
-    await controller.dispose();
   }
 }
 
