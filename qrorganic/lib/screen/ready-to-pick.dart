@@ -86,8 +86,8 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: Image.network(
-                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTprI6-IHZrDj6tSyBRlbmUnRb6CuDfZYIQVoPNpHEBtjg1atSd-B_LlhBdT7fJpWqFQWM&usqp=CAU",
+                                            child: Image.network(provider.pickOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.pickOrder[index].items![i].product.shopifyImage:
+                                      "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                               fit: BoxFit.cover,
                                             ),
                                           ),

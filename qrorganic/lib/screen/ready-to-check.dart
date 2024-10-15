@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'weigth-enter.dart';
@@ -92,8 +93,8 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: Image.network(
-                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTprI6-IHZrDj6tSyBRlbmUnRb6CuDfZYIQVoPNpHEBtjg1atSd-B_LlhBdT7fJpWqFQWM&usqp=CAU",
+                                        child: Image.network(provider.checkOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.checkOrder[index].items![i].product.shopifyImage:
+                                      "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -112,6 +113,12 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                               "SKU: ${provider.checkOrder[index].items![i].product.sku}",
                                               style: const TextStyle(fontSize: 14, color: Colors.blue),
                                             ),
+                                            const SizedBox(height: 4),
+                                             Text(
+                                                  "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].items![i].product.upDatedAt)}",
+                                                  style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                ),
+                                                const SizedBox(height: 4),
                                           ],
                                         ),
                                       ),

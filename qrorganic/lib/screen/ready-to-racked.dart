@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/qr_scanner.dart';
@@ -98,8 +99,8 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: Image.network(
-                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTprI6-IHZrDj6tSyBRlbmUnRb6CuDfZYIQVoPNpHEBtjg1atSd-B_LlhBdT7fJpWqFQWM&usqp=CAU",
+                                        child: Image.network(provider.rackedOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.rackedOrder[index].items![i].product.shopifyImage:
+                                      "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                           fit: BoxFit.cover,
                                           height: 80,
                                           width: 80,
@@ -120,6 +121,12 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                               "SKU: ${provider.rackedOrder[index].items![i].product.sku}",
                                               style: const TextStyle(fontSize: 14, color: Colors.blue),
                                             ),
+                                            const SizedBox(height: 4),
+                                                Text(
+                                                  "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.rackedOrder[index].items![i].product.upDatedAt)}",
+                                                  style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                ),
+                                                // const SizedBox(height: 4),
                                             const SizedBox(height: 4),
                                             Text(
                                               "Quantity: ${provider.rackedOrder[index].items![i].quantity}",
