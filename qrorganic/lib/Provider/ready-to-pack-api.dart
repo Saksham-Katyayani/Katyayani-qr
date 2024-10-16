@@ -29,11 +29,9 @@
 //   List<List<bool>>? get orderItemCheckBox =>_orderItemCheckBox;
 //   bool get showData=>_showData;
 
-//   List<ModelByDipu> get orders => _orders;
 //   List<ModelByDipu> get checkOrder =>_checkOrder;
-//   List<ModelByDipu> get rackedOrder =>_rackedOrder;
-//    List<ModelByDipu> get pickOrder =>_pickOrder;
   
+
 //   List<ModelByDipu> get manifestOrder =>_manifestOrder;
 //   bool get isLoading => _isLoading;
 //   List<bool> get checkBox => _checkbox;
@@ -49,13 +47,9 @@
 //   // Change this to your actual base URL if needed
 //   final String baseUrl = 'https://inventory-management-backend-s37u.onrender.com';
 
-
 //   void setDetailsOfProducts(List<String>title,List<int>productCount,List<int>scanCount){
 //     _productTitle=title;
-//     _numberOfProducts=productCount;
 //     _numberOfScannedProducts=scanCount;
-//     notifyListeners();
-//   }
 //     void upDateScannedProducts(int index){
 //    _numberOfScannedProducts[index]=_numberOfScannedProducts[index]+1;
 //     notifyListeners();
@@ -82,7 +76,6 @@
 //       // print("some error occured ${e.toString()}");
 //     }
 
-
 //   }
 
 //     void generateRTMCheckBox(){
@@ -101,7 +94,6 @@
 //       // print("some error occured ${e.toString()}");
 //     }
 
-
 //   }
 //     void generateRTRCheckBox(){
 //     _rtrcheckbox=List.generate(_rackedOrder.length, (index) =>false);
@@ -118,7 +110,6 @@
 //       // print("some error occured ${e.toString()}");
 //     }
 
-
 //   }
 //     void generateRTCCheckBox(){
 //     _rtccheckbox=List.generate(_checkOrder.length, (index) =>false);
@@ -134,7 +125,6 @@
 //     }catch(e){
 //       // print("some error occured ${e.toString()}");
 //     }
-
 
 //   }
 
@@ -156,7 +146,6 @@
 //     }catch(e){
 //       // print("some error occured ${e.toString()}");
 //     }
-
 
 //   }
 //     void updateCheckBoxStatus(int a){
@@ -208,7 +197,6 @@
 //     }
 //   }
 
-
 //     Future<Map<String, dynamic>> fetchReadyToPickOrders() async {
 //     _isLoading = true;
 //     notifyListeners();
@@ -252,7 +240,6 @@
 //       notifyListeners();
 //     }
 //   }
-
 
 //     Future<Map<String, dynamic>> fetchReadyToCheckOrders() async {
 //     _isLoading = true;

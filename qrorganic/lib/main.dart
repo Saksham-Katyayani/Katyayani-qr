@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/Provider/show-order-item.dart';
+import 'package:qrorganic/imageSender.dart';
 
 import 'package:qrorganic/screen/dasborad.dart';
 import 'package:qrorganic/screen/login_page.dart';
