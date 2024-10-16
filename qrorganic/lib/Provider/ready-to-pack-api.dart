@@ -21,7 +21,7 @@
 //   List<bool>_pickcheckbox=[];
 //   List<List<bool>>?_orderItemCheckBox;
 //   bool _showData=true;
-  
+
 //   List<String>_productTitle=[];
 //   List<int>_numberOfProducts=[];
 //   List<int>_numberOfScannedProducts=[];
@@ -33,7 +33,7 @@
 //   List<ModelByDipu> get checkOrder =>_checkOrder;
 //   List<ModelByDipu> get rackedOrder =>_rackedOrder;
 //    List<ModelByDipu> get pickOrder =>_pickOrder;
-  
+
 //   List<ModelByDipu> get manifestOrder =>_manifestOrder;
 //   bool get isLoading => _isLoading;
 //   List<bool> get checkBox => _checkbox;
@@ -41,14 +41,13 @@
 //   List<bool> get rtcCheckBox => _rtccheckbox;
 //   List<bool> get rtmCheckBox =>_rtmcheckbox;
 //   List<bool> get rtrcheckbox=> _rtrcheckbox;
-  
+
 //   List<String> get productTitle => _productTitle;
 //   List<int> get numberOfProducts => _numberOfProducts;
 //   List<int> get numberOfScannedProducts => _numberOfScannedProducts;
 
 //   // Change this to your actual base URL if needed
 //   final String baseUrl = 'https://inventory-management-backend-s37u.onrender.com';
-
 
 //   void setDetailsOfProducts(List<String>title,List<int>productCount,List<int>scanCount){
 //     _productTitle=title;
@@ -61,8 +60,6 @@
 //     notifyListeners();
 //   }
 
-
-
 //   void generateNumberOfCheckBox(){
 //     _checkbox=List.generate(_orders.length, (index) =>false);
 //     try{
@@ -74,7 +71,7 @@
 //       }
 //       for(int j=0;j<_orders[i].packer!.length;j++){
 //         value=value && _orders[i].packer![j].isFullyScanned;
-        
+
 //       }
 //       _checkbox[i]=value;
 //     }
@@ -82,25 +79,23 @@
 //       // print("some error occured ${e.toString()}");
 //     }
 
-
 //   }
 
 //     void generateRTMCheckBox(){
 //     _rtmcheckbox=List.generate(_manifestOrder.length, (index) =>false);
 //     try{
-      
+
 //     // for(int i=0;i<_manifestOrder.length;i++){
 //     //   bool value=true;
 //     //   for(int j=0;j<_manifestOrder[i].picker!.length;j++){
 //     //     value=value && _manifestOrder[i].picker![j].isFullyScanned;
-        
+
 //     //   }
 //     //   _rtmcheckbox[i]=value;
 //     // }
 //     }catch(e){
 //       // print("some error occured ${e.toString()}");
 //     }
-
 
 //   }
 //     void generateRTRCheckBox(){
@@ -110,14 +105,13 @@
 //     //   bool value=true;
 //     //   for(int j=0;j<_rackedOrder[i].picker!.length;j++){
 //     //     value=value && _rackedOrder[i].picker![j].isFullyScanned;
-        
+
 //     //   }
 //     //   _rtrcheckbox[i]=value;
 //     // }
 //     }catch(e){
 //       // print("some error occured ${e.toString()}");
 //     }
-
 
 //   }
 //     void generateRTCCheckBox(){
@@ -127,14 +121,13 @@
 //     //   bool value=true;
 //     //   for(int j=0;j<_rackedOrder[i].picker!.length;j++){
 //     //     value=value && _rackedOrder[i].picker![j].isFullyScanned;
-        
+
 //     //   }
 //     //   _rtccheckbox[i]=value;
 //     // }
 //     }catch(e){
 //       // print("some error occured ${e.toString()}");
 //     }
-
 
 //   }
 
@@ -149,7 +142,7 @@
 //       }
 //       for(int j=0;j<_pickOrder[i].picker!.length;j++){
 //         value=value && _pickOrder[i].picker![j].isFullyScanned;
-        
+
 //       }
 //       _pickcheckbox[i]=value;
 //     }
@@ -157,13 +150,12 @@
 //       // print("some error occured ${e.toString()}");
 //     }
 
-
 //   }
 //     void updateCheckBoxStatus(int a){
 //     _checkbox[a]=!_checkbox[a];
 //     notifyListeners();
 //   }
-  
+
 //   Future<Map<String, dynamic>> fetchReadyToPackOrders() async {
 //     _isLoading = true;
 //     notifyListeners();
@@ -207,7 +199,6 @@
 //       notifyListeners();
 //     }
 //   }
-
 
 //     Future<Map<String, dynamic>> fetchReadyToPickOrders() async {
 //     _isLoading = true;
@@ -253,7 +244,6 @@
 //     }
 //   }
 
-
 //     Future<Map<String, dynamic>> fetchReadyToCheckOrders() async {
 //     _isLoading = true;
 //      notifyListeners();
@@ -261,7 +251,7 @@
 //     final url = Uri.parse('$baseUrl/orders?orderStatus=5');
 
 //     try {
-      
+
 //       final response = await http.get(
 //         url,
 //         headers: {
@@ -277,7 +267,7 @@
 //       .map((orderJson) => ModelByDipu.fromJson(orderJson))
 //       .toList();
 //       generateRTCCheckBox();
-     
+
 //           return {'success': true, 'data': _orders}; // Return the data in structured format
 //         } else {
 //           // print('Unexpected response format: $data');
@@ -297,9 +287,7 @@
 //       notifyListeners();
 //     }
 //   }
- 
-  
-  
+
 //       Future<Map<String, dynamic>> fetchReadyToManiFestOrders() async {
 //     _isLoading = true;
 //     notifyListeners();
@@ -424,43 +412,45 @@ class ReadyToPackProvider with ChangeNotifier {
   List<ModelByDipu> _rackedOrder = [];
   List<ModelByDipu> _manifestOrder = [];
   List<ModelByDipu> _pickOrder = [];
-  
+
   bool _isLoading = false;
   List<bool> _checkbox = [];
   List<bool> _rtmcheckbox = [];
   List<bool> _rtccheckbox = [];
   List<bool> _rtrcheckbox = [];
   List<bool> _pickcheckbox = [];
-  
+
   List<List<bool>>? _orderItemCheckBox;
   bool _showData = true;
-  
+
   List<String> _productTitle = [];
   List<int> _numberOfProducts = [];
   List<int> _numberOfScannedProducts = [];
 
-  final String baseUrl = 'https://inventory-management-backend-s37u.onrender.com';
+  final String baseUrl =
+      'https://inventory-management-backend-s37u.onrender.com';
 
   List<ModelByDipu> get orders => _orders;
   List<ModelByDipu> get checkOrder => _checkOrder;
   List<ModelByDipu> get rackedOrder => _rackedOrder;
   List<ModelByDipu> get pickOrder => _pickOrder;
   List<ModelByDipu> get manifestOrder => _manifestOrder;
-  
+
   bool get isLoading => _isLoading;
   List<bool> get checkBox => _checkbox;
   List<bool> get pickCheckBox => _pickcheckbox;
   List<bool> get rtcCheckBox => _rtccheckbox;
   List<bool> get rtmCheckBox => _rtmcheckbox;
   List<bool> get rtrcheckbox => _rtrcheckbox;
-  
+
   List<String> get productTitle => _productTitle;
   List<int> get numberOfProducts => _numberOfProducts;
   List<int> get numberOfScannedProducts => _numberOfScannedProducts;
   List<List<bool>>? get orderItemCheckBox => _orderItemCheckBox;
   bool get showData => _showData;
 
-  void setDetailsOfProducts(List<String> title, List<int> productCount, List<int> scanCount) {
+  void setDetailsOfProducts(
+      List<String> title, List<int> productCount, List<int> scanCount) {
     _productTitle = title;
     _numberOfProducts = productCount;
     _numberOfScannedProducts = scanCount;
@@ -509,7 +499,7 @@ class ReadyToPackProvider with ChangeNotifier {
   Future<Map<String, dynamic>> fetchOrders(String orderStatus) async {
     _isLoading = true;
     notifyListeners();
-    
+
     final url = Uri.parse('$baseUrl/orders?orderStatus=$orderStatus');
 
     try {
@@ -517,7 +507,8 @@ class ReadyToPackProvider with ChangeNotifier {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNha3NoYW0uZGV2QGthdHlheWFuaW9yZ2FuaWNzLmNvbSIsImlkIjoiNjZjNTc5ZGJmNTA1YTA0OWE4YjVjMzA3IiwiaWF0IjoxNzI5MDYyMzk5LCJleHAiOjE3MjkxMDU1OTl9.3Hv9AUAHpPFMDNYq7JHKYBjpKdekn5te3j7ajE_bYsQ',
         },
       );
 
@@ -556,7 +547,11 @@ class ReadyToPackProvider with ChangeNotifier {
           return {'success': false, 'message': 'Unexpected response format'};
         }
       } else {
-        return {'success': false, 'message': 'Failed to fetch orders with status code: ${response.statusCode}'};
+        return {
+          'success': false,
+          'message':
+              'Failed to fetch orders with status code: ${response.statusCode}'
+        };
       }
     } catch (error) {
       return {'success': false, 'message': 'An error occurred: $error'};
@@ -577,9 +572,11 @@ class ReadyToPackProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> numberOfOrderCheckBox(int row, List<int> count, List<int> scannedProducts) async {
-    _orderItemCheckBox = List.generate(row, (index) => List.generate(count[index], (ind) => false));
-    
+  Future<void> numberOfOrderCheckBox(
+      int row, List<int> count, List<int> scannedProducts) async {
+    _orderItemCheckBox = List.generate(
+        row, (index) => List.generate(count[index], (ind) => false));
+
     for (int i = 0; i < scannedProducts.length; i++) {
       for (int j = 0; j < scannedProducts[i]; j++) {
         _orderItemCheckBox![i][j] = true;
@@ -596,4 +593,3 @@ class ReadyToPackProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-

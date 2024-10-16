@@ -22,7 +22,8 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
   }
 
   void getData() async {
-    var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+    var readyToPackProvider =
+        Provider.of<ReadyToPackProvider>(context, listen: false);
     await readyToPackProvider.fetchReadyToPackOrders();
     setState(() {});
   }
@@ -34,19 +35,22 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
     int totalScannedQty = 0;
     int totalQty = 0;
 
-   for (int val = 0; val < order.items!.length; val++) {
-  titles.add(order.items![val].product.sku);
-  quantities.add(order.items![val].quantity.toInt()); 
-  
-  int scannedQty = order.packer!.length > val ? order.packer![val].scannedQty : 0;
-  scannedQuantities.add(scannedQty);
-  
-  totalScannedQty += scannedQty;
-  totalQty += (double.tryParse(order.items![val].quantity.toString()) ?? 0).toInt(); 
-}
+    for (int val = 0; val < order.items!.length; val++) {
+      titles.add(order.items![val].product.sku);
+      quantities.add(order.items![val].quantity.toInt());
 
-    Provider.of<ReadyToPackProvider>(context, listen: false).setDetailsOfProducts(titles, scannedQuantities, scannedQuantities);
-    
+      int scannedQty =
+          order.packer!.length > val ? order.packer![val].scannedQty : 0;
+      scannedQuantities.add(scannedQty);
+
+      totalScannedQty += scannedQty;
+      totalQty +=
+          (double.tryParse(order.items![val].quantity.toString()) ?? 0).toInt();
+    }
+
+    Provider.of<ReadyToPackProvider>(context, listen: false)
+        .setDetailsOfProducts(titles, scannedQuantities, scannedQuantities);
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -106,9 +110,13 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                             ),
                           ),
                           Text(
-                            order.isPackerFullyScanned ? 'Approved' : 'Not Approved',
+                            order.isPackerFullyScanned
+                                ? 'Approved'
+                                : 'Not Approved',
                             style: TextStyle(
-                              color: order.isPackerFullyScanned ? Colors.green : Colors.red,
+                              color: order.isPackerFullyScanned
+                                  ? Colors.green
+                                  : Colors.red,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -117,7 +125,9 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                       const SizedBox(height: 10),
                       ...List.generate(order.items!.length, (i) {
                         final item = order.items![i];
-                        final scannedQty = order.packer!.length > i ? order.packer![i].scannedQty : 0;
+                        final scannedQty = order.packer!.length > i
+                            ? order.packer![i].scannedQty
+                            : 0;
 
                         return GestureDetector(
                           onTap: () {
@@ -131,8 +141,10 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: Image.network(item.product.shopifyImage.isNotEmpty?item.product.shopifyImage:
-                                      "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                    child: Image.network(
+                                      item.product.shopifyImage.isNotEmpty
+                                          ? item.product.shopifyImage
+                                          : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                       fit: BoxFit.cover,
                                       height: 80,
                                       width: 80,
@@ -142,40 +154,51 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   Expanded(
                                     flex: 2,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           item.product.displayName,
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
                                           "SKU: ${item.product.sku}",
-                                          style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                          style: const TextStyle(
+                                              fontSize: 14, color: Colors.blue),
                                         ),
                                         const SizedBox(height: 4),
-                                                Text(
-                                                  "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(item.product.upDatedAt)}",
-                                                  style: const TextStyle(fontSize: 14, color: Colors.blue),
-                                                ),
-                                                // const SizedBox(height: 4),
+                                        Text(
+                                          "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(item.product.upDatedAt)}",
+                                          style: const TextStyle(
+                                              fontSize: 14, color: Colors.blue),
+                                        ),
+                                        // const SizedBox(height: 4),
                                         const SizedBox(height: 4),
                                         Text(
                                           "Quantity: ${item.quantity}",
-                                          style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                          style: const TextStyle(
+                                              fontSize: 14, color: Colors.grey),
                                         ),
                                         Text(
                                           "Scanned Qty: $scannedQty",
-                                          style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                          style: const TextStyle(
+                                              fontSize: 14, color: Colors.grey),
                                         ),
                                       ],
                                     ),
                                   ),
                                   if (order.packer!.length > i)
                                     Icon(
-                                      order.packer![i].isFullyScanned ? FontAwesomeIcons.check : Icons.clear,
+                                      order.packer![i].isFullyScanned
+                                          ? FontAwesomeIcons.check
+                                          : Icons.clear,
                                       size: 25,
-                                      color: order.packer![i].isFullyScanned ? Colors.green : Colors.red,
+                                      color: order.packer![i].isFullyScanned
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                 ],
                               ),

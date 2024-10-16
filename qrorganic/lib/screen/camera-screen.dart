@@ -2,9 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key}) : super(key: key);
+  final String orderId;
+  const CameraScreen({Key? key, required this.orderId}) : super(key: key);
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -13,6 +17,8 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final ImagePicker _picker = ImagePicker();
+  final String _token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNha3NoYW0uZGV2QGthdHlheWFuaW9yZ2FuaWNzLmNvbSIsImlkIjoiNjZjNTc5ZGJmNTA1YTA0OWE4YjVjMzA3IiwiaWF0IjoxNzI5MDYyMzk5LCJleHAiOjE3MjkxMDU1OTl9.3Hv9AUAHpPFMDNYq7JHKYBjpKdekn5te3j7ajE_bYsQ";
 
   Future<void> _requestCameraPermission() async {
     var status = await Permission.camera.status;
@@ -59,11 +65,65 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
+  Future<void> sendData() async {
+    if (_image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select an image')),
+      );
+      return;
+    }
+
+    final mimeTypeData = lookupMimeType(_image!.path)?.split('/');
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+          'https://inventory-management-backend-s37u.onrender.com/orders/manifest'),
+    );
+
+    // Add headers
+    imageUploadRequest.headers['Authorization'] = 'Bearer $_token';
+
+    // Add fields
+    imageUploadRequest.fields['orderId'] = widget.orderId;
+
+    // Add files
+    imageUploadRequest.files.add(
+      await http.MultipartFile.fromPath(
+        'images',
+        _image!.path,
+        contentType: mimeTypeData != null
+            ? MediaType(mimeTypeData[0], mimeTypeData[1])
+            : null,
+      ),
+    );
+
+    try {
+      final streamedResponse = await imageUploadRequest.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Upload successful')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload failed: ${response.reasonPhrase}')),
+        );
+        print('Failed to upload: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception caught: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Image Picker"),
+        title: Text(widget.orderId),
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
       ),
@@ -102,8 +162,8 @@ class _CameraScreenState extends State<CameraScreen> {
                   icon: const Icon(Icons.camera_alt),
                   label: const Text("Camera"),
                   style: ElevatedButton.styleFrom(
-                  
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -111,26 +171,20 @@ class _CameraScreenState extends State<CameraScreen> {
                   icon: const Icon(Icons.photo_library),
                   label: const Text("Gallery"),
                   style: ElevatedButton.styleFrom(
-
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
             if (_image != null)
               ElevatedButton.icon(
-                onPressed: () {
-                  // Implement your upload logic here
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Image uploaded successfully!")),
-                  );
-                },
+                onPressed: sendData,
                 icon: const Icon(Icons.upload_file),
                 label: const Text("Upload"),
                 style: ElevatedButton.styleFrom(
-             
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
               ),
           ],

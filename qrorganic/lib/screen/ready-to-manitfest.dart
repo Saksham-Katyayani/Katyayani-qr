@@ -22,7 +22,8 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
   }
 
   void getData() async {
-    var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+    var readyToPackProvider =
+        Provider.of<ReadyToPackProvider>(context, listen: false);
     await readyToPackProvider.fetchReadyToManiFestOrders();
     setState(() {});
   }
@@ -69,13 +70,15 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                               ),
                             ),
                             if (provider.manifestOrder[index].mainFest.approved)
-                              const FaIcon(FontAwesomeIcons.check, color: Colors.green),
+                              const FaIcon(FontAwesomeIcons.check,
+                                  color: Colors.green),
                           ],
                         ),
                         const SizedBox(height: 10),
                         // Display each item in a separate card
                         Column(
-                          children: List.generate(provider.manifestOrder[index].items!.length, (i) {
+                          children: List.generate(
+                              provider.manifestOrder[index].items!.length, (i) {
                             return Card(
                               elevation: 2,
                               margin: const EdgeInsets.symmetric(vertical: 5),
@@ -86,15 +89,29 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const CameraScreen(),
+                                        builder: (context) => CameraScreen(
+                                          orderId: provider
+                                              .manifestOrder[index].orderId,
+                                        ),
                                       ),
                                     );
                                   },
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: Image.network(provider.manifestOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.manifestOrder[index].items![i].product.shopifyImage:
-                                      "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                        child: Image.network(
+                                          provider
+                                                  .manifestOrder[index]
+                                                  .items![i]
+                                                  .product
+                                                  .shopifyImage
+                                                  .isNotEmpty
+                                              ? provider
+                                                  .manifestOrder[index]
+                                                  .items![i]
+                                                  .product
+                                                  .shopifyImage
+                                              : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                           fit: BoxFit.cover,
                                           height: 80,
                                           width: 80,
@@ -104,23 +121,34 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                       Expanded(
                                         flex: 2,
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              provider.manifestOrder[index].items![i].product.displayName,
-                                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                              provider
+                                                  .manifestOrder[index]
+                                                  .items![i]
+                                                  .product
+                                                  .displayName,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 4),
                                             Text(
                                               "SKU: ${provider.manifestOrder[index].items![i].product.sku}",
-                                              style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.blue),
                                             ),
                                             const SizedBox(height: 4),
-                                             Text(
-                                                  "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].items![i].product.upDatedAt)}",
-                                                  style: const TextStyle(fontSize: 14, color: Colors.blue),
-                                                ),
-                                                const SizedBox(height: 4),
+                                            Text(
+                                              "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].items![i].product.upDatedAt)}",
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.blue),
+                                            ),
+                                            const SizedBox(height: 4),
                                           ],
                                         ),
                                       ),
