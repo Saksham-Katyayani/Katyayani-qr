@@ -136,9 +136,9 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked:(didPop) {
+      onPopInvoked:(didPop) async{
          var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
-             readyToPackProvider.fetchReadyToManiFestOrders();
+            await readyToPackProvider.fetchReadyToManiFestOrders();
       },
       // onWillPop: _onWillPop,
       child: Scaffold(
