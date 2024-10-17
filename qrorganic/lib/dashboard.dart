@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:qrorganic/const.dart';
+import 'package:qrorganic/custom/colors.dart';
+import 'package:qrorganic/screen/ready-to-check.dart';
+import 'package:qrorganic/screen/ready-to-manitfest.dart';
+// import 'package:qrorganic/const.dart';
 import 'package:qrorganic/screen/ready-to-pack.dart';
 import 'package:qrorganic/screen/ready-to-pick.dart';
+import 'package:qrorganic/screen/ready-to-racked.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -28,18 +32,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Icons.storage, // For "Ready to Racked"
     Icons.assignment, // For "Ready to Manifest"
   ];
-  final List<Widget> content = [
+  final List<Widget> content =const [
     ReadyToPickPage(),
     ReadyToPackPage(), // For "Ready to Pack"
-    const Center(
-      child: Text("Ready to Check"),
-    ), // For "Ready to Check"
-    const Center(
-      child: Text("Ready to Check"),
-    ), // For "Ready to Racked"
-    const Center(
-      child: Text("Ready to Manifes"),
-    ), // For "Ready to Manifest"
+    ReadyToCheckPage(),
+    ReadyToRacked(),
+    ReadyToManiFest(),
+   // For "Ready to Manifest"
   ];
 
   void _onItemTapped(int index) {
@@ -57,14 +56,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return BottomNavigationBarItem(
             icon: Icon(_icons[index],
                 color: _selectedIndex == index
-                    ? AppColors().primaryBlue
-                    : AppColors().primaryBlue),
+                    ? AppColors.primaryBlue
+                    : AppColors.primaryBlue),
             label: _labels[index],
           );
         }),
         currentIndex: _selectedIndex,
-        selectedItemColor: AppColors().primaryBlue,
-        unselectedItemColor: AppColors().primaryBlue,
+        selectedItemColor: AppColors.primaryBlue,
+        unselectedItemColor: AppColors.primaryBlue,
         onTap: _onItemTapped,
         backgroundColor: Colors.white,
       ),

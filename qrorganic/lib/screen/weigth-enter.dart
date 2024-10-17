@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 
 class WightEnter extends StatefulWidget {
@@ -119,11 +120,12 @@ class _WightEnterState extends State<WightEnter> {
     final url = Uri.parse('${ReadyToPackProvider().baseUrl}/orders/checker');
 
     try {
+      String? token=await AuthProvider().getToken();
       final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4NTc3MTMyLCJleHAiOjE3Mjg2MjAzMzJ9.sCM6xurdP8TLKuigxVcgmU8vkpDBncGQbX2Nv8741FI',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
           "orderId": widget.orderId,

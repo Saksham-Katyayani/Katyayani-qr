@@ -32,7 +32,7 @@ class ReadyToPickProvider with ChangeNotifier {
         final data = json.decode(response.body);
         if (data.containsKey('orders')) {
           _orders = List<Map<String, dynamic>>.from(data["orders"]);
-          print("Length of orders: ${_orders.length}");
+          print("Divyansh Patidar: ${data["currentPage"]} ${data["totalPages"]}");
           return {'success': true, 'data': _orders};
         } else {
           print('Unexpected response format: $data');
