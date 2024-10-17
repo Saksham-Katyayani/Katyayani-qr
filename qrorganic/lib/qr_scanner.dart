@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
+import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'dart:convert';
 
@@ -92,13 +93,14 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
    
     try {
       http.Response response;
-     print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
+      final token = await AuthProvider().getToken();
+    //  print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
       if(widget.isRacker){
         response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
       );
@@ -109,7 +111,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
       );
@@ -120,7 +122,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI4OTg4MTkxLCJleHAiOjE3MjkwMzEzOTF9.45bKpgKILJMs_64UZylOxAw-LV1pQeEOffYr44lYiLs',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
       );

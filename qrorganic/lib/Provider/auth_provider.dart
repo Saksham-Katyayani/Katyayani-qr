@@ -224,62 +224,62 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> getAllCategories(
-      {int page = 1, int limit = 70, String? name}) async {
-    final url = Uri.parse('$_baseUrl/category/?page=$page&limit=$limit');
+  // Future<Map<String, dynamic>> getAllCategories(
+  //     {int page = 1, int limit = 70, String? name}) async {
+  //   final url = Uri.parse('$_baseUrl/category/?page=$page&limit=$limit');
 
-    try {
-      final token = await getToken();
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
+  //   try {
+  //     final token = await getToken();
+  //     final response = await http.get(
+  //       url,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     );
 
-      print('Get All Categories Response: ${response.statusCode}');
-      print('Get All Categories Response Body: ${response.body}');
+  //     print('Get All Categories Response: ${response.statusCode}');
+  //     print('Get All Categories Response Body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data.containsKey('categories') && data['categories'] is List) {
-          List categories = data['categories'];
+  //     if (response.statusCode == 200) {
+  //       final data = json.decode(response.body);
+  //       if (data.containsKey('categories') && data['categories'] is List) {
+  //         List categories = data['categories'];
 
-          // If a name is provided, filter the categories by the name
-          if (name != null && name.isNotEmpty) {
-            categories = categories
-                .where((category) =>
-                    category['name'].toString().toLowerCase() ==
-                    name.toLowerCase())
-                .toList();
+  //         // If a name is provided, filter the categories by the name
+  //         if (name != null && name.isNotEmpty) {
+  //           categories = categories
+  //               .where((category) =>
+  //                   category['name'].toString().toLowerCase() ==
+  //                   name.toLowerCase())
+  //               .toList();
 
-            if (categories.isEmpty) {
-              return {
-                'success': false,
-                'message': 'Category with name "$name" not found'
-              };
-            }
-          }
+  //           if (categories.isEmpty) {
+  //             return {
+  //               'success': false,
+  //               'message': 'Category with name "$name" not found'
+  //             };
+  //           }
+  //         }
 
-          return {'success': true, 'data': categories};
-        } else {
-          print('Unexpected response format: $data');
-          return {'success': false, 'message': 'Unexpected response format'};
-        }
-      } else {
-        return {
-          'success': false,
-          'message':
-              'Failed to fetch categories with status code: ${response.statusCode}'
-        };
-      }
-    } catch (error, stackTrace) {
-      print('An error occurred while fetching categories: $error');
-      print('Stack trace: $stackTrace');
-      return {'success': false, 'message': 'An error occurred: $error'};
-    }
-  }
+  //         return {'success': true, 'data': categories};
+  //       } else {
+  //         print('Unexpected response format: $data');
+  //         return {'success': false, 'message': 'Unexpected response format'};
+  //       }
+  //     } else {
+  //       return {
+  //         'success': false,
+  //         'message':
+  //             'Failed to fetch categories with status code: ${response.statusCode}'
+  //       };
+  //     }
+  //   } catch (error, stackTrace) {
+  //     print('An error occurred while fetching categories: $error');
+  //     print('Stack trace: $stackTrace');
+  //     return {'success': false, 'message': 'An error occurred: $error'};
+  //   }
+  // }
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
