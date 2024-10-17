@@ -91,7 +91,7 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const CameraScreen(),
+                                              builder: (context) =>  CameraScreen(orderId:provider.manifestOrder[index].orderId,),
                                             ),
                                           );
                                         },
