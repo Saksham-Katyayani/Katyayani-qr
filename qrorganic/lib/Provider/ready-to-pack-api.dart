@@ -601,30 +601,38 @@ class ReadyToPackProvider with ChangeNotifier {
 
           switch (orderStatus) {
             case '4':
+              _orders.clear();
               _orders = orders;
               _packCurrentPage=data["currentPage"];
               _packTotalPages=data["totalPages"];
               generateNumberOfCheckBox();
               break;
             case '3':
+              _pickOrder.clear();
               _pickOrder = orders;
               _pickCurrentPage=data["currentPage"];
               _pickTotalPages=data["totalPages"];
               generateRTPICKCheckBox();
               break;
             case '5':
+              _checkOrder.clear();
               _checkOrder = orders;
               _checkCurrentPage=data["currentPage"];
               _checkTotalPages=data["totalPages"];
               generateRTCCheckBox();
               break;
             case '6':
+              _rackedOrder.clear();
               _rackedOrder = orders;
               _rackCurrentPage=data["currentPage"];
               _rackTotalPages=data["totalPages"];
               generateRTRCheckBox();
               break;
             case '7':
+            
+              _manifestOrder.clear();
+              notifyListeners();
+              print("i am called ${_manifestOrder.length}  ${orders.length}");
               _manifestOrder = orders;
               _maniFestCurrentPage=data["currentPage"];
               _maniFestTotalPages=data["totalPages"];
