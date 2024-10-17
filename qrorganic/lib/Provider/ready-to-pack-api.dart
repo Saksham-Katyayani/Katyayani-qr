@@ -629,7 +629,10 @@ class ReadyToPackProvider with ChangeNotifier {
               generateRTRCheckBox();
               break;
             case '7':
+            
               _manifestOrder.clear();
+              notifyListeners();
+              print("i am called ${_manifestOrder.length}  ${orders.length}");
               _manifestOrder = orders;
               _maniFestCurrentPage=data["currentPage"];
               _maniFestTotalPages=data["totalPages"];
