@@ -5,7 +5,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
+import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 
 class CameraScreen extends StatefulWidget {
   final String orderId;
@@ -18,8 +20,8 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final ImagePicker _picker = ImagePicker();
-   String ? _token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNha3NoYW0uZGV2QGthdHlheWFuaW9yZ2FuaWNzLmNvbSIsImlkIjoiNjZjNTc5ZGJmNTA1YTA0OWE4YjVjMzA3IiwiaWF0IjoxNzI5MDYyMzk5LCJleHAiOjE3MjkxMDU1OTl9.3Hv9AUAHpPFMDNYq7JHKYBjpKdekn5te3j7ajE_bYsQ";
+  String? _token;
+  bool _isUploading = false;
 
   Future<void> _requestCameraPermission() async {
     var status = await Permission.camera.status;
@@ -67,13 +69,17 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> sendData() async {
-    _token=await AuthProvider().getToken();
+    _token = await AuthProvider().getToken();
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select an image')),
       );
       return;
     }
+
+    setState(() {
+      _isUploading = true; // Show loading indicator
+    });
 
     final mimeTypeData = lookupMimeType(_image!.path)?.split('/');
     final imageUploadRequest = http.MultipartRequest(
@@ -82,13 +88,9 @@ class _CameraScreenState extends State<CameraScreen> {
           'https://inventory-management-backend-s37u.onrender.com/orders/manifest'),
     );
 
-    // Add headers
     imageUploadRequest.headers['Authorization'] = 'Bearer $_token';
-
-    // Add fields
     imageUploadRequest.fields['orderId'] = widget.orderId;
 
-    // Add files
     imageUploadRequest.files.add(
       await http.MultipartFile.fromPath(
         'images',
@@ -118,78 +120,97 @@ class _CameraScreenState extends State<CameraScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error uploading: $e')),
       );
+    } finally {
+      setState(() {
+        _isUploading = false; // Hide loading indicator
+      });
     }
   }
 
+  // Future<bool> _onWillPop() async {
+    
+  //   return true; 
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.orderId),
-        backgroundColor: Colors.blueAccent,
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_image != null)
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueAccent, width: 2),
-                ),
-                child: Image.file(
-                  _image!,
-                  height: 300,
-                  width: 300,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else
-              const Text(
-                "No image selected.",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () => _getImage(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text("Camera"),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
+    return PopScope(
+      canPop: true,
+      onPopInvoked:(didPop) {
+         var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+             readyToPackProvider.fetchReadyToManiFestOrders();
+      },
+      // onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.orderId),
+          backgroundColor: Colors.blueAccent,
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_image != null)
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueAccent, width: 2),
+                  ),
+                  child: Image.file(
+                    _image!,
+                    height: 300,
+                    width: 300,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              else
+                const Text(
+                  "No image selected.",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => _getImage(ImageSource.camera),
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text("Camera"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () => _getImage(ImageSource.gallery),
+                    icon: const Icon(Icons.photo_library),
+                    label: const Text("Gallery"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                    ),
+                  ),
+                ],
+              ),
+              if (_image != null)
                 ElevatedButton.icon(
-                  onPressed: () => _getImage(ImageSource.gallery),
-                  icon: const Icon(Icons.photo_library),
-                  label: const Text("Gallery"),
+                  onPressed: sendData,
+                  icon: const Icon(Icons.upload_file),
+                  label: const Text("Upload"),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                 ),
-              ],
-            ),
-            if (_image != null)
-              ElevatedButton.icon(
-                onPressed: sendData,
-                icon: const Icon(Icons.upload_file),
-                label: const Text("Upload"),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                ),
-              ),
-          ],
+              if (_isUploading) // Show loading indicator
+                const CircularProgressIndicator(),
+            ],
+          ),
         ),
       ),
     );
