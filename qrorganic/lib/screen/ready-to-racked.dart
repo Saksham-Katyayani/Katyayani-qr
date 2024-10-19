@@ -43,7 +43,20 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
           }
 
           return Column(
+            crossAxisAlignment:CrossAxisAlignment.end,
             children: [
+              InkWell(
+                      child:const Padding(
+                        padding:  EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.restart_alt
+                        ),
+                        
+                      ),
+                      onTap:()async{
+                         getData();
+                      },
+                    ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -68,7 +81,7 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                     child: Text(
                                       "Order ID: ${provider.rackedOrder[index].orderId}",
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -77,7 +90,14 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                     const FaIcon(FontAwesomeIcons.check, color: Colors.green),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height:2),
+                               Text(
+                                      "awb: ${provider.rackedOrder[index].awb}",
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                               // Display each item in a separate card
                               Column(
                                 children: List.generate(provider.rackedOrder[index].items!.length, (i) {
@@ -93,10 +113,19 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                             MaterialPageRoute(
                                               builder: (context) => ScannerWidget(
                                                 onScan: (String value) {},
-                                                scanned: 0,
-                                                totalQty: 1,
-                                                index: i,
-                                                isRacker: true,
+                                                scanned:0, 
+                                totalQty:0,
+                                index:0, 
+                                oredrId:provider.rackedOrder[index].orderId,
+                                isPicker:false,
+                                isPacker:false,
+                                isRacker:true,
+                                                // scanned: 0,
+                                                // totalQty: 1,
+                                                // index: i,
+                                                // isRacker: true,
+                                                // isPacker:false,
+                                                // isPicker:false,
                                               ),
                                             ),
                                           );
@@ -107,8 +136,8 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                               child: Image.network(provider.rackedOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.rackedOrder[index].items![i].product.shopifyImage:
                                             "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                                 fit: BoxFit.cover,
-                                                height: 80,
-                                                width: 80,
+                                                height: 90,
+                                                // width: 80,
                                               ),
                                             ),
                                             const SizedBox(width: 10),
@@ -119,23 +148,23 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                                 children: [
                                                   Text(
                                                     provider.rackedOrder[index].items![i].product.displayName,
-                                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                                                   ),
                                                   const SizedBox(height: 4),
                                                   Text(
                                                     "SKU: ${provider.rackedOrder[index].items![i].product.sku}",
-                                                    style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                    style: const TextStyle(fontSize:8, color: Colors.blue),
                                                   ),
                                                   const SizedBox(height: 4),
                                                       Text(
                                                         "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.rackedOrder[index].items![i].product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
                                                       ),
                                                       // const SizedBox(height: 4),
                                                   const SizedBox(height: 4),
                                                   Text(
                                                     "Quantity: ${provider.rackedOrder[index].items![i].quantity}",
-                                                    style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                    style: const TextStyle(fontSize:8, color: Colors.blue),
                                                   ),
                                                 ],
                                               ),

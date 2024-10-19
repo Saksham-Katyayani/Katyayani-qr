@@ -5,6 +5,7 @@ class Picker{
   String sku;
   int scannedQty;
   bool isFullyScanned;
+  // String? awb;
   Picker({required this.sku,required this.scannedQty,required this.isFullyScanned});
   factory Picker.fromJson(Map<String,dynamic>json){
     return Picker(
@@ -209,8 +210,9 @@ class ModelByDipu{
   ManiFestModel mainFest;
   bool isPickerFullyScanned;
   bool isPackerFullyScanned;
+  String awb;
   // String shopifyImage;
-  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned,required this.checker,required this.racker,required this.mainFest,required this.isPackerFullyScanned,required this.packer});
+  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned,required this.checker,required this.racker,required this.mainFest,required this.isPackerFullyScanned,required this.packer,required this.awb});
     factory ModelByDipu.fromJson(Map<String, dynamic> json) {
       print("model dipu ${json['isPickerFullyScanned']}   ${json['items']}");
     if(json['picker']==null){
@@ -229,6 +231,7 @@ class ModelByDipu{
       racker: RackerModel.fromJson(json["racker"]),
       mainFest:ManiFestModel.fromJson(json["checkManifest"]),
       isPackerFullyScanned:json["isPackerFullyScanned"],
+      awb:json["awb"]??'',
     );
   }
 

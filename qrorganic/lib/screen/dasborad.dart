@@ -20,8 +20,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // List of labels for the bottom navigation bar
   final List<String> _labels = [
-    'Ready to Pack',
+    
     'Ready to Pick',
+    'Ready to Pack',
     'Ready to Check',
     'Ready to Racked',
     'Ready to Manifest'
@@ -36,8 +37,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Icons.assignment,    // For "Ready to Manifest"
   ];
   final List<Widget> content = [
-    const ReadyToPackPage(),   
-    const ReadyToPickPage(),    // For "Ready to Pack"
+     
+  const ReadyToPickPage(),
+  const ReadyToPackPage(),      // For "Ready to Pack"
    const ReadyToCheckPage(), // For "Ready to Check"
    const ReadyToRacked(),      // For "Ready to Racked"
    const ReadyToManiFest(),    // For "Ready to Manifest"
@@ -53,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Dashboard'),
+        title: Text(_labels[_selectedIndex]),
         backgroundColor: primaryBlue,
       ),
       body:content[_selectedIndex],

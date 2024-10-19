@@ -44,22 +44,26 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
     super.initState();
     print('Scanned Item: ${widget.scanned} Total Items: ${widget.totalQty}');
     WidgetsBinding.instance.addObserver(this);
+    print("here is dipu ${widget.isRacker}");
     _initializeScanner();
   }
 
   void _initializeScanner() {
+    print("trrrr 1");
     controller = MobileScannerController(
       autoStart: false,
       torchEnabled: false,
       useNewCameraSelector: true,
       facing: CameraFacing.back,
     );
+    print("trrrr 2");
     _subscription = controller?.barcodes.listen(_handleBarcode);
     _startScanner();
   }
 
   Future<void> _startScanner() async {
     try {
+      print("trrrr 3");
       await controller?.start();
     } catch (e) {
       print("Error starting scanner: $e");
@@ -74,7 +78,8 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       if (value != null && isScanning) {
         var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
         
-       message= 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
+       if(!widget.isRacker){
+        message= 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';}
         setState(() {
           scannedValue = value;
           isScanning = false;
@@ -89,13 +94,14 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       progress = true;
     });
 
-    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker');
+    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker/');
    
     try {
       http.Response response;
       final token = await AuthProvider().getToken();
     //  print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
       if(widget.isRacker){
+        print("i am in rackernjdjjdnj");
         response = await http.post(
         url,
         headers: {
@@ -154,7 +160,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
           isScanning = true;
           scannedValue = "";
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Failed to fetch data: ${response.reasonPhrase}")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Failed to fetch data: ${jsonDecode(response.body)["message"]}")));
       }
     } catch (e) {
       print('Error: $e');

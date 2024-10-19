@@ -45,7 +45,20 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment:CrossAxisAlignment.end,
               children: [
+                InkWell(
+                      child:const Padding(
+                        padding:  EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.restart_alt
+                        ),
+                        
+                      ),
+                      onTap:()async{
+                         getData();
+                      },
+                    ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: provider.checkOrder.length,
@@ -68,7 +81,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                     child: Text(
                                       "Order ID: ${provider.checkOrder[index].orderId}",
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -77,7 +90,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                     const FaIcon(FontAwesomeIcons.check, color: Colors.green),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height:2),
                               // Displaying each item as a separate card
                               Column(
                                 children: List.generate(provider.checkOrder[index].items!.length, (i) {
@@ -101,6 +114,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                               child: Image.network(provider.checkOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.checkOrder[index].items![i].product.shopifyImage:
                                             "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                                 fit: BoxFit.cover,
+                                                height:90,
                                               ),
                                             ),
                                             const SizedBox(width: 10),
@@ -111,17 +125,17 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                                 children: [
                                                   Text(
                                                     provider.checkOrder[index].items![i].product.displayName,
-                                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                                                   ),
                                                   const SizedBox(height: 4),
                                                   Text(
                                                     "SKU: ${provider.checkOrder[index].items![i].product.sku}",
-                                                    style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                    style: const TextStyle(fontSize:8, color: Colors.blue),
                                                   ),
                                                   const SizedBox(height: 4),
                                                    Text(
                                                         "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].items![i].product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
                                                       ),
                                                       const SizedBox(height: 4),
                                                 ],

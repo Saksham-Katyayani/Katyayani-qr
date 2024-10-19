@@ -37,7 +37,20 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  crossAxisAlignment:CrossAxisAlignment.end,
                   children: [
+                    InkWell(
+                      child:const Padding(
+                        padding:  EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.restart_alt
+                        ),
+                        
+                      ),
+                      onTap:()async{
+                         getData();
+                      },
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: provider.pickOrder.length,
@@ -60,7 +73,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                         child: Text(
                                           "Order ID: ${provider.pickOrder[index].orderId}",
                                           style: const TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -70,11 +83,12 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                         style: TextStyle(
                                           color: provider.pickOrder[index].isPickerFullyScanned ? Colors.green : Colors.red,
                                           fontWeight: FontWeight.bold,
+                                          fontSize: 12,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height:2),
                                   // Displaying each item as a separate card
                                   Column(
                                     children: List.generate(provider.pickOrder[index].items!.length, (i) {
@@ -104,17 +118,17 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                                     children: [
                                                       Text(
                                                         provider.pickOrder[index].items![i].product.displayName,
-                                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                        style: const TextStyle(fontSize:10, fontWeight: FontWeight.bold),
                                                       ),
                                                       const SizedBox(height: 4),
                                                       Text(
                                                         "SKU: ${provider.pickOrder[index].items![i].product.sku}",
-                                                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
                                                       ),
                                                       const SizedBox(height: 4),
                                                       Text(
                                                         "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.pickOrder[index].items![i].product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
                                                       ),
                                                       const SizedBox(height: 4),
                                                       Row(
@@ -122,7 +136,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                                         children: [
                                                           Text(
                                                             "Quantity: ${provider.pickOrder[index].items![i].quantity}",
-                                                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                                            style: const TextStyle(fontSize: 8, color: Colors.grey),
                                                           ),
                                                       
                                                           provider.pickOrder[index].picker!.length > i &&
@@ -133,7 +147,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                                       ),
                                                            Text(
                                                 "Scanned Qty: ${provider.pickOrder[index].picker!.length>i?provider.pickOrder[index].picker![i].scannedQty:0}",
-                                                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                                style: const TextStyle(fontSize:8, color: Colors.grey),
                                               ),
                                                     ],
                                                   ),

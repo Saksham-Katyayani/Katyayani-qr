@@ -82,7 +82,20 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
           }
 
           return Column(
+            crossAxisAlignment:CrossAxisAlignment.end,
             children: [
+              InkWell(
+                      child:const Padding(
+                        padding:  EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.restart_alt
+                        ),
+                        
+                      ),
+                      onTap:()async{
+                         getData();
+                      },
+                    ),
               Expanded(
                 child: ListView.builder(
                   itemCount: provider.orders.length,
@@ -108,7 +121,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   child: Text(
                                     "Order ID: ${order.orderId}",
                                     style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -117,6 +130,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                   order.isPackerFullyScanned ? 'Approved' : 'Not Approved',
                                   style: TextStyle(
                                     color: order.isPackerFullyScanned ? Colors.green : Colors.red,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -142,11 +156,11 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                           child: Image.network(item.product.shopifyImage.isNotEmpty?item.product.shopifyImage:
                                             "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                             fit: BoxFit.cover,
-                                            height: 80,
-                                            width: 80,
+                                            height: 90,
+                                            // width: 80,
                                           ),
                                         ),
-                                        const SizedBox(width: 10),
+                                        const SizedBox(width:2),
                                         Expanded(
                                           flex: 2,
                                           child: Column(
@@ -154,27 +168,27 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                             children: [
                                               Text(
                                                 item.product.displayName,
-                                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 "SKU: ${item.product.sku}",
-                                                style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                style: const TextStyle(fontSize: 8, color: Colors.blue),
                                               ),
                                               const SizedBox(height: 4),
                                                       Text(
                                                         "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(item.product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                                                        style: const TextStyle(fontSize: 8, color: Colors.blue),
                                                       ),
                                                       // const SizedBox(height: 4),
                                               const SizedBox(height: 4),
                                               Text(
                                                 "Quantity: ${item.quantity}",
-                                                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                                style: const TextStyle(fontSize: 8, color: Colors.grey),
                                               ),
                                               Text(
                                                 "Scanned Qty: $scannedQty",
-                                                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                                style: const TextStyle(fontSize: 8, color: Colors.grey),
                                               ),
                                             ],
                                           ),
