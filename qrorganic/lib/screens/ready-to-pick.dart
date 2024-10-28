@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
+import 'package:qrorganic/screens/inboundScreens/status_check_screen.dart';
 
 class ReadyToPickPage extends StatefulWidget {
   const ReadyToPickPage({super.key});
@@ -47,6 +48,14 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  },
+                  child: const Text("Harsht Button")),
               InkWell(
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),

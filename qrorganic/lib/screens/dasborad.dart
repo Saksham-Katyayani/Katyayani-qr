@@ -1,11 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:qrorganic/screen/ready-to-check.dart';
-import 'package:qrorganic/screen/ready-to-manitfest.dart';
-import 'package:qrorganic/screen/ready-to-pack.dart';
-import 'package:qrorganic/screen/ready-to-pick.dart';
-import 'package:qrorganic/screen/ready-to-racked.dart';
+import 'package:qrorganic/screens/inboundScreens/in_bound_page.dart';
+import 'package:qrorganic/screens/ready-to-check.dart';
+import 'package:qrorganic/screens/ready-to-manitfest.dart';
+import 'package:qrorganic/screens/ready-to-pack.dart';
+import 'package:qrorganic/screens/ready-to-pick.dart';
+import 'package:qrorganic/screens/ready-to-racked.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -20,32 +21,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // List of labels for the bottom navigation bar
   final List<String> _labels = [
-    
     'Ready to Pick',
     'Ready to Pack',
     'Ready to Check',
     'Ready to Racked',
-    'Ready to Manifest'
+    'Ready to Manifest',
+    "Inbound"
   ];
 
   // List of icons for each item
   final List<IconData> _icons = [
-    Icons.shopping_bag, 
-    Icons.done,     // For "Ready to Pack"
+    Icons.shopping_bag,
+    Icons.done, // For "Ready to Pack"
     Icons.check_circle, // For "Ready to Check"
-    Icons.storage,      // For "Ready to Racked"
-    Icons.assignment,    // For "Ready to Manifest"
+    Icons.storage, // For "Ready to Racked"
+    Icons.assignment,
+    Icons.inbox_outlined, // For "Ready to Manifest"
   ];
   final List<Widget> content = [
-     
-  const ReadyToPickPage(),
-  const ReadyToPackPage(),      // For "Ready to Pack"
-   const ReadyToCheckPage(), // For "Ready to Check"
-   const ReadyToRacked(),      // For "Ready to Racked"
-   const ReadyToManiFest(),    // For "Ready to Manifest"
+    const ReadyToPickPage(),
+    const ReadyToPackPage(), // For "Ready to Pack"
+    const ReadyToCheckPage(), // For "Ready to Check"
+    const ReadyToRacked(), // For "Ready to Racked"
+    const ReadyToManiFest(),
+    const InBoundPage(), // For "Ready to Manifest"
   ];
 
   void _onItemTapped(int index) {
+    print("heree ${_labels.length}");
     setState(() {
       _selectedIndex = index;
     });
@@ -58,11 +61,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: Text(_labels[_selectedIndex]),
         backgroundColor: primaryBlue,
       ),
-      body:content[_selectedIndex],
+      body: content[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: List.generate(_labels.length, (index) {
           return BottomNavigationBarItem(
-            icon: Icon(_icons[index], color: _selectedIndex == index ? primaryBlue : primaryBlueLight),
+            icon: Icon(_icons[index],
+                color:
+                    _selectedIndex == index ? primaryBlue : primaryBlueLight),
             label: _labels[index],
           );
         }),

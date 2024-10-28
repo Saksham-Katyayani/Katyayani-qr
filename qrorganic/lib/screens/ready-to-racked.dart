@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/pagination.dart';
-import 'package:qrorganic/qr_scanner.dart';
+import 'package:qrorganic/widgets/qr_scanner.dart';
 
 class ReadyToRacked extends StatefulWidget {
   const ReadyToRacked({super.key});

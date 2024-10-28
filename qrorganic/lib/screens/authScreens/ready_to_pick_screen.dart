@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrorganic/const.dart';
+import 'package:qrorganic/utils/const.dart';
 
 class ReadyToPickPage extends StatefulWidget {
   const ReadyToPickPage({super.key});

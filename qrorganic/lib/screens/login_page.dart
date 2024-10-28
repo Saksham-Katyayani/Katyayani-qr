@@ -3,9 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/custom/colors.dart';
-import 'package:qrorganic/dashboard.dart';
-import 'package:qrorganic/screen/create_account.dart';
-import 'package:qrorganic/screen/forgot_password.dart';
+// import 'package:qrorganic/dashboard.dart';
+import 'package:qrorganic/screens/create_account.dart';
+import 'package:qrorganic/screens/dasborad.dart';
+import 'package:qrorganic/screens/forgot_password.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -23,14 +24,13 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   children: [
                     ClipRRect(
-                      borderRadius:BorderRadius.circular(10),
-                      child: 
-                      SizedBox(
-                        height:250,
-                        width:double.infinity,
-                        child: Image.
-                        network('https://th.bing.com/th/id/OIP.c-U9STnZ0Cd7FL2A0qPKkQHaHC?rs=1&pid=ImgDetMain'),
-                      )),
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          height: 250,
+                          width: double.infinity,
+                          child: Image.network(
+                              'https://th.bing.com/th/id/OIP.c-U9STnZ0Cd7FL2A0qPKkQHaHC?rs=1&pid=ImgDetMain'),
+                        )),
                     const Padding(
                       padding: EdgeInsets.all(5.0),
                       child: LoginForm(),
@@ -105,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  DashboardScreen(),
+          builder: (context) => DashboardScreen(),
         ),
       );
     } else {
@@ -132,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          
+
           const Text(
             "Log in to your Account",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -178,9 +178,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               );
             },
-            child:const Align(
-              alignment:Alignment.topLeft,
-              child:  Text(
+            child: const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
                 "Forgot Password?",
                 style: TextStyle(
                   color: AppColors.primaryBlue,
@@ -217,7 +217,8 @@ class _LoginFormState extends State<LoginForm> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
               elevation: _isLoading ? 0 : 5,
             ),
             child: _isLoading

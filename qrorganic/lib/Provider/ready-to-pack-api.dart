@@ -584,7 +584,7 @@ class ReadyToPackProvider with ChangeNotifier {
           'Authorization': 'Bearer $token',
         },
       );
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data.containsKey('orders')) {
