@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
+import 'package:qrorganic/Provider/qc_List_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/Provider/show-order-item.dart';
-import 'package:qrorganic/imageSender.dart';
-
-import 'package:qrorganic/screen/dasborad.dart';
-import 'package:qrorganic/screen/login_page.dart';
+import 'package:provider/provider.dart';
+import 'package:qrorganic/screens/dasborad.dart';
+import 'package:qrorganic/screens/login_page.dart';
 
 void main() => runApp(
   MultiProvider(
      providers: [
         ChangeNotifierProvider(create: (context) => ReadyToPackProvider()),
         ChangeNotifierProvider(create:(context)=> OrderItemProvider()),
-        ChangeNotifierProvider(create:(context)=>AuthProvider())
+        ChangeNotifierProvider(create:(context)=>AuthProvider()),
+        ChangeNotifierProvider(create: (context)=>QcListProvider()),
+    
+     
+
       ],
   child: const App()));
 
@@ -22,17 +26,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Sora',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xff09254A),
-          primary: const Color(0xff09254A),
+    return  MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Sora',
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff09254A),
+            primary: const Color(0xff09254A),
+          ),
+          useMaterial3: false,
         ),
-        useMaterial3: false,
-      ),
-      debugShowCheckedModeBanner: false,
-      home:const Home(),
+        debugShowCheckedModeBanner: false,
+        home:const Home(),
+      
     );
   }
 }

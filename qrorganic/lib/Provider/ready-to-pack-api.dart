@@ -581,7 +581,7 @@ class ReadyToPackProvider with ChangeNotifier {
     notifyListeners();
     
     final url = Uri.parse('$baseUrl/orders?orderStatus=$orderStatus?currentPage=$page');
-    final token = await AuthProvider().getToken();
+    final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNha3NoYW0uZGV2QGthdHlheWFuaW9yZ2FuaWNzLmNvbSIsImlkIjoiNjZjNTc5ZGJmNTA1YTA0OWE4YjVjMzA3IiwiaWF0IjoxNzMwMDkyMDM0LCJleHAiOjE3MzAxMzUyMzR9.dClGgxZl6JmAHMJl7GtkiBWrrIcSU22sZSUh-k2AOwA";
     try {
       final response = await http.get(
         url,
@@ -590,8 +590,9 @@ class ReadyToPackProvider with ChangeNotifier {
           'Authorization': 'Bearer $token',
         },
       );
-
+       print(response.statusCode);
       if (response.statusCode == 200) {
+        
         final data = json.decode(response.body);
         if (data.containsKey('orders')) {
            print("Divyansh Patidar: ${data["currentPage"]} ${data["totalPages"]}");

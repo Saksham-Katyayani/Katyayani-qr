@@ -24,7 +24,7 @@ class ReadyToPickProvider with ChangeNotifier {
         headers: {
           'Content-Type': 'application/json',
           'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXJ0aGkyNDc0QGdtYWlsLmNvbSIsImlkIjoiNjZjYjI3NDg0MjNjNmU0NmFjZDBhYjY1IiwiaWF0IjoxNzI3Nzg4MzA4LCJleHAiOjE3Mjc4MzE1MDh9.uZ6CnTG3TKdV-Nk0CZjuzMkKyQb8lLPLuev8nxQuF_4',
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNha3NoYW0uZGV2QGthdHlheWFuaW9yZ2FuaWNzLmNvbSIsImlkIjoiNjZjNTc5ZGJmNTA1YTA0OWE4YjVjMzA3IiwiaWF0IjoxNzI5NTk4MzgwLCJleHAiOjE3Mjk2NDE1ODB9.bT9Q3pUhaHJu-e6OZJ_1n2eQ_ifsj4pNZk1m7_TPQW8',
         },
       );
 

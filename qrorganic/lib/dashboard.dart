@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qrorganic/custom/colors.dart';
-import 'package:qrorganic/screen/ready-to-check.dart';
-import 'package:qrorganic/screen/ready-to-manitfest.dart';
+import 'package:qrorganic/screens/ready-to-check.dart';
+import 'package:qrorganic/screens/ready-to-manitfest.dart';
 // import 'package:qrorganic/const.dart';
-import 'package:qrorganic/screen/ready-to-pack.dart';
-import 'package:qrorganic/screen/ready-to-pick.dart';
-import 'package:qrorganic/screen/ready-to-racked.dart';
+import 'package:qrorganic/screens/ready-to-pack.dart';
+import 'package:qrorganic/screens/ready-to-pick.dart';
+import 'package:qrorganic/screens/ready-to-racked.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
