@@ -24,7 +24,8 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
   }
 
   void getData() async {
-    var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+    var readyToPackProvider =
+        Provider.of<ReadyToPackProvider>(context, listen: false);
     await readyToPackProvider.fetchReadyToCheckOrders();
     setState(() {});
   }
@@ -45,20 +46,17 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment:CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 InkWell(
-                      child:const Padding(
-                        padding:  EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.restart_alt
-                        ),
-                        
-                      ),
-                      onTap:()async{
-                         getData();
-                      },
-                    ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.restart_alt),
+                  ),
+                  onTap: () async {
+                    getData();
+                  },
+                ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: provider.checkOrder.length,
@@ -75,7 +73,8 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -86,17 +85,28 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                       ),
                                     ),
                                   ),
-                                  if (provider.checkOrder[index].checker.approved)
-                                    const FaIcon(FontAwesomeIcons.check, color: Colors.green),
+                                  if (provider
+                                      .checkOrder[index].checker.approved)
+                                    const FaIcon(FontAwesomeIcons.check,
+                                        color: Colors.green),
                                 ],
                               ),
-                              const SizedBox(height:2),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].updatedAt)}",
+                                style: const TextStyle(
+                                    fontSize: 8, color: Colors.blue),
+                              ),
+                              const SizedBox(height: 2),
                               // Displaying each item as a separate card
                               Column(
-                                children: List.generate(provider.checkOrder[index].items!.length, (i) {
+                                children: List.generate(
+                                    provider.checkOrder[index].items!.length,
+                                    (i) {
                                   return Card(
                                     elevation: 2,
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10),
                                       child: InkWell(
@@ -104,40 +114,59 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => WightEnter(orderId: provider.checkOrder[index].orderId),
+                                              builder: (context) => WightEnter(
+                                                  orderId: provider
+                                                      .checkOrder[index]
+                                                      .orderId),
                                             ),
                                           );
                                         },
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Image.network(provider.checkOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.checkOrder[index].items![i].product.shopifyImage:
-                                            "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                              child: Image.network(
+                                                provider
+                                                        .checkOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .shopifyImage
+                                                        .isNotEmpty
+                                                    ? provider
+                                                        .checkOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .shopifyImage
+                                                    : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                                 fit: BoxFit.cover,
-                                                height:90,
+                                                height: 90,
                                               ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
                                               flex: 2,
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    provider.checkOrder[index].items![i].product.displayName,
-                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                                    provider
+                                                        .checkOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .displayName,
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                   const SizedBox(height: 4),
                                                   Text(
                                                     "SKU: ${provider.checkOrder[index].items![i].product.sku}",
-                                                    style: const TextStyle(fontSize:8, color: Colors.blue),
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        color: Colors.blue),
                                                   ),
                                                   const SizedBox(height: 4),
-                                                   Text(
-                                                        "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].items![i].product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
-                                                      ),
-                                                      const SizedBox(height: 4),
                                                 ],
                                               ),
                                             ),
@@ -155,7 +184,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                     },
                   ),
                 ),
-                PaginationWidget(title:'check')
+                PaginationWidget(title: 'check')
               ],
             ),
           );
