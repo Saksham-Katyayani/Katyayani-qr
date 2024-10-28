@@ -1,11 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:qrorganic/screen/ready-to-check.dart';
-import 'package:qrorganic/screen/ready-to-manitfest.dart';
-import 'package:qrorganic/screen/ready-to-pack.dart';
-import 'package:qrorganic/screen/ready-to-pick.dart';
-import 'package:qrorganic/screen/ready-to-racked.dart';
+import 'package:qrorganic/screens/ready-to-check.dart';
+import 'package:qrorganic/screens/ready-to-manitfest.dart';
+import 'package:qrorganic/screens/ready-to-pack.dart';
+import 'package:qrorganic/screens/ready-to-pick.dart';
+import 'package:qrorganic/screens/ready-to-racked.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override

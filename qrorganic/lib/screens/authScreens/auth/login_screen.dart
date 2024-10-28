@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qrorganic/const.dart';
-import 'package:qrorganic/screens/auth/widgets/bubble_widget.dart';
+import 'package:qrorganic/utils/const.dart';
+import 'package:qrorganic/screens/authScreens/auth/widgets/bubble_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

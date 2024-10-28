@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
+import 'package:qrorganic/screens/inboundScreens/status_check_screen.dart';
 
 class ReadyToPickPage extends StatefulWidget {
   const ReadyToPickPage({super.key});
@@ -105,10 +106,10 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                             child: Row(
                                               children: [
                                                 Expanded(
-                                                  child: Image.network(provider.pickOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.pickOrder[index].items![i].product.shopifyImage:
-                                            "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                                  child: provider.pickOrder[index].items![i].product.shopifyImage.isNotEmpty?Image.network(provider.pickOrder[index].items![i].product.shopifyImage,
+                                           
                                                     fit: BoxFit.cover,
-                                                  ),
+                                                  ):Image.asset("assets/images/image_placeholder.jpg",fit: BoxFit.cover,)
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Expanded(
@@ -167,11 +168,35 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                         },
                       ),
                     ),
-                    PaginationWidget(title:'pick')
+               
+                       
+                        PaginationWidget(title:'pick'),
+                         
+                   
                   ],
                 ),
               )
-            : const Center(child: CircularProgressIndicator()),
+            :  Center(child: Column(
+              children: [
+                CircularProgressIndicator(),
+                Center(
+                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                side: BorderSide(color: Colors.black),
+                              ),
+                              elevation: 4,
+                            ),
+                            onPressed: (){
+                               Navigator.push(context, new MaterialPageRoute(builder: (context)=> HomePage()));
+                            },
+                            child: Text("Status"),
+                                                   ),
+                         ),
+              ],
+            )),
       ),
     );
   }

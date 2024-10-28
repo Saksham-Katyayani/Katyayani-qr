@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/Provider/show-order-item.dart';
-import 'package:qrorganic/qr_scanner.dart';
+import 'package:qrorganic/widgets/qr_scanner.dart';
 
 class ShowDetailsOfOrderItem extends StatefulWidget {
   String oredrId;

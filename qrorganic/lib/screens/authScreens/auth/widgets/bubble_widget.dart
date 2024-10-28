@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrorganic/const.dart';
+import 'package:qrorganic/utils/const.dart';
 
 class BubbleWidget extends StatelessWidget {
   final double height;

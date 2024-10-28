@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/dashboard.dart';
-import 'package:qrorganic/screen/create_account.dart';
-import 'package:qrorganic/screen/forgot_password.dart';
+import 'package:qrorganic/screens/create_account.dart';
+import 'package:qrorganic/screens/forgot_password.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

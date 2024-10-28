@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/custom/pagination.dart';
-import 'package:qrorganic/screen/camera-screen.dart';
+import 'package:qrorganic/screens/camera-screen.dart';
 
 class ReadyToManiFest extends StatefulWidget {
   const ReadyToManiFest({super.key});
