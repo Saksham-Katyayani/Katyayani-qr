@@ -1,33 +1,38 @@
-
 import 'package:flutter/foundation.dart';
 
-class Picker{
+class Picker {
   String sku;
   int scannedQty;
   bool isFullyScanned;
   // String? awb;
-  Picker({required this.sku,required this.scannedQty,required this.isFullyScanned});
-  factory Picker.fromJson(Map<String,dynamic>json){
+  Picker(
+      {required this.sku,
+      required this.scannedQty,
+      required this.isFullyScanned});
+  factory Picker.fromJson(Map<String, dynamic> json) {
     return Picker(
-      sku:json['sku']??'', 
-      scannedQty:(json['scannedQty'] as num?)?.toInt()??0, 
-      isFullyScanned: json['isFullyScanned']??false
-    );
+        sku: json['sku'] ?? '',
+        scannedQty: (json['scannedQty'] as num?)?.toInt() ?? 0,
+        isFullyScanned: json['isFullyScanned'] ?? false);
   }
 }
-class Packer{
+
+class Packer {
   String sku;
   int scannedQty;
   bool isFullyScanned;
-  Packer({required this.sku,required this.scannedQty,required this.isFullyScanned});
-  factory Packer.fromJson(Map<String,dynamic>json){
+  Packer(
+      {required this.sku,
+      required this.scannedQty,
+      required this.isFullyScanned});
+  factory Packer.fromJson(Map<String, dynamic> json) {
     return Packer(
-      sku:json['sku']??'', 
-      scannedQty:(json['scannedQty'] as num?)?.toInt()??0, 
-      isFullyScanned: json['isFullyScanned']??false
-    );
+        sku: json['sku'] ?? '',
+        scannedQty: (json['scannedQty'] as num?)?.toInt() ?? 0,
+        isFullyScanned: json['isFullyScanned'] ?? false);
   }
 }
+
 class Dimensions {
   final double length;
   final double width;
@@ -55,20 +60,19 @@ class Dimensions {
     };
   }
 }
-class ItemModel{
+
+class ItemModel {
   double quantity;
   double amount;
   Product product;
-  ItemModel({ this.amount=0.0,this.quantity=0.0,required this.product});
-    factory ItemModel.fromJson(Map<String, dynamic> json) {
+  ItemModel({this.amount = 0.0, this.quantity = 0.0, required this.product});
+  factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
-        quantity:(json["qty"] as num?)?.toDouble() ?? 0.0, 
-      amount:  (json["amount"] as num?)?.toDouble() ?? 0.0, 
-      product:Product.fromJson(json["product_id"])
-     
-    );
+        quantity: (json["qty"] as num?)?.toDouble() ?? 0.0,
+        amount: (json["amount"] as num?)?.toDouble() ?? 0.0,
+        product: Product.fromJson(json["product_id"]));
   }
-Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'qty': quantity,
       'amount': amount,
@@ -76,6 +80,7 @@ Map<String, dynamic> toJson() {
     };
   }
 }
+
 class Product {
   final String id;
   final String displayName;
@@ -119,7 +124,7 @@ class Product {
     this.images = const [],
     this.grade = '',
     this.shopifyImage = '',
-     required this.upDatedAt,
+    required this.upDatedAt,
     required this.dimensions,
   });
 
@@ -131,23 +136,23 @@ class Product {
       sku: json['sku'] as String? ?? '',
       ean: json['ean'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      brand: json['brand'] as String? ?? '',
-      category: json['category'] as String? ?? '',
+      brand: '',
+      category: '',
       technicalName: json['technicalName'] as String? ?? '',
       taxRule: json['tax_rule'] as String? ?? '',
       netWeight: (json['netWeight'] as num?)?.toDouble() ?? 0.0,
       grossWeight: (json['grossWeight'] as num?)?.toDouble() ?? 0.0,
-      boxSize: json['boxSize'] as String? ?? '',
+      boxSize: '',
       mrp: (json['mrp'] as num?)?.toDouble() ?? 0.0,
       cost: (json['cost'] as num?)?.toDouble() ?? 0.0,
       active: json['active'] as bool? ?? false,
       images: List<String>.from(json['images'] ?? []),
       grade: json['grade'] as String? ?? '',
       shopifyImage: json['shopifyImage'] as String? ?? '',
-      upDatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
+      upDatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
       // updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
       dimensions: Dimensions.fromJson(json['dimensions'] ?? {}),
-      
     );
   }
 
@@ -178,64 +183,87 @@ class Product {
     };
   }
 }
-class CheckerModel{
+
+class CheckerModel {
   bool approved;
   CheckerModel({required this.approved});
-  factory CheckerModel.fromJson(Map<String,dynamic>json){
-    return CheckerModel(approved:json["approved"]);
-  }
-}
-class RackerModel{
-  bool approved;
-  RackerModel({required this.approved});
-  factory RackerModel.fromJson(Map<String,dynamic>json){
-    return RackerModel(approved:json["approved"]);
-  }
-}
-class ManiFestModel{
-  bool approved;
-  ManiFestModel({required this.approved});
-  factory ManiFestModel.fromJson(Map<String,dynamic>json){
-    return ManiFestModel(approved:json["approved"]);
+  factory CheckerModel.fromJson(Map<String, dynamic> json) {
+    return CheckerModel(approved: json["approved"]);
   }
 }
 
-class ModelByDipu{
+class RackerModel {
+  bool approved;
+  RackerModel({required this.approved});
+  factory RackerModel.fromJson(Map<String, dynamic> json) {
+    return RackerModel(approved: json["approved"]);
+  }
+}
+
+class ManiFestModel {
+  bool approved;
+  ManiFestModel({required this.approved});
+  factory ManiFestModel.fromJson(Map<String, dynamic> json) {
+    return ManiFestModel(approved: json["approved"]);
+  }
+}
+
+class ModelByDipu {
   String orderId;
-  List<ItemModel>?items;
-  List<Picker>?picker;
-  List<Packer>?packer;
+  List<ItemModel>? items;
+  List<Picker>? picker;
+  List<Packer>? packer;
   CheckerModel checker;
-   RackerModel racker;
+  RackerModel racker;
   ManiFestModel mainFest;
   bool isPickerFullyScanned;
   bool isPackerFullyScanned;
   String awb;
+  DateTime updatedAt;
   // String shopifyImage;
-  ModelByDipu({required this.orderId,this.items,this.picker,required this.isPickerFullyScanned,required this.checker,required this.racker,required this.mainFest,required this.isPackerFullyScanned,required this.packer,required this.awb});
-    factory ModelByDipu.fromJson(Map<String, dynamic> json) {
-      print("model dipu ${json['isPickerFullyScanned']}   ${json['items']}");
-    if(json['picker']==null){
-      json['picker']=[];
+  ModelByDipu(
+      {required this.orderId,
+      this.items,
+      this.picker,
+      required this.isPickerFullyScanned,
+      required this.checker,
+      required this.racker,
+      required this.mainFest,
+      required this.isPackerFullyScanned,
+      required this.packer,
+      required this.awb,
+      required this.updatedAt});
+  factory ModelByDipu.fromJson(Map<String, dynamic> json) {
+    print(
+        "model dipu ${json['isPickerFullyScanned']}   ${List.from(json['items']).length}");
+    for (int i = 0; i < List.from(json['items']).length; i++) {
+      print("item are here ${json['items'][i]}");
+    }
+    if (json['picker'] == null) {
+      json['picker'] = [];
     }
     return ModelByDipu(
-      orderId:json['order_id'],
-      // items: (json['items'] as List) 
+      orderId: json['order_id'],
+      // items: (json['items'] as List)
       //     .map((itemJson) => ItemModel.fromJson(itemJson))
       //     .toList(),
-      items:(json['items'] as List).map((e) =>ItemModel.fromJson(e) ).toList(),
-      picker:(json['picker'] as List).map((e) =>Picker.fromJson(e as Map<String,dynamic>) ).toList(),
-      packer:(json['packer'] as List).map((e) =>Packer.fromJson(e as Map<String,dynamic>) ).toList(),
-      isPickerFullyScanned:json["isPickerFullyScanned"],
-      checker:CheckerModel.fromJson(json["checker"]),
+      items: (json['items'] as List).map((e) => ItemModel.fromJson(e)).toList(),
+      picker: (json['picker'] as List)
+          .map((e) => Picker.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      packer: (json['packer'] as List)
+          .map((e) => Packer.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      isPickerFullyScanned: json["isPickerFullyScanned"],
+      checker: CheckerModel.fromJson(json["checker"]),
       racker: RackerModel.fromJson(json["racker"]),
-      mainFest:ManiFestModel.fromJson(json["checkManifest"]),
-      isPackerFullyScanned:json["isPackerFullyScanned"],
-      awb:json["awb"]??'',
+      mainFest: ManiFestModel.fromJson(json["checkManifest"]),
+      isPackerFullyScanned: json["isPackerFullyScanned"],
+      awb: json["awb"] ?? '',
+      updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
-
-  
 }
 
 // class StatusModel {
@@ -278,53 +306,45 @@ class ModelByDipu{
 //   }
 // }
 
+// "_id": "66fe7008d5c08322975858ae",
+// "order_id": "dummyOrderId2324324",
+// "phone": 1234567890,
+// "payment_mode": "Credit Card",
+// "currency_code": "INR",
 
+// "picker": null,
+// "packer": null,
+// "code": null,
+// "sku_tracking_id": "abcd12345",
+// "total_weight": 10,
+// "total_amt": 2,
+// "coin": 10,
+// "cod_amount": 1,
+// "prepaid_amount": 2,
+// "discount_scheme": "None",
+// "discount_percent": 0,
+// "discount_amount": 0,
+// "tax_percent": 0,
+// "courier_name": "dummy",
+// "order_type": "New Order",
+// "order_status": 4,
+// "order_status_map": [
+//   {
+//     "_id": "66fe7008d5c08322975858ab",
+//     "status_id": 0,
+//     "status": "failed",
+//     "createdAt": "2024-10-03T10:20:56.647Z",
+//     "updatedAt": "2024-10-03T10:20:56.647Z",
+//     "__v": 0
+//   }
+// ],
+// "filter": "B2C",
 
-
-
-
-
-
-    
-      // "_id": "66fe7008d5c08322975858ae",
-      // "order_id": "dummyOrderId2324324",
-      // "phone": 1234567890,
-      // "payment_mode": "Credit Card",
-      // "currency_code": "INR",
-      
-      // "picker": null,
-      // "packer": null,
-      // "code": null,
-      // "sku_tracking_id": "abcd12345",
-      // "total_weight": 10,
-      // "total_amt": 2,
-      // "coin": 10,
-      // "cod_amount": 1,
-      // "prepaid_amount": 2,
-      // "discount_scheme": "None",
-      // "discount_percent": 0,
-      // "discount_amount": 0,
-      // "tax_percent": 0,
-      // "courier_name": "dummy",
-      // "order_type": "New Order",
-      // "order_status": 4,
-      // "order_status_map": [
-      //   {
-      //     "_id": "66fe7008d5c08322975858ab",
-      //     "status_id": 0,
-      //     "status": "failed",
-      //     "createdAt": "2024-10-03T10:20:56.647Z",
-      //     "updatedAt": "2024-10-03T10:20:56.647Z",
-      //     "__v": 0
-      //   }
-      // ],
-      // "filter": "B2C",
-     
-      // "source": "internal",
-      // "agent": "Agent Smith",
-      // "notes": "Handle with care.",
-    //   "date": "2024-10-03T10:20:56.864Z",
-    //   "createdAt": "2024-10-03T10:20:56.873Z",
-    //   "updatedAt": "2024-10-03T10:20:56.873Z",
-    //   "__v": 0
-    // }
+// "source": "internal",
+// "agent": "Agent Smith",
+// "notes": "Handle with care.",
+//   "date": "2024-10-03T10:20:56.864Z",
+//   "createdAt": "2024-10-03T10:20:56.873Z",
+//   "updatedAt": "2024-10-03T10:20:56.873Z",
+//   "__v": 0
+// }

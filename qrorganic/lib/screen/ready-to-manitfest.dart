@@ -24,7 +24,8 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
   }
 
   void getData() async {
-    var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
+    var readyToPackProvider =
+        Provider.of<ReadyToPackProvider>(context, listen: false);
     await readyToPackProvider.fetchReadyToManiFestOrders();
     setState(() {});
   }
@@ -43,20 +44,17 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
           }
 
           return Column(
-            crossAxisAlignment:CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               InkWell(
-                      child:const Padding(
-                        padding:  EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.restart_alt
-                        ),
-                        
-                      ),
-                      onTap:()async{
-                         getData();
-                      },
-                    ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.restart_alt),
+                ),
+                onTap: () async {
+                  getData();
+                },
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -75,7 +73,8 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -86,17 +85,28 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                       ),
                                     ),
                                   ),
-                                  if (provider.manifestOrder[index].mainFest.approved)
-                                    const FaIcon(FontAwesomeIcons.check, color: Colors.green),
+                                  if (provider
+                                      .manifestOrder[index].mainFest.approved)
+                                    const FaIcon(FontAwesomeIcons.check,
+                                        color: Colors.green),
                                 ],
                               ),
-                              const SizedBox(height:2),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].updatedAt)}",
+                                style: const TextStyle(
+                                    fontSize: 8, color: Colors.blue),
+                              ),
+                              const SizedBox(height: 2),
                               // Display each item in a separate card
                               Column(
-                                children: List.generate(provider.manifestOrder[index].items!.length, (i) {
+                                children: List.generate(
+                                    provider.manifestOrder[index].items!.length,
+                                    (i) {
                                   return Card(
                                     elevation: 2,
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10),
                                       child: InkWell(
@@ -104,15 +114,31 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>  CameraScreen(orderId:provider.manifestOrder[index].orderId,),
+                                              builder: (context) =>
+                                                  CameraScreen(
+                                                orderId: provider
+                                                    .manifestOrder[index]
+                                                    .orderId,
+                                              ),
                                             ),
                                           );
                                         },
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Image.network(provider.manifestOrder[index].items![i].product.shopifyImage.isNotEmpty?provider.manifestOrder[index].items![i].product.shopifyImage:
-                                            "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                              child: Image.network(
+                                                provider
+                                                        .manifestOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .shopifyImage
+                                                        .isNotEmpty
+                                                    ? provider
+                                                        .manifestOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .shopifyImage
+                                                    : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                                 fit: BoxFit.cover,
                                                 height: 90,
                                                 // width: 80,
@@ -122,23 +148,28 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                             Expanded(
                                               flex: 2,
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    provider.manifestOrder[index].items![i].product.displayName,
-                                                    style: const TextStyle(fontSize:10, fontWeight: FontWeight.bold),
+                                                    provider
+                                                        .manifestOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .displayName,
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                   const SizedBox(height: 4),
                                                   Text(
                                                     "SKU: ${provider.manifestOrder[index].items![i].product.sku}",
-                                                    style: const TextStyle(fontSize:8, color: Colors.blue),
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        color: Colors.blue),
                                                   ),
                                                   const SizedBox(height: 4),
-                                                   Text(
-                                                        "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].items![i].product.upDatedAt)}",
-                                                        style: const TextStyle(fontSize:8, color: Colors.blue),
-                                                      ),
-                                                      const SizedBox(height: 4),
                                                 ],
                                               ),
                                             ),
@@ -158,7 +189,7 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                   ),
                 ),
               ),
-              PaginationWidget(title:'manifest')
+              PaginationWidget(title: 'manifest')
             ],
           );
         },
