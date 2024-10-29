@@ -88,7 +88,7 @@ class _BinnerPageState extends State<BinnerPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "Order ID: ${snapshot.data![index].id}",
+                                      "ID: ${snapshot.data![index].id}",
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,

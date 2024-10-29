@@ -127,14 +127,14 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                           children: [
                                             Expanded(
                                               child: provider
-                                                      .pickOrder[index]
+                                                      .rackedOrder[index]
                                                       .items![i]
                                                       .product
                                                       .shopifyImage
                                                       .isNotEmpty
                                                   ? Image.network(
                                                       provider
-                                                          .pickOrder[index]
+                                                          .rackedOrder[index]
                                                           .items![i]
                                                           .product
                                                           .shopifyImage,

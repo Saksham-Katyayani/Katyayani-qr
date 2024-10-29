@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -125,14 +127,14 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                           children: [
                                             Expanded(
                                               child: provider
-                                                      .pickOrder[index]
+                                                      .checkOrder[index]
                                                       .items![i]
                                                       .product
                                                       .shopifyImage
                                                       .isNotEmpty
                                                   ? Image.network(
                                                       provider
-                                                          .pickOrder[index]
+                                                          .checkOrder[index]
                                                           .items![i]
                                                           .product
                                                           .shopifyImage,

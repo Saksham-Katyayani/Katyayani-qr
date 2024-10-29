@@ -588,9 +588,10 @@ class ReadyToPackProvider with ChangeNotifier {
           'Authorization': 'Bearer $token',
         },
       );
-      log("status code: ${response.statusCode}");
+      log("status: ${response.statusCode}");
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        log("data: $data");
         if (data.containsKey('orders')) {
           print(
               "Divyansh Patidar: ${data["currentPage"]} ${data["totalPages"]}");

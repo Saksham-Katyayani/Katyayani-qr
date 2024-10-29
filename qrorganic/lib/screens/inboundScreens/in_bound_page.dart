@@ -333,8 +333,9 @@ class _InBoundPageState extends State<InBoundPage> {
                                   inboundController2[i].text.toString())));
                         }
                       });
+                      print("inboundData ${inboundData}");
                       String result = await postInbound(inboundData, file!);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
                           "Your data is successfully posted",
                           style: TextStyle(color: Colors.white, fontSize: 18),
