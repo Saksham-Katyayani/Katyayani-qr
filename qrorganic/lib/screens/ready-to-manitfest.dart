@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/screens/camera-screen.dart';
 
@@ -95,7 +96,7 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                               Text(
                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].updatedAt)}",
                                 style: const TextStyle(
-                                    fontSize: 8, color: Colors.blue),
+                                    fontSize: 8, color: AppColors.primaryBlue),
                               ),
                               const SizedBox(height: 2),
                               // Display each item in a separate card
@@ -171,7 +172,8 @@ class _ReadyToManiFestState extends State<ReadyToManiFest> {
                                                     "SKU: ${provider.manifestOrder[index].items![i].product.sku}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
                                                   const SizedBox(height: 4),
                                                 ],

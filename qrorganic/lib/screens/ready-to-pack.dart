@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
 
@@ -74,7 +75,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('Ready to Pack Orders'),
-      //   backgroundColor: Colors.blueAccent,
+      //   backgroundColor: AppColors.primaryBlueAccent,
       // ),
       body: Consumer<ReadyToPackProvider>(
         builder: (context, provider, child) {
@@ -194,14 +195,16 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                 "SKU: ${item.product.sku}",
                                                 style: const TextStyle(
                                                     fontSize: 8,
-                                                    color: Colors.blue),
+                                                    color:
+                                                        AppColors.primaryBlue),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(item.product.upDatedAt)}",
                                                 style: const TextStyle(
                                                     fontSize: 8,
-                                                    color: Colors.blue),
+                                                    color:
+                                                        AppColors.primaryBlue),
                                               ),
                                               // const SizedBox(height: 4),
                                               const SizedBox(height: 4),

@@ -108,7 +108,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("S.No.",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -120,7 +120,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("Sku",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -132,7 +132,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("Quantity",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -144,7 +144,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("Bin",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -203,7 +203,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("S.No.",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -215,7 +215,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("Sku",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -227,7 +227,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                                   child: Text("Quantity",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.blue,
+                                          color: AppColors().primaryBlue,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center),
                                 ),
@@ -274,7 +274,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                     child: Text(
                       "Bin Image",
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: AppColors().primaryBlue,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),
@@ -429,7 +429,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(color: Colors.black)),
                           elevation: 4,
-                          backgroundColor: Colors.blue.shade700,
+                          backgroundColor: AppColors().primaryBlue,
                           fixedSize: Size(120, 50) // Button color
                           ),
                       child: isLoading
@@ -664,7 +664,7 @@ class _CustomContainerWidgetState extends State<CustomContainerWidget> {
           //       shape: RoundedRectangleBorder(
           //         borderRadius: BorderRadius.circular(10),
           //       ),
-          //       backgroundColor: Colors.blue.shade700, // Button color
+          //       backgroundColor: AppColors().primaryBlue.shade700, // Button color
           //     ),
           //     child: Text(
           //       'Submit',

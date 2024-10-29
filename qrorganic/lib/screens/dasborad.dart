@@ -20,8 +20,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  static const Color primaryBlue = Color.fromRGBO(6, 90, 216, 1);
-  static const Color primaryBlueLight = Color.fromRGBO(6, 90, 216, 0.7);
+  static const Color primaryBlue = Color(0xFF033b5c);
+  static const Color primaryBlueLight = Color(0xFF033b5c);
 
   // List of labels for the bottom navigation bar
   final List<String> _labels = [

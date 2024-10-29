@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/services/api_service.dart';
 import 'package:qrorganic/widgets/custom_form.dart';
 import 'package:qrorganic/Model/inbound_model.dart';
@@ -71,7 +72,7 @@ class _InBoundPageState extends State<InBoundPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: Colors.blue.shade700, width: 3),
+                                        color: AppColors.primaryBlue, width: 3),
                                   ),
                                   child: Center(
                                       child: Text(
@@ -108,7 +109,8 @@ class _InBoundPageState extends State<InBoundPage> {
                                                 child: Text("S.No",
                                                     style: TextStyle(
                                                         fontSize: 16,
-                                                        color: Colors.blue,
+                                                        color: AppColors
+                                                            .primaryBlue,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                     textAlign:
@@ -122,7 +124,8 @@ class _InBoundPageState extends State<InBoundPage> {
                                                 child: Text("Product-Id",
                                                     style: TextStyle(
                                                         fontSize: 16,
-                                                        color: Colors.blue,
+                                                        color: AppColors
+                                                            .primaryBlue,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                     textAlign:
@@ -136,7 +139,8 @@ class _InBoundPageState extends State<InBoundPage> {
                                                 child: Text("Quantity",
                                                     style: TextStyle(
                                                         fontSize: 16,
-                                                        color: Colors.blue,
+                                                        color: AppColors
+                                                            .primaryBlue,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                     textAlign:
@@ -180,7 +184,7 @@ class _InBoundPageState extends State<InBoundPage> {
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(150, 50),
                       elevation: 4,
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: AppColors.primaryBlue,
                       side: BorderSide(color: Colors.black),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -317,7 +321,7 @@ class _InBoundPageState extends State<InBoundPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(150, 50),
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: AppColors.primaryBlue,
                       side: BorderSide(color: Colors.black),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),

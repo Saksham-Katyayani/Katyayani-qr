@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/services/api_service.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
@@ -183,7 +184,8 @@ class _QcCheckPageState extends State<QcCheckPage> {
                                                     "Update At: ${snapshot.data![index].updatedAt.toString().substring(0, 10)} at ${output}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
                                                   Row(
                                                     mainAxisAlignment:
@@ -300,7 +302,7 @@ class _QcCheckPageState extends State<QcCheckPage> {
                 child: Text(
                   "Sorry, failed to fetch the data",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: AppColors.primaryBlue,
                     fontSize: 28,
                   ),
                 ),
@@ -308,7 +310,7 @@ class _QcCheckPageState extends State<QcCheckPage> {
             } else {
               return Center(
                 child: CircularProgressIndicator(
-                  color: Colors.blue,
+                  color: AppColors.primaryBlue,
                 ),
               );
             }

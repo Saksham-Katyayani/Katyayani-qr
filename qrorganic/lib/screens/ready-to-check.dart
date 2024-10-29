@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'weigth-enter.dart';
 
@@ -97,7 +98,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                               Text(
                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].updatedAt)}",
                                 style: const TextStyle(
-                                    fontSize: 8, color: Colors.blue),
+                                    fontSize: 8, color: AppColors.primaryBlue),
                               ),
                               const SizedBox(height: 2),
                               // Displaying each item as a separate card
@@ -171,7 +172,8 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                                     "SKU: ${provider.checkOrder[index].items![i].product.sku}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
                                                   const SizedBox(height: 4),
                                                 ],

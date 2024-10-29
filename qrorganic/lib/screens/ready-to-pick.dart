@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
 import 'package:qrorganic/screens/inboundScreens/status_check_screen.dart';
@@ -101,7 +102,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                             Text(
                               "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.pickOrder[index].updatedAt)}",
                               style: const TextStyle(
-                                  fontSize: 8, color: Colors.blue),
+                                  fontSize: 8, color: AppColors.primaryBlue),
                             ),
                             const SizedBox(height: 2),
                             // Displaying each item as a separate card
@@ -167,7 +168,8 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                                   "SKU: ${provider.pickOrder[index].items![i].product.sku}",
                                                   style: const TextStyle(
                                                       fontSize: 8,
-                                                      color: Colors.blue),
+                                                      color: AppColors
+                                                          .primaryBlue),
                                                 ),
                                                 const SizedBox(height: 4),
                                                 Row(

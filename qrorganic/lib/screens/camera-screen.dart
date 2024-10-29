@@ -8,6 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 
 class CameraScreen extends StatefulWidget {
   final String orderId;
@@ -128,24 +129,28 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   // Future<bool> _onWillPop() async {
-    
-  //   return true; 
+
+  //   return true;
   // }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked:(didPop) {
+      onPopInvoked: (didPop) {
         print("i am heere sjsjnjsn");
-         var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
-             readyToPackProvider.fetchReadyToManiFestOrders();
+        var readyToPackProvider =
+            Provider.of<ReadyToPackProvider>(context, listen: false);
+        readyToPackProvider.fetchReadyToManiFestOrders();
       },
       // onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.orderId),
-          backgroundColor: Colors.blueAccent,
+          title: Text(
+            widget.orderId,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: AppColors.primaryBlue,
           centerTitle: true,
         ),
         backgroundColor: Colors.white,
@@ -156,7 +161,7 @@ class _CameraScreenState extends State<CameraScreen> {
               if (_image != null)
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent, width: 2),
+                    border: Border.all(color: AppColors.primaryBlue, width: 2),
                   ),
                   child: Image.file(
                     _image!,
@@ -204,8 +209,8 @@ class _CameraScreenState extends State<CameraScreen> {
                   icon: const Icon(Icons.upload_file),
                   label: const Text("Upload"),
                   style: ElevatedButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                 ),
               if (_isUploading) // Show loading indicator

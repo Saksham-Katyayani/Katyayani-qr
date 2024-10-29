@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/screens/inboundScreens/binner_page.dart';
 import 'package:qrorganic/screens/inboundScreens/in_bound_page.dart';
 import 'package:qrorganic/screens/inboundScreens/qc_check_page.dart';
@@ -15,7 +16,7 @@ class InBoundDashboard extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: AppColors.primaryBlue,
                 side: BorderSide(color: Colors.black38),
                 fixedSize: Size(150, 50),
                 elevation: 4,
@@ -39,7 +40,7 @@ class InBoundDashboard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(150, 50),
                 elevation: 4,
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: AppColors.primaryBlue,
                 side: BorderSide(color: Colors.black38),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -61,7 +62,7 @@ class InBoundDashboard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(150, 50),
                 elevation: 4,
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: AppColors.primaryBlue,
                 side: BorderSide(color: Colors.black38),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),

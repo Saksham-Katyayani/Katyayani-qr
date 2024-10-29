@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/services/api_service.dart';
 import 'dart:io';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -194,7 +195,8 @@ class _BinnerPageState extends State<BinnerPage> {
                                                         "Update At: ${snapshot.data![index].updatedAt.toString().substring(0, 10)} at ${output}",
                                                         style: const TextStyle(
                                                             fontSize: 8,
-                                                            color: Colors.blue),
+                                                            color: AppColors
+                                                                .primaryBlue),
                                                       ),
                                                       const FaIcon(
                                                           FontAwesomeIcons
@@ -309,7 +311,7 @@ class _BinnerPageState extends State<BinnerPage> {
                 child: Text(
                   "Failed to fetch the data",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: AppColors.primaryBlue,
                     fontSize: 28,
                   ),
                 ),
@@ -317,7 +319,7 @@ class _BinnerPageState extends State<BinnerPage> {
             } else {
               return Center(
                 child: CircularProgressIndicator(
-                  color: Colors.blue,
+                  color: AppColors.primaryBlue,
                 ),
               );
             }
