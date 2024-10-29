@@ -3,13 +3,12 @@ import 'package:qrorganic/screens/inboundScreens/binner_page.dart';
 import 'package:qrorganic/screens/inboundScreens/in_bound_page.dart';
 import 'package:qrorganic/screens/inboundScreens/qc_check_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class InBoundDashboard extends StatelessWidget {
+  const InBoundDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

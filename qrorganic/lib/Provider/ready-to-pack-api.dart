@@ -395,6 +395,8 @@
 //   }
 // }
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -570,11 +572,13 @@ class ReadyToPackProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> fetchOrders(String orderStatus, int page) async {
+    log("page: $page");
     _isLoading = true;
     notifyListeners();
 
     final url =
-        Uri.parse('$baseUrl/orders?orderStatus=$orderStatus?currentPage=$page');
+        Uri.parse('$baseUrl/orders?orderStatus=$orderStatus&page=$page');
+    log("url: $url");
     final token = await AuthProvider().getToken();
     try {
       final response = await http.get(
@@ -584,7 +588,7 @@ class ReadyToPackProvider with ChangeNotifier {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.statusCode);
+      log("status code: ${response.statusCode}");
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data.containsKey('orders')) {
@@ -596,13 +600,6 @@ class ReadyToPackProvider with ChangeNotifier {
 
           switch (orderStatus) {
             case '4':
-              _orders.clear();
-              _orders = orders;
-              _packCurrentPage = data["currentPage"];
-              _packTotalPages = data["totalPages"];
-              generateNumberOfCheckBox();
-              break;
-            case '3':
               _pickOrder.clear();
               _pickOrder = orders;
               _pickCurrentPage = data["currentPage"];
@@ -610,20 +607,27 @@ class ReadyToPackProvider with ChangeNotifier {
               generateRTPICKCheckBox();
               break;
             case '5':
+              _orders.clear();
+              _orders = orders;
+              _packCurrentPage = data["currentPage"];
+              _packTotalPages = data["totalPages"];
+              generateNumberOfCheckBox();
+              break;
+            case '6':
               _checkOrder.clear();
               _checkOrder = orders;
               _checkCurrentPage = data["currentPage"];
               _checkTotalPages = data["totalPages"];
               generateRTCCheckBox();
               break;
-            case '6':
+            case '7':
               _rackedOrder.clear();
               _rackedOrder = orders;
               _rackCurrentPage = data["currentPage"];
               _rackTotalPages = data["totalPages"];
               generateRTRCheckBox();
               break;
-            case '7':
+            case '8':
               _manifestOrder.clear();
               notifyListeners();
               print("i am called ${_manifestOrder.length}  ${orders.length}");
@@ -653,16 +657,16 @@ class ReadyToPackProvider with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchReadyToPackOrders({int page = 1}) =>
-      fetchOrders('4', page);
   Future<Map<String, dynamic>> fetchReadyToPickOrders({int page = 1}) =>
-      fetchOrders('3', page);
-  Future<Map<String, dynamic>> fetchReadyToCheckOrders({int page = 1}) =>
+      fetchOrders('4', page);
+  Future<Map<String, dynamic>> fetchReadyToPackOrders({int page = 1}) =>
       fetchOrders('5', page);
-  Future<Map<String, dynamic>> fetchReadyToManiFestOrders({int page = 1}) =>
-      fetchOrders('7', page);
-  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
+  Future<Map<String, dynamic>> fetchReadyToCheckOrders({int page = 1}) =>
       fetchOrders('6', page);
+  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
+      fetchOrders('7', page);
+  Future<Map<String, dynamic>> fetchReadyToManiFestOrders({int page = 1}) =>
+      fetchOrders('8', page);
 
   void updateData() {
     _showData = !_showData;

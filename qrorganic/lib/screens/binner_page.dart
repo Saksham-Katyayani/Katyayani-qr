@@ -26,25 +26,33 @@ class _BinnerPageState extends State<BinnerPage> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return 
-    // SafeArea(
-    //     child: 
+    return
+        // SafeArea(
+        //     child:
         Scaffold(
-          appBar: AppBar(
-            title: Text("Binner Page",style: TextStyle(fontSize: 20,fontFamily: "Sora-Regular",),),
-            backgroundColor: Color.fromRGBO(6, 90, 216, 1),
+      appBar: AppBar(
+        title: Text(
+          "Binner",
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: "Sora-Regular",
           ),
+        ),
+        backgroundColor: Color.fromRGBO(6, 90, 216, 1),
+      ),
       body: FutureBuilder(
           future: binner,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                     String time = snapshot.data![index].updatedAt.toString().substring(11,16);
-                     DateFormat format = new DateFormat("HH:mm");
-                     DateTime updateAt = format.parse(time);
-                     DateFormat outputFormat = new DateFormat("hh:mm aa");
-                     String output = outputFormat.format(updateAt);
+                  String time = snapshot.data![index].updatedAt
+                      .toString()
+                      .substring(11, 16);
+                  DateFormat format = new DateFormat("HH:mm");
+                  DateTime updateAt = format.parse(time);
+                  DateFormat outputFormat = new DateFormat("hh:mm aa");
+                  String output = outputFormat.format(updateAt);
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -54,136 +62,164 @@ class _BinnerPageState extends State<BinnerPage> {
                                     products: snapshot.data![index].products,
                                     id: snapshot.data![index].id,
                                     isTextFieldRequired: true,
-                                    imageUrl: snapshot.data![index].images['qcImages'],
-                                  ))).then((value){
-                                    setState(() {
-                                      binner=getData("QC_CHECKED");
-                                    });
-                                  });
+                                    imageUrl: snapshot
+                                        .data![index].images['qcImages'],
+                                  ))).then((value) {
+                        setState(() {
+                          binner = getData("QC_CHECKED");
+                        });
+                      });
                     },
                     child: Expanded(
                       child: Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: const EdgeInsets.all(8),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Order ID: ${snapshot.data![index].id}",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                  Expanded(
+                                    child: Text(
+                                      "Order ID: ${snapshot.data![index].id}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Text(
-                                      "STATUS: QC_CHECKED",
-                                        style: TextStyle(
-                                          color:  Colors.green,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                  const SizedBox(height:2),
-                                  // Displaying each item as a separate card
-                                  Column(
-                                    children: List.generate(snapshot.data[index].products.length, (i) {
-                                      return Card(
-                                        elevation: 2,
-                                        margin: const EdgeInsets.symmetric(vertical: 5),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => CustomContainerWidget(
-                                    products: snapshot.data![index].products,
-                                    id: snapshot.data![index].id,
-                                    isTextFieldRequired: true,
-                                    imageUrl: snapshot.data![index].images['qcImages'],
-                                  ))).then((Value){
-setState(() {
-  binner=getData("QC_CHECKED");
-});
-                                  });
-                                              // Navigate to details page
-                                              
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height:100,
-                                                  width: 100,
-                                                  child:snapshot.data![index].images['qcImages']!=null?Image.network(snapshot.data![index].images['inboundImage'].toString(),
-                                           
-                                                    fit: BoxFit.cover,
-                                                  ):Image.asset("assets/images/image_placeholder.jpg",fit: BoxFit.cover,)
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                       Text(
-                                                        "SKU: ${snapshot.data![index].products[i]['sku']}",
-                                                        style: const TextStyle(fontSize:10, fontWeight: FontWeight.bold),
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                   
-                                                          Text(
-                                                            "Quantity: ${snapshot.data![index].products[i]['quantity']}",
-                                                            style: const TextStyle(fontSize: 8, color: Colors.grey,fontWeight: FontWeight.bold),
-                                                          ),
-                                                      
-                                                            
-                                                      
-                                                      const SizedBox(height: 4),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Update At: ${snapshot.data![index].updatedAt.toString().substring(0,10)} at ${output}",
-                                                            style: const TextStyle(fontSize:8, color: Colors.blue),
-                                                          ),
-                                                          
-                                                          const FaIcon(FontAwesomeIcons.check, size: 25, color: Colors.green),
-                                                        ],
-                                                      ),
-                
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }),
+                                  Text(
+                                    "STATUS: QC_CHECKED",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                  const Divider(thickness: 1),
                                 ],
                               ),
-                            ),
+                              const SizedBox(height: 2),
+                              // Displaying each item as a separate card
+                              Column(
+                                children: List.generate(
+                                    snapshot.data[index].products.length, (i) {
+                                  return Card(
+                                    elevation: 2,
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CustomContainerWidget(
+                                                        products: snapshot
+                                                            .data![index]
+                                                            .products,
+                                                        id: snapshot
+                                                            .data![index].id,
+                                                        isTextFieldRequired:
+                                                            true,
+                                                        imageUrl: snapshot
+                                                            .data![index]
+                                                            .images['qcImages'],
+                                                      ))).then((Value) {
+                                            setState(() {
+                                              binner = getData("QC_CHECKED");
+                                            });
+                                          });
+                                          // Navigate to details page
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                height: 100,
+                                                width: 100,
+                                                child: snapshot.data![index]
+                                                                .images[
+                                                            'qcImages'] !=
+                                                        null
+                                                    ? Image.network(
+                                                        snapshot
+                                                            .data![index]
+                                                            .images[
+                                                                'inboundImage']
+                                                            .toString(),
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : Image.asset(
+                                                        "assets/images/image_placeholder.jpg",
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "SKU: ${snapshot.data![index].products[i]['sku']}",
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    "Quantity: ${snapshot.data![index].products[i]['quantity']}",
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        color: Colors.grey,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Update At: ${snapshot.data![index].updatedAt.toString().substring(0, 10)} at ${output}",
+                                                        style: const TextStyle(
+                                                            fontSize: 8,
+                                                            color: Colors.blue),
+                                                      ),
+                                                      const FaIcon(
+                                                          FontAwesomeIcons
+                                                              .check,
+                                                          size: 25,
+                                                          color: Colors.green),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                              const Divider(thickness: 1),
+                            ],
                           ),
-                      
+                        ),
+                      ),
                     ),
-                    
-                    
-                    );
+                  );
                   // return GestureDetector(
                   //   onTap: () {
                   //     Navigator.push(

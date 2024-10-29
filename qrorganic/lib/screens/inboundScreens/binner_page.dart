@@ -32,7 +32,7 @@ class _BinnerPageState extends State<BinnerPage> {
         Scaffold(
       appBar: AppBar(
         title: Text(
-          "Binner Page",
+          "Binner",
           style: TextStyle(
             fontSize: 20,
             fontFamily: "Sora-Regular",

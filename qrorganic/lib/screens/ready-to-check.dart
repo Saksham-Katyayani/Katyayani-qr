@@ -124,22 +124,27 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Image.network(
-                                                provider
-                                                        .checkOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                        .isNotEmpty
-                                                    ? provider
-                                                        .checkOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                    : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                                fit: BoxFit.cover,
-                                                height: 90,
-                                              ),
+                                              child: provider
+                                                      .pickOrder[index]
+                                                      .items![i]
+                                                      .product
+                                                      .shopifyImage
+                                                      .isNotEmpty
+                                                  ? Image.network(
+                                                      provider
+                                                          .pickOrder[index]
+                                                          .items![i]
+                                                          .product
+                                                          .shopifyImage,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : const Center(
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey,
+                                                        size: 50,
+                                                      ),
+                                                    ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(

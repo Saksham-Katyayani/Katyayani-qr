@@ -167,14 +167,19 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: Image.network(
-                                            item.product.shopifyImage.isNotEmpty
-                                                ? item.product.shopifyImage
-                                                : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                            fit: BoxFit.cover,
-                                            height: 90,
-                                            // width: 80,
-                                          ),
+                                          child: item.product.shopifyImage
+                                                  .isNotEmpty
+                                              ? Image.network(
+                                                  item.product.shopifyImage,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Center(
+                                                  child: Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey,
+                                                    size: 50,
+                                                  ),
+                                                ),
                                         ),
                                         const SizedBox(width: 2),
                                         Expanded(

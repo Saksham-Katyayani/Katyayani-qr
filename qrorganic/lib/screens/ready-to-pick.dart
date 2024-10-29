@@ -28,9 +28,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
     var readyToPackProvider =
         Provider.of<ReadyToPackProvider>(context, listen: false);
     await readyToPackProvider.fetchReadyToPickOrders();
-    setState(() {});
-    print(
-        "now data is  ${Provider.of<ReadyToPackProvider>(context, listen: false).pickOrder.toList()}");
+    setState(() {}); // Ensure UI updates after data fetch
   }
 
   @override
@@ -48,14 +46,6 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
-                  },
-                  child: const Text("Harsht Button")),
               InkWell(
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -132,21 +122,27 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: Image.network(
-                                              provider
-                                                      .pickOrder[index]
-                                                      .items![i]
-                                                      .product
-                                                      .shopifyImage
-                                                      .isNotEmpty
-                                                  ? provider
-                                                      .pickOrder[index]
-                                                      .items![i]
-                                                      .product
-                                                      .shopifyImage
-                                                  : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                              fit: BoxFit.cover,
-                                            ),
+                                            child: provider
+                                                    .pickOrder[index]
+                                                    .items![i]
+                                                    .product
+                                                    .shopifyImage
+                                                    .isNotEmpty
+                                                ? Image.network(
+                                                    provider
+                                                        .pickOrder[index]
+                                                        .items![i]
+                                                        .product
+                                                        .shopifyImage,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : const Center(
+                                                    child: Icon(
+                                                      Icons.broken_image,
+                                                      color: Colors.grey,
+                                                      size: 50,
+                                                    ),
+                                                  ),
                                           ),
                                           const SizedBox(width: 10),
                                           Expanded(
@@ -232,9 +228,7 @@ class _ReadyToPickPageState extends State<ReadyToPickPage> {
             ],
           ),
         );
-      }
-          // : const Center(child: CircularProgressIndicator()),
-          ),
+      }),
     );
   }
 

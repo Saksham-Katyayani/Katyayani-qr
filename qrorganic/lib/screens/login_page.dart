@@ -35,22 +35,22 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.all(5.0),
                       child: LoginForm(),
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 300,
-                      color: AppColors.primaryBlue,
-                      child: const Center(
-                        child: Text(
-                          "Katyayani",
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 300,
+                    //   color: AppColors.primaryBlue,
+                    //   child: const Center(
+                    //     child: Text(
+                    //       "Katyayani",
+                    //       style: TextStyle(
+                    //         fontSize: 40,
+                    //         color: AppColors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

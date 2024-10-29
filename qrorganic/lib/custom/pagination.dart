@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pagination_flutter/pagination.dart';
 import 'package:provider/provider.dart';
@@ -25,30 +27,26 @@ class PaginationWidget extends StatelessWidget {
               pagesVisible: 5,
               spacing: 10,
               onPageChanged: (page) {
-                switch (title.toLowerCase()) {
-                  case 'pack':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToPackOrders(
-                        page: provider.getCurrentPage(title));
-                    break;
-                  case 'rack':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToRackedOrders(
-                        page: provider.getCurrentPage(title));
-                    break;
+                provider.setCurrentPage(title, page);
+                switch (title) {
                   case 'pick':
-                    provider.setCurrentPage(title, page);
                     provider.fetchReadyToPickOrders(
                         page: provider.getCurrentPage(title));
                     break;
-                  case 'manifest':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToManiFestOrders(
+                  case 'pack':
+                    provider.fetchReadyToPackOrders(
                         page: provider.getCurrentPage(title));
                     break;
                   case 'check':
-                    provider.setCurrentPage(title, page);
                     provider.fetchReadyToCheckOrders(
+                        page: provider.getCurrentPage(title));
+                    break;
+                  case 'rack':
+                    provider.fetchReadyToRackedOrders(
+                        page: provider.getCurrentPage(title));
+                    break;
+                  case 'manifest':
+                    provider.fetchReadyToManiFestOrders(
                         page: provider.getCurrentPage(title));
                     break;
                   default:
