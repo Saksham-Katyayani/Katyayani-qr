@@ -128,18 +128,19 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   // Future<bool> _onWillPop() async {
-    
-  //   return true; 
+
+  //   return true;
   // }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked:(didPop) {
+      onPopInvoked: (didPop) {
         print("i am heere sjsjnjsn");
-         var readyToPackProvider = Provider.of<ReadyToPackProvider>(context, listen: false);
-             readyToPackProvider.fetchReadyToManiFestOrders();
+        var readyToPackProvider =
+            Provider.of<ReadyToPackProvider>(context, listen: false);
+        readyToPackProvider.fetchReadyToManiFestOrders();
       },
       // onWillPop: _onWillPop,
       child: Scaffold(
@@ -204,8 +205,8 @@ class _CameraScreenState extends State<CameraScreen> {
                   icon: const Icon(Icons.upload_file),
                   label: const Text("Upload"),
                   style: ElevatedButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                 ),
               if (_isUploading) // Show loading indicator

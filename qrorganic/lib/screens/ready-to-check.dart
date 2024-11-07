@@ -54,6 +54,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                     child: Icon(Icons.restart_alt),
                   ),
                   onTap: () async {
+                    // provider.;
                     getData();
                   },
                 ),

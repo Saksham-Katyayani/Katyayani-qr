@@ -14,15 +14,24 @@ import 'package:qrorganic/Provider/show-order-item.dart';
 
 class ScannerWidget extends StatefulWidget {
   final String? oredrId;
-   int scanned;
-   int totalQty;
-   int index;
+  int scanned;
+  int totalQty;
+  int index;
   bool isPicker;
   bool isPacker;
-   bool isRacker;
+  bool isRacker;
   final void Function(String value) onScan;
 
-   ScannerWidget({super.key, required this.onScan,required this.scanned,required this.totalQty, this.oredrId,required this.index,this.isRacker=false,this.isPicker=false,this.isPacker=false});
+  ScannerWidget(
+      {super.key,
+      required this.onScan,
+      required this.scanned,
+      required this.totalQty,
+      this.oredrId,
+      required this.index,
+      this.isRacker = false,
+      this.isPicker = false,
+      this.isPacker = false});
 
   @override
   State<ScannerWidget> createState() => _ScannerState();
@@ -31,7 +40,7 @@ class ScannerWidget extends StatefulWidget {
 class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
   MobileScannerController? controller;
   StreamSubscription<Object?>? _subscription;
-  
+
   String scannedValue = "";
   bool isScanning = true;
   // int scannedItem = 0;
@@ -76,10 +85,12 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
     if (mounted) {
       final String? value = barcodes.barcodes.firstOrNull?.displayValue?.trim();
       if (value != null && isScanning) {
-        var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
-        
-       if(!widget.isRacker){
-        message= 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';}
+        var provider = Provider.of<ReadyToPackProvider>(context, listen: false);
+
+        if (!widget.isRacker) {
+          message =
+              'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
+        }
         setState(() {
           scannedValue = value;
           isScanning = false;
@@ -94,73 +105,74 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
       progress = true;
     });
 
-    var url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/racker/');
-   
+    var url = Uri.parse(
+        'https://inventory-management-backend-s37u.onrender.com/orders/racker/');
+
     try {
       http.Response response;
       final token = await AuthProvider().getToken();
-    //  print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
-      if(widget.isRacker){
+      //  print("heee;o i am dipu  ${widget.isRacker}  ${widget.isPacker}  ${widget.isPicker}");
+      if (widget.isRacker) {
         print("i am in rackernjdjjdnj");
         response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({"orderId":widget.oredrId, "awbNumber":qrCode}),
-      );
-
-      }else if(widget.isPacker){
-         url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan/packer');
-         response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
-      );
-
-      }else{
-        url = Uri.parse('https://inventory-management-backend-s37u.onrender.com/orders/scan');
-         response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({"orderId":widget.oredrId, "sku":qrCode}),
-      );
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({"orderId": widget.oredrId, "awbNumber": qrCode}),
+        );
+      } else if (widget.isPacker) {
+        url = Uri.parse(
+            'https://inventory-management-backend-s37u.onrender.com/orders/scan/packer');
+        response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({"orderId": widget.oredrId, "sku": qrCode}),
+        );
+      } else {
+        url = Uri.parse(
+            'https://inventory-management-backend-s37u.onrender.com/orders/scan');
+        response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({"orderId": widget.oredrId, "sku": qrCode}),
+        );
       }
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
         // print("here response data ${data.toString()}");
-         var provider=Provider.of<ReadyToPackProvider>(context,listen:false);
-        if(!widget.isRacker){
-        int scannedCount = data['scannedCount'];
-        widget.scanned++;
+        var provider = Provider.of<ReadyToPackProvider>(context, listen: false);
+        if (!widget.isRacker) {
+          int scannedCount = data['scannedCount'];
+          widget.scanned++;
           provider.upDateScannedProducts(widget.index);
-         provider.updateCheckBoxValue(widget.index,widget.scanned);
+          provider.updateCheckBoxValue(widget.index, widget.scanned);
         }
-        
-       provider=Provider.of<ReadyToPackProvider>(context,listen:false);
-        message = 'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
-        setState(() {
 
-          
-          isScanning = true;
-          scannedValue = "";
-        });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("Scanned Succesfully}")));
-      } else {
-       
-        
+        provider = Provider.of<ReadyToPackProvider>(context, listen: false);
+        message =
+            'Scanned Item: ${provider.numberOfScannedProducts[widget.index]} Total Items: ${provider.numberOfProducts[widget.index]}';
         setState(() {
           isScanning = true;
           scannedValue = "";
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Failed to fetch data: ${jsonDecode(response.body)["message"]}")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Scanned Succesfully}")));
+      } else {
+        setState(() {
+          isScanning = true;
+          scannedValue = "";
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "Failed to fetch data: ${jsonDecode(response.body)["message"]}")));
       }
     } catch (e) {
       print('Error: $e');
@@ -209,92 +221,119 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.blueGrey[900],
-        appBar: AppBar(
-          title: const Text("Scan QR", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
-          backgroundColor: Colors.black.withOpacity(0.01),
-          elevation: 0,
-          leading:InkWell(
-            child:const Icon(Icons.arrow_back),
-            onTap:()async{
-              var provider= Provider.of<ReadyToPackProvider>(context,listen:false);
-              if(widget.isPicker){
-                // print("heeelooo i am dipu");
-                provider.fetchReadyToPickOrders();
-              }else if(widget.isRacker){
-                 provider.fetchReadyToCheckOrders(); 
-              }else{
-                 provider.fetchReadyToPackOrders();
-              }
+      child: PopScope(
+        canPop: true,
+        onPopInvoked: (v) async {
+          // print("object is here ");
+          var provider =
+              Provider.of<ReadyToPackProvider>(context, listen: false);
+          if (widget.isPicker) {
+            provider.fetchReadyToPickOrders();
+          } else if (widget.isRacker) {
+            provider.fetchReadyToCheckOrders();
+          } else {
+            provider.fetchReadyToPackOrders();
+          }
+
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          backgroundColor: Colors.blueGrey[900],
+          appBar: AppBar(
+            title: const Text("Scan QR",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            backgroundColor: Colors.black.withOpacity(0.01),
+            elevation: 0,
+            leading: InkWell(
+              child: const Icon(Icons.arrow_back),
+              onTap: () async {
+                var provider =
+                    Provider.of<ReadyToPackProvider>(context, listen: false);
+                if (widget.isPicker) {
+                  // print("heeelooo i am dipu");
+                  provider.fetchReadyToPickOrders();
+                } else if (widget.isRacker) {
+                  provider.fetchReadyToCheckOrders();
+                } else {
+                  provider.fetchReadyToPackOrders();
+                  print("i am here with packer  ${provider.orders.length}");
+                }
                 Navigator.pop(context);
-            },
+              },
+            ),
           ),
-        ),
-        body: Stack(
-          children: [
-           !widget.isRacker?Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 30,
-                width: double.infinity,
-                color: Colors.white,
-                child: Center(child:  Text("Scanned : ${widget.scanned} total ${widget.totalQty}")),
-              ),
-            ):const Text(''),
-            Center(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10.0,
-                      spreadRadius: 2.0,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
+          body: Stack(
+            children: [
+              !widget.isRacker
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 30,
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Center(
+                            child: Text(
+                                "Scanned : ${widget.scanned} total ${widget.totalQty}")),
+                      ),
+                    )
+                  : const Text(''),
+              Center(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10.0,
+                        spreadRadius: 2.0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: progress
+                      ? const Center(child: CircularProgressIndicator())
+                      : MobileScanner(
+                          controller: controller!,
+                          errorBuilder: (context, error, child) {
+                            return Center(child: Text(error.toString()));
+                          },
+                          placeholderBuilder: (context, val) {
+                            return Center(child: Text(val.toString()));
+                          },
+                        ),
                 ),
-                child: progress
-                    ? const Center(child: CircularProgressIndicator())
-                    : MobileScanner(
-                        controller: controller!,
-                        errorBuilder: (context, error, child) {
-                          return Center(child: Text(error.toString()));
-                        },
-                        placeholderBuilder: (context, val) {
-                          return Center(child: Text(val.toString()));
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 80,
+                  color: Colors.black.withOpacity(0.6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ToggleFlashlightButton(controller: controller!),
+                      IconButton(
+                        icon: const Icon(Icons.switch_camera,
+                            color: Colors.white, size: 32),
+                        onPressed: () async {
+                          await _stopScanner();
+                          await controller?.switchCamera();
+                          await _startScanner();
                         },
                       ),
-              ),
-            ),
-            
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 80,
-                color: Colors.black.withOpacity(0.6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ToggleFlashlightButton(controller: controller!),
-                    IconButton(
-                      icon: const Icon(Icons.switch_camera, color: Colors.white, size: 32),
-                      onPressed: () async {
-                        await _stopScanner();
-                        await controller?.switchCamera();
-                        await _startScanner();
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

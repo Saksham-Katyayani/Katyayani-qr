@@ -608,6 +608,7 @@ class ReadyToPackProvider with ChangeNotifier {
               _pickCurrentPage = data["currentPage"];
               _pickTotalPages = data["totalPages"];
               generateRTPICKCheckBox();
+              notifyListeners();
               break;
             case '5':
               _checkOrder.clear();
@@ -615,6 +616,7 @@ class ReadyToPackProvider with ChangeNotifier {
               _checkCurrentPage = data["currentPage"];
               _checkTotalPages = data["totalPages"];
               generateRTCCheckBox();
+              notifyListeners();
               break;
             case '6':
               _rackedOrder.clear();
@@ -622,15 +624,17 @@ class ReadyToPackProvider with ChangeNotifier {
               _rackCurrentPage = data["currentPage"];
               _rackTotalPages = data["totalPages"];
               generateRTRCheckBox();
+              notifyListeners();
               break;
             case '7':
               _manifestOrder.clear();
-              notifyListeners();
+
               print("i am called ${_manifestOrder.length}  ${orders.length}");
               _manifestOrder = orders;
               _maniFestCurrentPage = data["currentPage"];
               _maniFestTotalPages = data["totalPages"];
               generateRTMCheckBox();
+              notifyListeners();
               break;
           }
 
@@ -639,6 +643,25 @@ class ReadyToPackProvider with ChangeNotifier {
           return {'success': false, 'message': 'Unexpected response format'};
         }
       } else {
+        switch (orderStatus) {
+          case '4':
+            _pickOrder.clear();
+            break;
+          case '5':
+            _orders.clear();
+            notifyListeners();
+            break;
+          case '6':
+            _checkOrder.clear();
+            break;
+          case '7':
+            _rackedOrder.clear();
+            break;
+          case '8':
+            _manifestOrder.clear();
+            break;
+        }
+
         return {
           'success': false,
           'message':
