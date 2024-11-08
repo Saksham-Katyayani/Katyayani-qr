@@ -1,7 +1,6 @@
 import 'dart:convert';
+import 'package:qrorganic/Provider/auth_provider.dart';
 
-import 'package:flutter/material.dart';
-import 'package:qrorganic/widgets/custom_form.dart';
 import '../Model/inbound_model.dart';
 import 'package:qrorganic/Model/product_model.dart';
 import 'package:qrorganic/services/api_urls.dart';
@@ -16,8 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-
 Future<String> postInbound(List<InBoundModel> inbounds, File imageFile) async {
+  final token = await AuthProvider().getToken();
   String postReslt = '';
   if (imageFile == null) {
     postReslt = 'Please select image and then send data';
@@ -31,7 +30,7 @@ Future<String> postInbound(List<InBoundModel> inbounds, File imageFile) async {
   );
 
   // Add headers
-  imageUploadRequest.headers['Authorization'] = 'Bearer ${token}';
+  imageUploadRequest.headers['Authorization'] = 'Bearer $token';
 
   // Add fields
   final products = jsonEncode(inbounds
@@ -77,8 +76,9 @@ Future<String> postInbound(List<InBoundModel> inbounds, File imageFile) async {
 }
 
 Future<List<Product>> getData(String queryValue) async {
+  final token = await AuthProvider().getToken();
   final response = await http.get(
-    Uri.parse("${baseUrl}"+"/inbound"+"?status="+"${queryValue}"),
+    Uri.parse("${baseUrl}" + "/inbound" + "?status=" + "${queryValue}"),
     headers: {
       "Authorization": "Bearer ${token}",
       "Content-type": "application/json; charset=utf-8"
@@ -88,10 +88,14 @@ Future<List<Product>> getData(String queryValue) async {
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
     var productList = data['inboundInventory'] as List;
-    
+
     final products = productList.map((product) {
       print(product['updatedAt']);
-      return Product(products: product['products'], id: product['_id'],updatedAt: product['updatedAt'],images: product['images']);
+      return Product(
+          products: product['products'],
+          id: product['_id'],
+          updatedAt: product['updatedAt'],
+          images: product['images']);
     }).toList();
     print(products);
     return products;

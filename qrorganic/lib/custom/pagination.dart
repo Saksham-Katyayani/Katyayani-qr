@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pagination_flutter/pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 
 class PaginationWidget extends StatelessWidget {
   final String title; // Page title ("pack", "pick", etc.)
@@ -25,30 +28,26 @@ class PaginationWidget extends StatelessWidget {
               pagesVisible: 5,
               spacing: 10,
               onPageChanged: (page) {
-                switch (title.toLowerCase()) {
-                  case 'pack':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToPackOrders(
-                        page: provider.getCurrentPage(title));
-                    break;
-                  case 'rack':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToRackedOrders(
-                        page: provider.getCurrentPage(title));
-                    break;
+                provider.setCurrentPage(title, page);
+                switch (title) {
                   case 'pick':
-                    provider.setCurrentPage(title, page);
                     provider.fetchReadyToPickOrders(
                         page: provider.getCurrentPage(title));
                     break;
-                  case 'manifest':
-                    provider.setCurrentPage(title, page);
-                    provider.fetchReadyToManiFestOrders(
+                  case 'pack':
+                    provider.fetchReadyToPackOrders(
                         page: provider.getCurrentPage(title));
                     break;
                   case 'check':
-                    provider.setCurrentPage(title, page);
                     provider.fetchReadyToCheckOrders(
+                        page: provider.getCurrentPage(title));
+                    break;
+                  case 'rack':
+                    provider.fetchReadyToRackedOrders(
+                        page: provider.getCurrentPage(title));
+                    break;
+                  case 'manifest':
+                    provider.fetchReadyToManiFestOrders(
                         page: provider.getCurrentPage(title));
                     break;
                   default:
@@ -56,27 +55,27 @@ class PaginationWidget extends StatelessWidget {
                 }
               },
               nextIcon: const Icon(Icons.chevron_right_rounded,
-                  color: Colors.blueAccent, size: 20),
+                  color: AppColors.primaryBlue, size: 20),
               previousIcon: const Icon(Icons.chevron_left_rounded,
-                  color: Colors.blueAccent, size: 20),
+                  color: AppColors.primaryBlue, size: 20),
               activeTextStyle: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w700),
               activeBtnStyle: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
-                shape: MaterialStateProperty.all(const CircleBorder(
-                    side: BorderSide(color: Colors.blueAccent, width: 1))),
-              ),
+                  // backgroundColor: WidgetStateProperty.all(AppColors.primaryBlue),
+                  // shape: WidgetStateProperty.all(const CircleBorder(
+                  //     side: BorderSide(color: AppColors.primaryBlue, width: 1))),
+                  ),
               inactiveBtnStyle: ButtonStyle(
-                elevation: MaterialStateProperty.all(0),
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(const CircleBorder(
-                    side: BorderSide(color: Colors.blueAccent, width: 1))),
-              ),
+                  // elevation: WidgetStateProperty.all(0),
+                  // backgroundColor: WidgetStateProperty.all(Colors.white),
+                  // shape: WidgetStateProperty.all(const CircleBorder(
+                  //     side: BorderSide(color: AppColors.primaryBlue, width: 1))),
+                  ),
               inactiveTextStyle: const TextStyle(
                   fontSize: 14,
-                  color: Colors.blueAccent,
+                  color: AppColors.primaryBlue,
                   fontWeight: FontWeight.w700),
             ),
           ],

@@ -24,33 +24,36 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   children: [
                     ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: SizedBox(
-                          height: 250,
-                          width: double.infinity,
-                          child: Image.network(
-                              'https://th.bing.com/th/id/OIP.c-U9STnZ0Cd7FL2A0qPKkQHaHC?rs=1&pid=ImgDetMain'),
-                        )),
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        height: 250,
+                        width: double.infinity,
+                        child: Image.asset(
+                          'assets/images/icon.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     const Padding(
                       padding: EdgeInsets.all(5.0),
                       child: LoginForm(),
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 300,
-                      color: AppColors.primaryBlue,
-                      child: const Center(
-                        child: Text(
-                          "Katyayani",
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 300,
+                    //   color: AppColors.primaryBlue,
+                    //   child: const Center(
+                    //     child: Text(
+                    //       "Katyayani",
+                    //       style: TextStyle(
+                    //         fontSize: 40,
+                    //         color: AppColors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

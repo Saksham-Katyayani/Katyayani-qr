@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'weigth-enter.dart';
 
@@ -54,7 +57,6 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                     child: Icon(Icons.restart_alt),
                   ),
                   onTap: () async {
-                    // provider.;
                     getData();
                   },
                 ),
@@ -96,7 +98,7 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                               Text(
                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.checkOrder[index].updatedAt)}",
                                 style: const TextStyle(
-                                    fontSize: 8, color: Colors.blue),
+                                    fontSize: 8, color: AppColors.primaryBlue),
                               ),
                               const SizedBox(height: 2),
                               // Displaying each item as a separate card
@@ -125,22 +127,27 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Image.network(
-                                                provider
-                                                        .checkOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                        .isNotEmpty
-                                                    ? provider
-                                                        .checkOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                    : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                                fit: BoxFit.cover,
-                                                height: 90,
-                                              ),
+                                              child: provider
+                                                      .checkOrder[index]
+                                                      .items![i]
+                                                      .product
+                                                      .shopifyImage
+                                                      .isNotEmpty
+                                                  ? Image.network(
+                                                      provider
+                                                          .checkOrder[index]
+                                                          .items![i]
+                                                          .product
+                                                          .shopifyImage,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : const Center(
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey,
+                                                        size: 50,
+                                                      ),
+                                                    ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
@@ -165,7 +172,8 @@ class _ReadyToCheckPageState extends State<ReadyToCheckPage> {
                                                     "SKU: ${provider.checkOrder[index].items![i].product.sku}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
                                                   const SizedBox(height: 4),
                                                 ],

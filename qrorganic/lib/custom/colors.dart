@@ -9,8 +9,8 @@ class AppColors {
   static const Color shadowblack = Color.fromRGBO(0, 0, 0, 0.451);
   static const Color shadowblack1 = Color.fromRGBO(0, 0, 0, 0.259);
   static const Color grey = Colors.grey;
-  static const Color primaryBlue = Color.fromRGBO(6, 90, 216, 1);
-  static const Color primaryBlueLight = Color.fromRGBO(6, 90, 216, 0.7);
+  static const Color primaryBlue = Color(0xFF033b5c);
+  static const Color primaryBlueLight = Color(0xFF033b5c);
   static const Color primaryGreen = Color.fromRGBO(37, 128, 69, 1);
   static const Color lightGrey = Color.fromRGBO(240, 240, 240, 1);
   static const Color greyBackground = Color.fromRGBO(238, 238, 238, 1);
@@ -19,7 +19,7 @@ class AppColors {
   static const Color cardsred = Colors.redAccent;
   static const Color cardsgreen = Colors.greenAccent;
   static const Color green = Colors.green;
-  static const Color blueAccent = Color.fromRGBO(68, 138, 255, 1);
+  static const Color blueAccent = Color(0xFF033b5c);
   static const Color orange = Colors.orange;
 // <<<<<<< HEAD
 // <<<<<<< HEAD
@@ -46,7 +46,7 @@ class AppColors {
 
 // <<<<<<< HEAD
 // =======
-  static const Color lightBlue = Color.fromRGBO(3, 169, 244, 1);
+  static const Color lightBlue = AppColors.primaryBlue;
   static const Color tealcolor = Color.fromRGBO(38, 166, 154, 1);
 // >>>>>>> d730f9b8e18daf06e72f376d49e2a1dcb3bb96e2
 // =======

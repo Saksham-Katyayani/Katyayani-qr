@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/custom/show-order-item-details.dart';
 
@@ -74,7 +75,7 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('Ready to Pack Orders'),
-      //   backgroundColor: Colors.blueAccent,
+      //   backgroundColor: AppColors.primaryBlueAccent,
       // ),
       body: Consumer<ReadyToPackProvider>(
         builder: (context, provider, child) {
@@ -161,14 +162,19 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: Image.network(
-                                            item.product.shopifyImage.isNotEmpty
-                                                ? item.product.shopifyImage
-                                                : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                            fit: BoxFit.cover,
-                                            height: 90,
-                                            // width: 80,
-                                          ),
+                                          child: item.product.shopifyImage
+                                                  .isNotEmpty
+                                              ? Image.network(
+                                                  item.product.shopifyImage,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Center(
+                                                  child: Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey,
+                                                    size: 50,
+                                                  ),
+                                                ),
                                         ),
                                         const SizedBox(width: 2),
                                         Expanded(
@@ -189,14 +195,16 @@ class _ReadyToPackPageState extends State<ReadyToPackPage> {
                                                 "SKU: ${item.product.sku}",
                                                 style: const TextStyle(
                                                     fontSize: 8,
-                                                    color: Colors.blue),
+                                                    color:
+                                                        AppColors.primaryBlue),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(item.product.upDatedAt)}",
                                                 style: const TextStyle(
                                                     fontSize: 8,
-                                                    color: Colors.blue),
+                                                    color:
+                                                        AppColors.primaryBlue),
                                               ),
                                               // const SizedBox(height: 4),
                                               const SizedBox(height: 4),

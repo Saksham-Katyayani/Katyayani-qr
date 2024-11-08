@@ -1,12 +1,16 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:qrorganic/screens/authScreens/auth/login_screen.dart';
 import 'package:qrorganic/screens/inboundScreens/in_bound_page.dart';
+import 'package:qrorganic/screens/inboundScreens/status_check_screen.dart';
+import 'package:qrorganic/screens/login_page.dart';
 import 'package:qrorganic/screens/ready-to-check.dart';
 import 'package:qrorganic/screens/ready-to-manitfest.dart';
 import 'package:qrorganic/screens/ready-to-pack.dart';
 import 'package:qrorganic/screens/ready-to-pick.dart';
 import 'package:qrorganic/screens/ready-to-racked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -16,8 +20,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  static const Color primaryBlue = Color.fromRGBO(6, 90, 216, 1);
-  static const Color primaryBlueLight = Color.fromRGBO(6, 90, 216, 0.7);
+  static const Color primaryBlue = Color(0xFF033b5c);
+  static const Color primaryBlueLight = Color(0xFF033b5c);
 
   // List of labels for the bottom navigation bar
   final List<String> _labels = [
@@ -26,7 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     'Ready to Check',
     'Ready to Racked',
     'Ready to Manifest',
-    "Inbound"
+    "Inbound Dashboard"
   ];
 
   // List of icons for each item
@@ -44,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     const ReadyToCheckPage(), // For "Ready to Check"
     const ReadyToRacked(), // For "Ready to Racked"
     const ReadyToManiFest(),
-    const InBoundPage(), // For "Ready to Manifest"
+    const InBoundDashboard(),
   ];
 
   void _onItemTapped(int index) {
@@ -54,12 +58,121 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
+  Future<void> _confirmLogout() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Logout'),
+          content: Text('Are you sure you want to logout?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Logout'),
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                await _logout(); // Call the logout function
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('authToken'); // Remove the token
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LoginPage()), // Navigate to login screen
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_labels[_selectedIndex]),
         backgroundColor: primaryBlue,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: primaryBlue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.shopping_bag),
+              title: Text('Ready to Pick'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(0);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.done),
+              title: Text('Ready to Pack'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(1);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.check_circle),
+              title: Text('Ready to Check'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(2);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.storage),
+              title: Text('Ready to Racked'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(3);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text('Ready to Manifest'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(4);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.inbox_outlined),
+              title: Text('Inbound Dashboard'),
+              onTap: () {
+                Navigator.pop(context);
+                _onItemTapped(5);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: _confirmLogout, // Use the confirm logout method
+            ),
+          ],
+        ),
       ),
       body: content[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(

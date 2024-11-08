@@ -259,7 +259,7 @@ class ModelByDipu {
       racker: RackerModel.fromJson(json["racker"]),
       mainFest: ManiFestModel.fromJson(json["checkManifest"]),
       isPackerFullyScanned: json["isPackerFullyScanned"],
-      awb: json["awb"] ?? '',
+      awb: json["awb_number"] ?? '',
       updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
           DateTime.now(),
     );

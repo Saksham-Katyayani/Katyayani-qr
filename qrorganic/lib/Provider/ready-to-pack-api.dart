@@ -395,6 +395,8 @@
 //   }
 // }
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -570,11 +572,13 @@ class ReadyToPackProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> fetchOrders(String orderStatus, int page) async {
+    log("page: $page");
     _isLoading = true;
     notifyListeners();
 
     final url =
-        Uri.parse('$baseUrl/orders?orderStatus=$orderStatus?currentPage=$page');
+        Uri.parse('$baseUrl/orders?orderStatus=$orderStatus&page=$page');
+    log("url: $url");
     final token = await AuthProvider().getToken();
     try {
       final response = await http.get(
@@ -584,9 +588,10 @@ class ReadyToPackProvider with ChangeNotifier {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.statusCode);
+      log("status: ${response.statusCode}");
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        log("data: $data");
         if (data.containsKey('orders')) {
           print(
               "Divyansh Patidar: ${data["currentPage"]} ${data["totalPages"]}");

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/widgets/qr_scanner.dart';
 
@@ -95,7 +96,7 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                               Text(
                                 "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.rackedOrder[index].updatedAt)}",
                                 style: const TextStyle(
-                                    fontSize: 8, color: Colors.blue),
+                                    fontSize: 8, color: AppColors.primaryBlue),
                               ),
                               const SizedBox(height: 2),
                               Text(
@@ -145,23 +146,27 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: Image.network(
-                                                provider
-                                                        .rackedOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                        .isNotEmpty
-                                                    ? provider
-                                                        .rackedOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .shopifyImage
-                                                    : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                                fit: BoxFit.cover,
-                                                height: 90,
-                                                // width: 80,
-                                              ),
+                                              child: provider
+                                                      .rackedOrder[index]
+                                                      .items![i]
+                                                      .product
+                                                      .shopifyImage
+                                                      .isNotEmpty
+                                                  ? Image.network(
+                                                      provider
+                                                          .rackedOrder[index]
+                                                          .items![i]
+                                                          .product
+                                                          .shopifyImage,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : const Center(
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey,
+                                                        size: 50,
+                                                      ),
+                                                    ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
@@ -186,7 +191,8 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                                     "SKU: ${provider.rackedOrder[index].items![i].product.sku}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
 
                                                   // const SizedBox(height: 4),
@@ -195,7 +201,8 @@ class _ReadyToRackedState extends State<ReadyToRacked> {
                                                     "Quantity: ${provider.rackedOrder[index].items![i].quantity}",
                                                     style: const TextStyle(
                                                         fontSize: 8,
-                                                        color: Colors.blue),
+                                                        color: AppColors
+                                                            .primaryBlue),
                                                   ),
                                                 ],
                                               ),
