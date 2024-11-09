@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
+import 'package:qrorganic/custom/colors.dart';
 
 class WightEnter extends StatefulWidget {
   String orderId;
@@ -27,82 +28,94 @@ class _WightEnterState extends State<WightEnter> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Enter Weight"),
-        elevation: 4,
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Please enter the weight:",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hintText: "Enter weight in kg",
-                hintStyle: TextStyle(color: Colors.grey[600]),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.black),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.black),
-                ),
-                prefixIcon: const Icon(Icons.monitor_weight, color: Colors.teal),
-              ),
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            isLoading
-                ? const CircularProgressIndicator() // Show loader when loading
-                : ElevatedButton(
-                    onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.teal,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+    return SafeArea(
+      child: PopScope(
+        onPopInvoked: (val) async {
+          var readyToPackProvider =
+              Provider.of<ReadyToPackProvider>(context, listen: false);
+          await readyToPackProvider.fetchReadyToCheckOrders();
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Enter Weight"),
+            elevation: 4,
+            centerTitle: true,
+          ),
+          body: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Please enter the weight:",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryBlue,
                   ),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                controller.clear();
-              },
-              child: const Text(
-                "Clear",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          ],
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Enter weight in kg",
+                    hintStyle: TextStyle(color: AppColors.primaryBlue),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.black),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.black),
+                    ),
+                    prefixIcon:
+                        const Icon(Icons.monitor_weight, color: Colors.teal),
+                  ),
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                isLoading
+                    ? const CircularProgressIndicator() // Show loader when loading
+                    : ElevatedButton(
+                        onPressed: onPressed,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 15),
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.teal,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    controller.clear();
+                  },
+                  child: const Text(
+                    "Clear",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Future<void> onPressed() async {
-    
     if (controller.text.isEmpty || double.tryParse(controller.text) == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -120,7 +133,7 @@ class _WightEnterState extends State<WightEnter> {
     final url = Uri.parse('${ReadyToPackProvider().baseUrl}/orders/checker');
 
     try {
-      String? token=await AuthProvider().getToken();
+      String? token = await AuthProvider().getToken();
       final response = await http.post(
         url,
         headers: {
@@ -132,8 +145,8 @@ class _WightEnterState extends State<WightEnter> {
           "enteredWeight": double.parse(controller.text)
         }),
       );
-      final data=jsonDecode(response.body);
-      if (data["checker"]["approved"]==true) {
+      final data = jsonDecode(response.body);
+      if (data["checker"]["approved"] == true) {
         // print(response.body.toString());
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -141,7 +154,8 @@ class _WightEnterState extends State<WightEnter> {
             duration: const Duration(seconds: 2),
           ),
         );
-        Provider.of<ReadyToPackProvider>(context,listen:false).fetchReadyToCheckOrders();
+        Provider.of<ReadyToPackProvider>(context, listen: false)
+            .fetchReadyToCheckOrders();
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

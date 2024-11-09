@@ -63,16 +63,16 @@ class PaginationWidget extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w700),
               activeBtnStyle: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(AppColors.primaryBlue),
-                shape: WidgetStateProperty.all(const CircleBorder(
-                    side: BorderSide(color: AppColors.primaryBlue, width: 1))),
-              ),
+                  // backgroundColor: WidgetStateProperty.all(AppColors.primaryBlue),
+                  // shape: WidgetStateProperty.all(const CircleBorder(
+                  //     side: BorderSide(color: AppColors.primaryBlue, width: 1))),
+                  ),
               inactiveBtnStyle: ButtonStyle(
-                elevation: WidgetStateProperty.all(0),
-                backgroundColor: WidgetStateProperty.all(Colors.white),
-                shape: WidgetStateProperty.all(const CircleBorder(
-                    side: BorderSide(color: AppColors.primaryBlue, width: 1))),
-              ),
+                  // elevation: WidgetStateProperty.all(0),
+                  // backgroundColor: WidgetStateProperty.all(Colors.white),
+                  // shape: WidgetStateProperty.all(const CircleBorder(
+                  //     side: BorderSide(color: AppColors.primaryBlue, width: 1))),
+                  ),
               inactiveTextStyle: const TextStyle(
                   fontSize: 14,
                   color: AppColors.primaryBlue,

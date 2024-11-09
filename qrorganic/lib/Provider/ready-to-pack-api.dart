@@ -601,41 +601,45 @@ class ReadyToPackProvider with ChangeNotifier {
 
           switch (orderStatus) {
             case '4':
-              _pickOrder.clear();
-              _pickOrder = orders;
-              _pickCurrentPage = data["currentPage"];
-              _pickTotalPages = data["totalPages"];
-              generateRTPICKCheckBox();
-              break;
-            case '5':
               _orders.clear();
               _orders = orders;
               _packCurrentPage = data["currentPage"];
               _packTotalPages = data["totalPages"];
               generateNumberOfCheckBox();
               break;
-            case '6':
+            case '3':
+              _pickOrder.clear();
+              _pickOrder = orders;
+              _pickCurrentPage = data["currentPage"];
+              _pickTotalPages = data["totalPages"];
+              generateRTPICKCheckBox();
+              notifyListeners();
+              break;
+            case '5':
               _checkOrder.clear();
               _checkOrder = orders;
               _checkCurrentPage = data["currentPage"];
               _checkTotalPages = data["totalPages"];
               generateRTCCheckBox();
+              notifyListeners();
               break;
-            case '7':
+            case '6':
               _rackedOrder.clear();
               _rackedOrder = orders;
               _rackCurrentPage = data["currentPage"];
               _rackTotalPages = data["totalPages"];
               generateRTRCheckBox();
-              break;
-            case '8':
-              _manifestOrder.clear();
               notifyListeners();
+              break;
+            case '7':
+              _manifestOrder.clear();
+
               print("i am called ${_manifestOrder.length}  ${orders.length}");
               _manifestOrder = orders;
               _maniFestCurrentPage = data["currentPage"];
               _maniFestTotalPages = data["totalPages"];
               generateRTMCheckBox();
+              notifyListeners();
               break;
           }
 
@@ -644,6 +648,25 @@ class ReadyToPackProvider with ChangeNotifier {
           return {'success': false, 'message': 'Unexpected response format'};
         }
       } else {
+        switch (orderStatus) {
+          case '4':
+            _pickOrder.clear();
+            break;
+          case '5':
+            _orders.clear();
+            notifyListeners();
+            break;
+          case '6':
+            _checkOrder.clear();
+            break;
+          case '7':
+            _rackedOrder.clear();
+            break;
+          case '8':
+            _manifestOrder.clear();
+            break;
+        }
+
         return {
           'success': false,
           'message':
@@ -658,16 +681,16 @@ class ReadyToPackProvider with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchReadyToPickOrders({int page = 1}) =>
-      fetchOrders('4', page);
   Future<Map<String, dynamic>> fetchReadyToPackOrders({int page = 1}) =>
-      fetchOrders('5', page);
+      fetchOrders('4', page);
+  Future<Map<String, dynamic>> fetchReadyToPickOrders({int page = 1}) =>
+      fetchOrders('3', page);
   Future<Map<String, dynamic>> fetchReadyToCheckOrders({int page = 1}) =>
-      fetchOrders('6', page);
-  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
-      fetchOrders('7', page);
+      fetchOrders('5', page);
   Future<Map<String, dynamic>> fetchReadyToManiFestOrders({int page = 1}) =>
-      fetchOrders('8', page);
+      fetchOrders('7', page);
+  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
+      fetchOrders('6', page);
 
   void updateData() {
     _showData = !_showData;
