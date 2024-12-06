@@ -131,7 +131,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
-          body: jsonEncode({"orderId": widget.oredrId, "sku": qrCode}),
+          body: jsonEncode({"orderId": widget.oredrId, "parentSku": qrCode}),
         );
       } else {
         url = Uri.parse(
@@ -142,7 +142,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
-          body: jsonEncode({"orderId": widget.oredrId, "sku": qrCode}),
+          body: jsonEncode({"orderId": widget.oredrId, "parentSku": qrCode}),
         );
       }
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -225,17 +225,17 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
         canPop: true,
         onPopInvoked: (v) async {
           // print("object is here ");
-          var provider =
+          final provider =
               Provider.of<ReadyToPackProvider>(context, listen: false);
           if (widget.isPicker) {
             provider.fetchReadyToPickOrders();
           } else if (widget.isRacker) {
-            provider.fetchReadyToCheckOrders();
+            provider.fetchReadyToRackedOrders();
           } else {
             provider.fetchReadyToPackOrders();
           }
 
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
         child: Scaffold(
           backgroundColor: Colors.blueGrey[900],
@@ -247,16 +247,15 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                     color: Colors.white)),
             backgroundColor: Colors.black.withOpacity(0.01),
             elevation: 0,
-            leading: InkWell(
-              child: const Icon(Icons.arrow_back),
-              onTap: () async {
-                var provider =
+            leading: BackButton(
+              onPressed: () async {
+                final provider =
                     Provider.of<ReadyToPackProvider>(context, listen: false);
                 if (widget.isPicker) {
                   // print("heeelooo i am dipu");
                   provider.fetchReadyToPickOrders();
                 } else if (widget.isRacker) {
-                  provider.fetchReadyToCheckOrders();
+                  provider.fetchReadyToRackedOrders();
                 } else {
                   provider.fetchReadyToPackOrders();
                   print("i am here with packer  ${provider.orders.length}");
@@ -301,6 +300,7 @@ class _ScannerState extends State<ScannerWidget> with WidgetsBindingObserver {
                       ? const Center(child: CircularProgressIndicator())
                       : MobileScanner(
                           controller: controller!,
+                          onDetect: (barcodes) {},
                           errorBuilder: (context, error, child) {
                             return Center(child: Text(error.toString()));
                           },

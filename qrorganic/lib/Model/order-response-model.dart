@@ -103,6 +103,7 @@ class Product {
   final String shopifyImage;
   final Dimensions dimensions;
   DateTime upDatedAt;
+  int itemQty;
 
   Product({
     this.id = '',
@@ -126,6 +127,7 @@ class Product {
     this.shopifyImage = '',
     required this.upDatedAt,
     required this.dimensions,
+    this.itemQty = 0,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -151,8 +153,8 @@ class Product {
       shopifyImage: json['shopifyImage'] as String? ?? '',
       upDatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
           DateTime.now(),
-      // updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ?? DateTime.now(),
       dimensions: Dimensions.fromJson(json['dimensions'] ?? {}),
+      itemQty: (json['itemQty'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -178,8 +180,7 @@ class Product {
       'grade': grade,
       'shopifyImage': shopifyImage,
       'dimensions': dimensions.toJson(),
-      // 'createdAT': c,
-      // 'dimensions': dimensions.toJson(),
+      'itemQty': itemQty,
     };
   }
 }

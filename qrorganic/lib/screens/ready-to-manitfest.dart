@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:qrorganic/Provider/ready-to-pack-api.dart';
-import 'package:qrorganic/custom/colors.dart';
+import 'package:qrorganic/Model/manifest_model.dart';
 import 'package:qrorganic/custom/pagination.dart';
 import 'package:qrorganic/screens/camera-screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:qrorganic/custom/colors.dart';
+import 'package:qrorganic/Model/order_model.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:intl/intl.dart';
+
+// no gallery, submit buttom pop, refersh
 
 class ReadyToManiFest extends StatefulWidget {
   const ReadyToManiFest({super.key});
@@ -16,190 +20,369 @@ class ReadyToManiFest extends StatefulWidget {
 }
 
 class _ReadyToManiFestState extends State<ReadyToManiFest> {
+  int _totalPages = 1;
+  int _currentPage = 1;
+  bool _isLoading = true;
+  List<Order> _orders = [];
+  List<Manifest> _manifests = [];
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      getData();
-    });
-  }
-
-  void getData() async {
-    var readyToPackProvider =
-        Provider.of<ReadyToPackProvider>(context, listen: false);
-    await readyToPackProvider.fetchReadyToManiFestOrders();
-    setState(() {});
+    getData(1);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<ReadyToPackProvider>(
-        builder: (context, provider, child) {
-          if (provider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (provider.manifestOrder.isEmpty) {
-            return const Center(child: Text('No Data Available'));
-          }
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              InkWell(
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.restart_alt),
-                ),
-                onTap: () async {
-                  getData();
-                },
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount: provider.manifestOrder.length,
+    return RefreshIndicator(
+      onRefresh: () => getData(1),
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                if (_isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else if (_manifests.isEmpty)
+                  const Center(
+                    child: Text(
+                      'No Orders Found',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                else
+                  ListView.builder(
+                    itemCount: _manifests.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                      final manifest = _manifests[index];
+                      log("manifest: ${manifest.orders}");
+                      return Column(
+                        children: [
+                          _buildManifest(manifest),
+                          const Divider(thickness: 1, color: Colors.grey),
+                        ],
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
+          PaginationWidget(title: "manifest"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildManifest(Manifest manifest) {
+    log("lengthhhhhhhh: ${manifest.orders.length}");
+    log("order: ${manifest.orders[0].orderId}");
+
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: manifest.orders.length,
+          itemBuilder: (context, index) {
+            log("saksham");
+            // return Text("rom rom bhaiyon");
+            return _buildOrderCard(manifest.manifestId, manifest.orders[index]);
+          },
+        ),
+        // const SizedBox(width: 20),
+        // buildCell(
+        //   Column(
+        //     children: [
+        //       Text(
+        //         manifest.manifestId,
+        //         style: const TextStyle(
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 16,
+        //           color: Colors.blueAccent,
+        //         ),
+        //       ),
+        //       // Text(
+        //       //   "(${manifest.deliveryPartner})",
+        //       //   style: const TextStyle(
+        //       //     fontSize: 16,
+        //       //   ),
+        //       // ),
+        //     ],
+        //   ),
+        //   flex: 1,
+        // ),
+      ],
+    );
+  }
+
+  Widget _buildOrderCard(String manifestId, Order order) {
+    log("Hi: $order");
+    return Card(
+      color: AppColors.white,
+      elevation: 4, // Reduced elevation for less shadow
+      shape: RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.circular(12), // Slightly smaller rounded corners
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0), // Add padding here
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 15,
+                  child: SizedBox(
+                    // height: 200, // Removed fixed height
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap:
+                          true, // Allow ListView to take necessary height
+                      itemCount: order.items.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CameraScreen(
+                                  manifestId: manifestId,
+                                ),
+                              ),
+                            );
+                            if (result == true) {
+                              getData(1);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.lightGrey,
+                              borderRadius: BorderRadius.circular(
+                                  10), // Slightly smaller rounded corners
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(
+                                      0.08), // Lighter shadow for smaller card
+                                  offset: const Offset(0, 1),
+                                  blurRadius: 3,
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                  10.0), // Reduced padding inside product card
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Order ID: ${provider.manifestOrder[index].orderId}",
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: SizedBox(
+                                          width: 60, // Smaller image size
+                                          height: 60,
+                                          child: order.items[index].product!
+                                                          .shopifyImage !=
+                                                      null &&
+                                                  order.items[index].product!
+                                                      .shopifyImage!.isNotEmpty
+                                              ? Image.network(
+                                                  '${order.items[index].product!.shopifyImage}',
+                                                )
+                                              : const Icon(
+                                                  Icons.image_not_supported,
+                                                  size:
+                                                      40, // Fallback icon size
+                                                  color: AppColors.grey,
+                                                ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  if (provider
-                                      .manifestOrder[index].mainFest.approved)
-                                    const FaIcon(FontAwesomeIcons.check,
-                                        color: Colors.green),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "Order Time: ${DateFormat('dd-MM-yyyy hh:mm a').format(provider.manifestOrder[index].updatedAt)}",
-                                style: const TextStyle(
-                                    fontSize: 8, color: AppColors.primaryBlue),
-                              ),
-                              const SizedBox(height: 2),
-                              // Display each item in a separate card
-                              Column(
-                                children: List.generate(
-                                    provider.manifestOrder[index].items!.length,
-                                    (i) {
-                                  return Card(
-                                    elevation: 2,
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CameraScreen(
-                                                orderId: provider
-                                                    .manifestOrder[index]
-                                                    .orderId,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Row(
+                                      const SizedBox(
+                                          width:
+                                              8.0), // Reduced spacing between image and text
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Expanded(
-                                              child: provider
-                                                      .manifestOrder[index]
-                                                      .items![i]
-                                                      .product
-                                                      .shopifyImage
-                                                      .isNotEmpty
-                                                  ? Image.network(
-                                                      provider
-                                                          .manifestOrder[index]
-                                                          .items![i]
-                                                          .product
-                                                          .shopifyImage,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : const Center(
-                                                      child: Icon(
-                                                        Icons.broken_image,
-                                                        color: Colors.grey,
-                                                        size: 50,
-                                                      ),
-                                                    ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    provider
-                                                        .manifestOrder[index]
-                                                        .items![i]
-                                                        .product
-                                                        .displayName,
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  Text(
-                                                    "SKU: ${provider.manifestOrder[index].items![i].product.sku}",
-                                                    style: const TextStyle(
-                                                        fontSize: 8,
-                                                        color: AppColors
-                                                            .primaryBlue),
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                ],
+                                            Text(
+                                              order.items[index].product!
+                                                  .displayName,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12,
+                                                color: Colors.black87,
                                               ),
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(
+                                                height:
+                                                    6.0), // Reduced spacing between text elements
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      const TextSpan(
+                                                        text: 'SKU: ',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: order.items[index]
+                                                            .product!.sku,
+                                                        style: const TextStyle(
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
                               ),
-                              // const Divider(thickness: 1),
-                            ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              PaginationWidget(title: 'manifest')
-            ],
-          );
-        },
+                const SizedBox(width: 4),
+                buildCell(
+                  Text(
+                    manifestId,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                  flex: 3,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(
+                      text: "Updated on: ",
+                      children: [
+                        TextSpan(
+                            text: DateFormat('dd-MM-yyyy\',\' hh:mm a').format(
+                              DateTime.parse("${order.updatedAt}"),
+                            ),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                            )),
+                      ],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget buildCell(Widget content, {int flex = 1}) {
+    return Expanded(
+      flex: flex,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
+        child: Center(child: content),
+      ),
+    );
+  }
+
+  Future<void> getData(int page) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken') ?? '';
+    var url =
+        'https://inventory-management-backend-s37u.onrender.com/manifest?page=$page';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+      log("Code: ${response.statusCode}");
+      log("Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        List<Manifest> manifests = (data['data']['manifest'] as List)
+            .map((manifest) => Manifest.fromJson(manifest))
+            .toList();
+        log(manifests.toString());
+
+        setState(() {
+          _totalPages = data['data']['totalPages'];
+          _currentPage =
+              data['data']['currentPage']; // Get total pages from response
+          _manifests = manifests; // Set the orders for the
+        });
+      } else {
+        // Handle non-success responses
+        setState(() {
+          _manifests = [];
+          _totalPages = 1;
+        });
+      }
+    } catch (e) {
+      // Handle errors
+      log("catch data $e");
+      setState(() {
+        _orders = [];
+        _totalPages = 1;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

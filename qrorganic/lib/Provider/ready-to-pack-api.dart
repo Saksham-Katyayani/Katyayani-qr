@@ -431,6 +431,7 @@ class ReadyToPackProvider with ChangeNotifier {
   bool _showData = true;
 
   List<String> _productTitle = [];
+  List<String> _productName = [];
   List<int> _numberOfProducts = [];
   List<int> _numberOfScannedProducts = [];
 
@@ -451,6 +452,7 @@ class ReadyToPackProvider with ChangeNotifier {
   List<bool> get rtrcheckbox => _rtrcheckbox;
 
   List<String> get productTitle => _productTitle;
+  List<String> get productName => _productName;
   List<int> get numberOfProducts => _numberOfProducts;
   List<int> get numberOfScannedProducts => _numberOfScannedProducts;
   List<List<bool>>? get orderItemCheckBox => _orderItemCheckBox;
@@ -524,9 +526,10 @@ class ReadyToPackProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDetailsOfProducts(
-      List<String> title, List<int> productCount, List<int> scanCount) {
+  void setDetailsOfProducts(List<String> productName, List<String> title,
+      List<int> productCount, List<int> scanCount) {
     _productTitle = title;
+    _productName = productName;
     _numberOfProducts = productCount;
     _numberOfScannedProducts = scanCount;
     notifyListeners();
@@ -600,14 +603,14 @@ class ReadyToPackProvider with ChangeNotifier {
               .toList();
 
           switch (orderStatus) {
-            case '4':
+            case '5':
               _orders.clear();
               _orders = orders;
               _packCurrentPage = data["currentPage"];
               _packTotalPages = data["totalPages"];
               generateNumberOfCheckBox();
               break;
-            case '3':
+            case '4':
               _pickOrder.clear();
               _pickOrder = orders;
               _pickCurrentPage = data["currentPage"];
@@ -615,7 +618,7 @@ class ReadyToPackProvider with ChangeNotifier {
               generateRTPICKCheckBox();
               notifyListeners();
               break;
-            case '5':
+            case '6':
               _checkOrder.clear();
               _checkOrder = orders;
               _checkCurrentPage = data["currentPage"];
@@ -623,7 +626,7 @@ class ReadyToPackProvider with ChangeNotifier {
               generateRTCCheckBox();
               notifyListeners();
               break;
-            case '6':
+            case '7':
               _rackedOrder.clear();
               _rackedOrder = orders;
               _rackCurrentPage = data["currentPage"];
@@ -631,7 +634,7 @@ class ReadyToPackProvider with ChangeNotifier {
               generateRTRCheckBox();
               notifyListeners();
               break;
-            case '7':
+            case '8':
               _manifestOrder.clear();
 
               print("i am called ${_manifestOrder.length}  ${orders.length}");
@@ -681,16 +684,16 @@ class ReadyToPackProvider with ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchReadyToPackOrders({int page = 1}) =>
-      fetchOrders('4', page);
   Future<Map<String, dynamic>> fetchReadyToPickOrders({int page = 1}) =>
-      fetchOrders('3', page);
-  Future<Map<String, dynamic>> fetchReadyToCheckOrders({int page = 1}) =>
+      fetchOrders('4', page);
+  Future<Map<String, dynamic>> fetchReadyToPackOrders({int page = 1}) =>
       fetchOrders('5', page);
-  Future<Map<String, dynamic>> fetchReadyToManiFestOrders({int page = 1}) =>
-      fetchOrders('7', page);
-  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
+  Future<Map<String, dynamic>> fetchReadyToCheckOrders({int page = 1}) =>
       fetchOrders('6', page);
+  Future<Map<String, dynamic>> fetchReadyToRackedOrders({int page = 1}) =>
+      fetchOrders('7', page);
+  Future<Map<String, dynamic>> fetchReadyToManiFestOrders({int page = 1}) =>
+      fetchOrders('8', page);
 
   void updateData() {
     _showData = !_showData;

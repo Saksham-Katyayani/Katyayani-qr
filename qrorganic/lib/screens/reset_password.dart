@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:inventory_management/Custom-Files/colors.dart';
+// import 'package:qrorganic/Custom-Files/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 // import 'package:qrorganic/const.dart';
@@ -75,7 +75,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 fit: BoxFit.contain),
                           ),
                           const SizedBox(height: 20),
-                           Text(
+                          Text(
                             'Reset Password',
                             style: TextStyle(
                               fontSize: 25,
@@ -84,7 +84,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                           Text(
+                          Text(
                             'Please enter your new password and confirm it',
                             style: TextStyle(color: AppColors.primaryBlue),
                           ),
@@ -99,18 +99,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   child: TextFormField(
                                     controller: _newPasswordController,
                                     obscureText: _obscureTextNew,
-                                    style:  TextStyle(
-                                        color: AppColors.primaryBlue),
+                                    style:
+                                        TextStyle(color: AppColors.primaryBlue),
                                     cursorColor: AppColors.primaryBlue,
                                     decoration: InputDecoration(
                                       labelText: 'New Password',
-                                      labelStyle:  TextStyle(
+                                      labelStyle: TextStyle(
                                           color: AppColors.primaryBlue),
-                                      enabledBorder:  UnderlineInputBorder(
+                                      enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: AppColors.primaryBlue),
                                       ),
-                                      focusedBorder:  UnderlineInputBorder(
+                                      focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: AppColors.primaryBlue),
                                       ),
@@ -143,18 +143,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                   child: TextFormField(
                                     controller: _confirmPasswordController,
                                     obscureText: _obscureTextConfirm,
-                                    style:  TextStyle(
-                                        color: AppColors.primaryBlue),
+                                    style:
+                                        TextStyle(color: AppColors.primaryBlue),
                                     cursorColor: AppColors.primaryBlue,
                                     decoration: InputDecoration(
                                       labelText: 'Confirm New Password',
-                                      labelStyle:  TextStyle(
+                                      labelStyle: TextStyle(
                                           color: AppColors.primaryBlue),
-                                      enabledBorder:  UnderlineInputBorder(
+                                      enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: AppColors.primaryBlue),
                                       ),
-                                      focusedBorder:  UnderlineInputBorder(
+                                      focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: AppColors.primaryBlue),
                                       ),

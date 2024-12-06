@@ -5,6 +5,7 @@ import 'package:qrorganic/screens/authScreens/auth/login_screen.dart';
 import 'package:qrorganic/screens/inboundScreens/in_bound_page.dart';
 import 'package:qrorganic/screens/inboundScreens/status_check_screen.dart';
 import 'package:qrorganic/screens/login_page.dart';
+import 'package:qrorganic/screens/picker_page.dart';
 import 'package:qrorganic/screens/ready-to-check.dart';
 import 'package:qrorganic/screens/ready-to-manitfest.dart';
 import 'package:qrorganic/screens/ready-to-pack.dart';
@@ -43,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Icons.inbox_outlined, // For "Ready to Manifest"
   ];
   final List<Widget> content = [
-    const ReadyToPickPage(),
+    const PickerPage(),
     const ReadyToPackPage(), // For "Ready to Pack"
     const ReadyToCheckPage(), // For "Ready to Check"
     const ReadyToRacked(), // For "Ready to Racked"

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/Provider/qc_List_provider.dart';
+import 'package:qrorganic/Provider/picker_provider.dart';
 import 'package:qrorganic/Provider/ready-to-pack-api.dart';
 import 'package:qrorganic/Provider/show-order-item.dart';
 // import 'package:provider/prov/ider.dart';
@@ -10,12 +11,16 @@ import 'package:qrorganic/screens/dasborad.dart';
 // import 'package:qrorganic/screens/dasborad.dart';
 import 'package:qrorganic/screens/login_page.dart';
 
-void main() => runApp(MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => ReadyToPackProvider()),
-      ChangeNotifierProvider(create: (context) => OrderItemProvider()),
-      ChangeNotifierProvider(create: (context) => AuthProvider()),
-      ChangeNotifierProvider(create: (context) => QcListProvider()),
-    ], child: const App()));
+void main() => runApp(MultiProvider(
+      providers: [
+        // ChangeNotifierProvider(create: (context) => PickerrProvider()),
+        ChangeNotifierProvider(create: (context) => ReadyToPackProvider()),
+        ChangeNotifierProvider(create: (context) => OrderItemProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => QcListProvider()),
+      ],
+      child: const App(),
+    ));
 
 class App extends StatelessWidget {
   const App({super.key});

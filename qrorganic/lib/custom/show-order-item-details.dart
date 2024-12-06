@@ -11,6 +11,7 @@ import 'package:qrorganic/widgets/qr_scanner.dart';
 class ShowDetailsOfOrderItem extends StatefulWidget {
   String oredrId;
   List<String> title;
+  List<String> productName;
   List<int> numberOfItme;
   List<int> scannedQ;
   int totalQty;
@@ -18,17 +19,20 @@ class ShowDetailsOfOrderItem extends StatefulWidget {
   bool isPicker;
   bool isPacker;
   bool isRacker;
+  int itemQty;
   ShowDetailsOfOrderItem(
       {super.key,
       required this.numberOfItme,
       required this.title,
+      required this.productName,
       required this.oredrId,
       required this.scannedQty,
       required this.totalQty,
       required this.scannedQ,
       this.isPicker = false,
       this.isPacker = false,
-      this.isRacker = false});
+      this.isRacker = false,
+      required this.itemQty});
 
   @override
   State<ShowDetailsOfOrderItem> createState() => _ShowDetailsOfOrderItemState();
@@ -61,14 +65,14 @@ class _ShowDetailsOfOrderItemState extends State<ShowDetailsOfOrderItem> {
             style: GoogleFonts.daiBannaSil(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryBlue,
+              color: AppColors.white,
             ),
           ),
         ),
         body: Consumer<ReadyToPackProvider>(
           builder: (context, readyToPackProvider, child) => readyToPackProvider
                   .isLoading
-              ? const CircularProgressIndicator()
+              ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
                   itemBuilder: (context, i) => SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -91,9 +95,9 @@ class _ShowDetailsOfOrderItemState extends State<ShowDetailsOfOrderItem> {
                                       child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      readyToPackProvider.productTitle[i],
+                                      "${readyToPackProvider.productTitle[i]}\n(${readyToPackProvider.productName[i]}) ${widget.itemQty}",
                                       style: GoogleFonts.daiBannaSil(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.primaryBlue,
                                       ),

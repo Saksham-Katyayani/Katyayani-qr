@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:inventory_management/Custom-Files/colors.dart';
+// import 'package:qrorganic/Custom-Files/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:qrorganic/Provider/auth_provider.dart';
 import 'package:qrorganic/custom/colors.dart';
@@ -16,64 +16,63 @@ class CreateAccountPage extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 300,
-                        color: AppColors.primaryBlue,
-                        child:const  Center(
-                          child: Padding(
-                            padding:  EdgeInsets.all(40.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                 Text(
-                                  "Welcome Back!",
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    color: AppColors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 300,
+                      color: AppColors.primaryBlue,
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(40.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Welcome Back!",
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                 SizedBox(height: 20),
-                                 Text(
-                                  "To keep connected with us please login with your personal info",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: AppColors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                "To keep connected with us please login with your personal info",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: AppColors.white,
                                 ),
-                                 SizedBox(height: 40),
-                               
-                              ],
-                            ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 40),
+                            ],
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: CreateAccountForm(),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CreateAccountForm(),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  top: 40,
-                  left:10,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: AppColors.black),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+              ),
+              Positioned(
+                top: 40,
+                left: 10,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: AppColors.black),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
-              ],
-            );
+              ),
+            ],
+          );
           // }
         },
       ),
@@ -218,258 +217,258 @@ class CreateAccountFormState extends State<CreateAccountForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-  child: Padding(
-    padding: const EdgeInsets.all(5.0),
-    child: Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text(
-            "Create Account",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryBlue,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.facebook,
-                    color: AppColors.facebookColor),
-                onPressed: () {},
-              ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.google,
-                    color: AppColors.googleColor),
-                onPressed: () {},
-              ),
-              const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.linkedin,
-                    color: AppColors.linkedinColor),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          const Text("or use your email for registration:"),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: _usernameController,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.person),
-              labelText: "Username",
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your username';
-              }
-              return null;
-            },
-            onChanged: (value) {
-              _username = value;
-              _checkIfOtpCanBeEnabled();
-            },
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.mail),
-              labelText: "Email",
-              border: const OutlineInputBorder(),
-              suffixIcon: _email != null && _email!.isNotEmpty
-                  ? Icon(
-                      _isValidEmail(_email!)
-                          ? Icons.check_circle
-                          : Icons.cancel,
-                      color: _isValidEmail(_email!)
-                          ? Colors.green
-                          : Colors.red,
-                    )
-                  : null,
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email';
-              }
-              if (!_isValidEmail(value)) {
-                return 'Please enter a valid email address';
-              }
-              return null;
-            },
-            onChanged: (value) {
-              _email = value;
-              _checkIfOtpCanBeEnabled();
-            },
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            obscureText: _obscurePassword,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.lock),
-              labelText: "Password",
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscurePassword
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: AppColors.grey,
+              const Text(
+                "Create Account",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBlue,
                 ),
-                onPressed: () {
-                  setState(() {
-                    _obscurePassword = !_obscurePassword;
-                  });
-                },
               ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your password';
-              }
-              return null;
-            },
-            onChanged: (value) {
-              _password = value;
-              _checkIfOtpCanBeEnabled();
-            },
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            obscureText: _obscureConfirmPassword,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.lock),
-              labelText: "Confirm Password",
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureConfirmPassword
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: AppColors.grey,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureConfirmPassword = !_obscureConfirmPassword;
-                  });
-                },
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.facebook,
+                        color: AppColors.facebookColor),
+                    onPressed: () {},
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.google,
+                        color: AppColors.googleColor),
+                    onPressed: () {},
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    icon: const Icon(FontAwesomeIcons.linkedin,
+                        color: AppColors.linkedinColor),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please confirm your password';
-              }
-              if (value != _password) {
-                return 'Passwords do not match';
-              }
-              return null;
-            },
-            onChanged: (value) {
-              _confirmPassword = value;
-              _checkIfOtpCanBeEnabled();
-            },
-          ),
-          const SizedBox(height: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+              const SizedBox(height: 20),
+              const Text("or use your email for registration:"),
+              const SizedBox(height: 20),
               TextFormField(
-                controller: _otpController,
-                enabled: _isOtpEnabled,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.sms),
-                  labelText: "OTP",
-                  border: const OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryBlue),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person),
+                  labelText: "Username",
+                  border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  if (_isOtpEnabled && (value == null || value.isEmpty)) {
-                    return 'Please enter the OTP';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
                   }
                   return null;
                 },
+                onChanged: (value) {
+                  _username = value;
+                  _checkIfOtpCanBeEnabled();
+                },
               ),
-              const SizedBox(height: 10), // Spacing between OTP field and button
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.mail),
+                  labelText: "Email",
+                  border: const OutlineInputBorder(),
+                  suffixIcon: _email != null && _email!.isNotEmpty
+                      ? Icon(
+                          _isValidEmail(_email!)
+                              ? Icons.check_circle
+                              : Icons.cancel,
+                          color: _isValidEmail(_email!)
+                              ? Colors.green
+                              : Colors.red,
+                        )
+                      : null,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!_isValidEmail(value)) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  _email = value;
+                  _checkIfOtpCanBeEnabled();
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock),
+                  labelText: "Password",
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  _password = value;
+                  _checkIfOtpCanBeEnabled();
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                obscureText: _obscureConfirmPassword,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock),
+                  labelText: "Confirm Password",
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: AppColors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != _password) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  _confirmPassword = value;
+                  _checkIfOtpCanBeEnabled();
+                },
+              ),
+              const SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextFormField(
+                    controller: _otpController,
+                    enabled: _isOtpEnabled,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.sms),
+                      labelText: "OTP",
+                      border: const OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.primaryBlue),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (_isOtpEnabled && (value == null || value.isEmpty)) {
+                        return 'Please enter the OTP';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                      height: 10), // Spacing between OTP field and button
+                  ElevatedButton(
+                    onPressed: _isOtpEnabled
+                        ? (_isOtpSent ? _verifyOtp : _sendOtp)
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      backgroundColor: AppColors.primaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    child: _isSendingOtp || _isVerifyingOtp
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.white),
+                            ),
+                          )
+                        : Text(_isOtpSent ? "Verify" : "Send OTP"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _isOtpEnabled
-                    ? (_isOtpSent ? _verifyOtp : _sendOtp)
+                onPressed: _isOtpVerified && !_isVerifyingOtp
+                    ? () {
+                        if (_formKey.currentState!.validate()) {
+                          _register();
+                        }
+                      }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 40.0),
                   backgroundColor: AppColors.primaryBlue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                child: _isSendingOtp || _isVerifyingOtp
+                child: _isVerifyingOtp
                     ? const SizedBox(
                         height: 20,
                         width: 20,
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.white),
                         ),
                       )
-                    : Text(_isOtpSent ? "Verify" : "Send OTP"),
+                    : _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.white),
+                            ),
+                          )
+                        : const Text("Sign Up"),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _isOtpVerified && !_isVerifyingOtp
-                ? () {
-                    if (_formKey.currentState!.validate()) {
-                      _register();
-                    }
-                  }
-                : null,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 20.0, horizontal: 40.0),
-              backgroundColor: AppColors.primaryBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: _isVerifyingOtp
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(AppColors.white),
-                    ),
-                  )
-                : _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.white),
-                        ),
-                      )
-                    : const Text("Sign Up"),
-          ),
-        ],
+        ),
       ),
-    ),
-  ),
-);
-
+    );
   }
 
   void _register() async {
